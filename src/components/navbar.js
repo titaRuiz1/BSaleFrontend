@@ -3,6 +3,7 @@ import logo from "../assets/Logo-orange-WO-bg.svg";
 import { useAuth } from "../context/auth-context";
 import { Button } from "./buttons";
 import { typography, colors } from "../styles"
+import { useNavigate } from "react-router";
 
 const NavbarContainer = styled.div`
   display: flex;
@@ -40,9 +41,11 @@ const Logo = styled.img`
 
 export function Navbar() {
   const { logout } = useAuth()
+  const navigate = useNavigate();
 
   function handleLogout() {
     logout()
+    navigate("/login")
   }
 
   return (

@@ -5,6 +5,7 @@ import Button from "./button";
 import Input from "./input";
 import { ReactComponent as Logo } from "../src/assets/logo-bsale.svg";
 import { typography } from "./styles";
+import { useNavigate } from "react-router";
 
 const Section = styled.div`
   margin: 96px auto;
@@ -39,6 +40,7 @@ const SubtitleLogo = styled.p`
 
 export default function LoginPage() {
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     email: "",
@@ -49,6 +51,7 @@ export default function LoginPage() {
     event.preventDefault();
 
     login(form).catch((error) => console.log(error));
+    navigate("/challenge")
   }
 
   function handleFormChange(event) {
