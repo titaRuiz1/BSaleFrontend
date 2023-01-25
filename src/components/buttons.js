@@ -11,8 +11,8 @@ export const Button = styled.button`
 
     border:none;
     border-radius: 4px;
-    width: 100px;
-    height: 42px;
+    width: ${(props) => props.width || '100px'};
+    height: ${(props) => props.height || '42px'};
     background: ${colors.orange};
     color: ${colors.white};
     ${typography.head.xxs};
