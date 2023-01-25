@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { colors, typography } from "../styles"
 
 export const Button = styled.button`
     display:flex;
@@ -12,7 +13,8 @@ export const Button = styled.button`
     border-radius: 4px;
     width: 100px;
     height: 42px;
-    background: #FF5B00;
-    color: #FFFFFF;
+    background: ${colors.orange};
+    color: ${colors.white};
+    ${typography.head.xxs};
     cursor:pointer
 `;

@@ -1,5 +1,5 @@
 export const fonts = {
-  primary: `'Poppins', sans-serif`,
+  primary: `"Poppins", sans-serif`,
 };
 
 export const typography = {
