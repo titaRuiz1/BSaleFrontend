@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
-import logo from "../assets/Logo-orange-WO-bg.svg"
-import { Button } from "./buttons"
-import { colors, typography } from "../styles"
-
+import logo from "../assets/Logo-orange-WO-bg.svg";
+import { useAuth } from "../context/auth-context";
+import { Button } from "./buttons";
+import { typography, colors } from "../styles"
 
 const NavbarContainer = styled.div`
   display: flex;
@@ -30,7 +30,6 @@ const LeftDiv = styled.div`
   height: 44px;
   display: flex;
   gap: 12px;
-
   ${typography.head.lg}
 `;
 
@@ -40,6 +39,11 @@ const Logo = styled.img`
 `;
 
 export function Navbar() {
+  const { logout } = useAuth()
+
+  function handleLogout() {
+    logout()
+  }
 
   return (
     <NavbarContainer>
@@ -48,7 +52,7 @@ export function Navbar() {
           <Logo src={logo} alt="BSale" />
           <p>Desafíate</p>
         </LeftDiv>
-        <Button>Logout</Button>
+        <Button onClick={handleLogout}>Logout</Button>
       </NavbarSection>
     </NavbarContainer>
   );
