@@ -1,31 +1,39 @@
 export const fonts = {
-  primary: `"poppins", Source Sans Pro, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-  Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif`,
-  secondary: `"Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
-  Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif`,
+  primary: `"Poppins", sans-serif`,
+
 };
 
 export const typography = {
   text: {
+    xxs: `
+      font-size: 0.75rem;
+      line-height: 150%;
+      font-weight: 400;
+    `,
     xs: `
-    font-size: 0.75rem;
-    line-height: 1rem;
+      font-size: 0.875rem;
+      line-height: 185%;
+      font-weight: 400;
     `,
     sm: `
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+      font-size: 1rem;
+      line-height: 187%;
+      font-weight: 400;
     `,
     md: `
-    font-size: 1rem;
-    line-height: 1.5rem;
+      font-size: 1.125rem;
+      line-height: 155%;
+      font-weight: 400;
     `,
     lg: `
-    font-size: 1.125rem;
-    line-height: 1.75rem;
+      font-size: 1.25rem;
+      line-height: 140%;
+      font-weight: 400;
     `,
     xl: `
-    font-size: 1.25rem;
-    line-height: 1.75rem;
+      font-size: 1.375rem;
+      line-height: 127%;
+      font-weight: 400;
     `,
     xxl: `
     font-size: 2.5rem;
@@ -34,29 +42,41 @@ export const typography = {
 
   },
   head: {
+    xxs: `
+      font-size: 1rem;
+      line-height: 187%;
+      font-weight: 600;
+    `,
     xs: `
-    font-size: 1.25rem;
-    line-height: 1.75rem;
+      font-size: 1.125rem;
+      line-height: 155%;
+      font-weight: 600;
     `,
     sm: `
-    font-size: 1.5rem;
-    line-height: 2rem;
+      font-size: 1.25rem;
+      line-height: 160%;
+      font-weight: 600;
     `,
     md: `
-    font-size: 1.875rem;
-    line-height: 2.25rem;
+      font-size: 1.15rem;
+      line-height: 115%;
+      font-weight: 600;
     `,
     lg: `
-    font-size: 2.25rem;
-    line-height: 2.5rem;
+      font-size: 1.75rem;
+      line-height: 160%;
+      font-weight: 600;
     `,
     xl: `
     font-size: 3rem;
     line-height: 3rem;
     `,
+    
     xxl: `
     font-size: 2.5rem;
-    line-height: 3.75rem;
+    line-height: 150%;
+    font-weight: 600;
+
     `,
   },
 };
@@ -69,7 +89,6 @@ for (const size in typography.text) {
 
 for (const size in typography.head) {
   typography.head[size] += `
-  font-family: ${fonts.secondary};
-  font-weight: 600;
+  font-family: ${fonts.primary};
   `;
 }
