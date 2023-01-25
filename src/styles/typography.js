@@ -1,5 +1,5 @@
 export const fonts = {
-  primary: `"Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  primary: `"poppins", Source Sans Pro, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
   Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif`,
   secondary: `"Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
   Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif`,
@@ -27,6 +27,11 @@ export const typography = {
     font-size: 1.25rem;
     line-height: 1.75rem;
     `,
+    xxl: `
+    font-size: 2.5rem;
+    line-height: 3.75rem;
+    `,
+
   },
   head: {
     xs: `
@@ -50,7 +55,7 @@ export const typography = {
     line-height: 3rem;
     `,
     xxl: `
-    font-size: 3.75rem;
+    font-size: 2.5rem;
     line-height: 3.75rem;
     `,
   },
