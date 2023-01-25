@@ -1,3 +1,4 @@
+import ChallengePage from "./challenge-page";
 import { Navbar } from "./components/navbar"
 import { Routes, Route, Navigate } from "react-router-dom";
 
