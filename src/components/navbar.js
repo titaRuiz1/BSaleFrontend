@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import logo from "../assets/Logo-orange-WO-bg.svg";
 import { useAuth } from "../context/auth-context";
 import { Button } from "./buttons";
+import { typography, colors } from "../styles"
 
 const NavbarContainer = styled.div`
   display: flex;
@@ -9,7 +10,7 @@ const NavbarContainer = styled.div`
   align-items: center;
   padding: 0px 270px;
   height: 80px;
-  background: rgba(230, 232, 235, 0.31)
+  background: ${colors.background}
 `;
 
 const NavbarSection = styled.div`
@@ -29,6 +30,7 @@ const LeftDiv = styled.div`
   height: 44px;
   display: flex;
   gap: 12px;
+  ${typography.head.lg}
 `;
 
 const Logo = styled.img`

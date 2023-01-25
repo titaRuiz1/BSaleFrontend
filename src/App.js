@@ -1,5 +1,4 @@
 import ChallengePage from "./challenge-page";
-import { Navbar } from "./components/navbar"
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./login";
 import styled from "@emotion/styled";
@@ -18,12 +17,12 @@ function App() {
   return (
 
     <Wrapper>
-     <Navbar></Navbar>
-    <Routes>
-      <Route index element={<Navigate to="login" />} />
-      <Route path="login" element={<LoginPage/>} />
-      {/* <Route path="/routes" element={<ChallengePage />} /> */}
-    </Routes>
+      <Routes>
+        <Route index element={<Navigate to="login" />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="challenge" element={<ChallengePage />} />
+        {/* <Route path="/routes" element={<ChallengePage />} /> */}
+      </Routes>
     </Wrapper>
 
   );
