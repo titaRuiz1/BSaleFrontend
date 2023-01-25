@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import logo from "../assets/Logo-w-o-background.svg"
+import { Button } from "./buttons"
 
 
 const NavbarContainer = styled.div`
@@ -7,7 +9,7 @@ const NavbarContainer = styled.div`
   align-items: center;
   padding: 0px 270px;
   height: 80px;
-  border: 3px solid #051441;
+  background: rgba(230, 232, 235, 0.31)
 `;
 
 const NavbarSection = styled.div`
@@ -20,7 +22,18 @@ const NavbarSection = styled.div`
 
   width: 900px;
   height: 80px;
-  border: 3px solid #EF4444;
+`;
+
+const LeftDiv = styled.div`
+  width: 270px;
+  height: 44px;
+  display: flex;
+  gap: 12px;
+`;
+
+const Logo = styled.img`
+  width: 120px;
+  height: 36px;
 `;
 
 export function Navbar() {
@@ -28,7 +41,11 @@ export function Navbar() {
   return (
     <NavbarContainer>
       <NavbarSection>
-
+        <LeftDiv>
+          <Logo src={logo} alt="BSale" />
+          <p>Desafíate</p>
+        </LeftDiv>
+        <Button>Logout</Button>
       </NavbarSection>
     </NavbarContainer>
   );
