@@ -1,9 +1,9 @@
+import ChallengePage from "./challenge-page";
 
 function App() {
   return (
-    <div >
-      holaa
-
+    <div>
+      <ChallengePage/>
     </div>
   );
 }
