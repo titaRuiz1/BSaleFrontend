@@ -1,5 +1,6 @@
 export const fonts = {
   primary: `"Poppins", sans-serif`,
+
 };
 
 export const typography = {
@@ -34,6 +35,11 @@ export const typography = {
       line-height: 127%;
       font-weight: 400;
     `,
+    xxl: `
+    font-size: 2.5rem;
+    line-height: 3.75rem;
+    `,
+
   },
   head: {
     xxs: `
@@ -62,9 +68,15 @@ export const typography = {
       font-weight: 600;
     `,
     xl: `
-      font-size: 2.5rem;
-      line-height: 150%;
-      font-weight: 600;
+    font-size: 3rem;
+    line-height: 3rem;
+    `,
+    
+    xxl: `
+    font-size: 2.5rem;
+    line-height: 150%;
+    font-weight: 600;
+
     `,
   },
 };
