@@ -41,8 +41,7 @@ const Text4 = styled.p`
 `;
 
 const Text5 = styled.p`
-  ${typography.text.md}
-  font-weight: 600;
+  ${typography.head.xs}
   line-height: 27.9px;
   color: #677294;
 `;
