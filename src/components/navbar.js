@@ -31,7 +31,8 @@ const LeftDiv = styled.div`
   height: 44px;
   display: flex;
   gap: 12px;
-  ${typography.head.lg}
+  ${typography.head.lg};
+  color:${colors.blue}
 `;
 
 const Logo = styled.img`

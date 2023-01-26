@@ -58,7 +58,7 @@ export const typography = {
       font-weight: 600;
     `,
     md: `
-      font-size: 1.15rem;
+      font-size: 1.5rem;
       line-height: 115%;
       font-weight: 600;
     `,
@@ -71,7 +71,7 @@ export const typography = {
     font-size: 3rem;
     line-height: 3rem;
     `,
-    
+
     xxl: `
     font-size: 2.5rem;
     line-height: 150%;
