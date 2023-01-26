@@ -1,4 +1,5 @@
 import ChallengePage from "./challenge-page";
+import ResultsPage from "./results-page";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./login";
 import styled from "@emotion/styled";
@@ -21,7 +22,7 @@ function App() {
         <Route index element={<Navigate to="login" />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="challenge" element={<ChallengePage />} />
-        {/* <Route path="/routes" element={<ChallengePage />} /> */}
+        <Route path="results" element={<ResultsPage />} />
       </Routes>
     </Wrapper>
 
