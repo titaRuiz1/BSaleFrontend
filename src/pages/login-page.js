@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import { useAuth } from "./context/auth-context";
-import Button from "./button";
-import Input from "./input";
-import { ReactComponent as Logo } from "../src/assets/logo-bsale.svg";
-import { typography } from "./styles";
+import { useAuth } from "../context/auth-context";
+import {Button }from "../components/buttons";
+import Input from "../components/input";
+import { ReactComponent as Logo } from "../assets/logo-bsale.svg";
+import { typography } from "../styles";
 import { useNavigate } from "react-router";
 
 const Section = styled.div`
@@ -80,7 +80,7 @@ export default function LoginPage() {
             value={form.password}
             onChange={handleFormChange}
           />
-          <Button isFullWidth type="primary">
+          <Button width='280px'>
             Ingresar
           </Button>
         </StyledForm>

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { Navbar } from "./components/navbar";
-import { typography } from "./styles";
-import { Button } from "./components/buttons";
+import { Navbar } from "../components/navbar";
+import { typography } from "../styles";
+import { Button } from "../components/buttons";
 import { useNavigate } from "react-router";
+import { useAuth } from "../context/auth-context";
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -53,13 +54,13 @@ const Text4 = styled.p`
 
 function ResultsPage() {
   const navigate = useNavigate();
-
+  const {position} = useAuth();
 
   return (
     <Wrapper1 style={{alignItems:"center", justifyContent:"center"}}>
       <Navbar />
       <Wrapper1 style={{ maxWidth:"868px", gap: "32px", marginTop:"48px"}}>
-        <Text1>Desarrollador Web Junior</Text1>
+        <Text1>{position.title}</Text1>
         <Text1>Resumen de Resultados</Text1>
         <StageResultsContainer>
           <Text2>Etapa 1: Fundamentos de programacion</Text2>

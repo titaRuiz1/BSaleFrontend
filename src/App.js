@@ -1,9 +1,9 @@
-import ResultsPage from "./results-page";
+import ResultsPage from "./pages/results-page";
 import styled from "@emotion/styled";
 import { Routes, Route, Navigate } from "react-router-dom";
-import LoginPage from "./login";
-import ChallengePage from "./challenge-page";
-import MultipleChoicePage from "./pages/multiple_choice_question"
+import LoginPage from "./pages/login-page";
+import ChallengePage from "./pages/challenge-page";
+import MultipleChoicePage from "./pages/multiple_choice_question-page"
 
 const Wrapper = styled.div`
 height: 100%;

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { colors, typography } from "./styles";
+import { colors, typography } from "../styles";
 
 const Label = styled.label`
 color: #677294;
