@@ -9,7 +9,7 @@ import { global, reset } from './styles';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <>
     <Global styles={reset} />
     <Global styles={global} />
     <BrowserRouter>
@@ -17,6 +17,6 @@ root.render(
         <App />
       </AuthProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </>
 );
 

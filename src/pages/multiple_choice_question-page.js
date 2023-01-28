@@ -7,6 +7,13 @@ import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { Option } from "../components/option"
 
+const Wrapper1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -97,21 +104,21 @@ const Label = styled.label`
 function MultipleChoicePage() {
   const [showStyledInput, setShowStyledInput] = useState(false);
   const [inputID, setInputID] = useState(null);
-  const {position, mulChoiceQuestions } = useAuth();
+  const { position, mulChoiceQuestions } = useAuth();
   const [correctAnswer, setCorrectAnswer] = useState(null)
-  
-  console.log('PREGUNTAS EN OTRA MCPG', mulChoiceQuestions)
-  console.log( 'PREGUNTAS EN OTRA MCPG', mulChoiceQuestions.options )
 
-  
+  // console.log('PREGUNTAS EN OTRA MCPG', mulChoiceQuestions)
+  // console.log('OPCIONES', mulChoiceQuestions[0].options)
+
+
   function handleRadio(event) {
     event.preventDefault();
-    setInputID(event.target.id)
+    setInputID(+event.target.id)
     setShowStyledInput(true)
   }
 
   return (
-    <>
+    <Wrapper1>
       <Navbar />
       <Container>
         <Section>
@@ -123,37 +130,21 @@ function MultipleChoicePage() {
             </TextSection>
             <Img src={example} />
             <OptionsSection >
-              {mulChoiceQuestions.options && mulChoiceQuestions.options.map(option=>{
-                {showStyledInput && (inputID === 'answer1') ?
-                  <Option border={`1px solid ${colors.orange}`} id={`answer1`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-                  :
-                  <Option border={`1px solid ${colors.gray[600]}`} id={`answer1`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+              {mulChoiceQuestions[0].options && mulChoiceQuestions[0].options.map(option => {
+                if (showStyledInput && inputID === option.id) {
+                  return <Option key={`key${option.id}`} border={`1px solid ${colors.orange}`} id={option.id} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+                } else {
+                  return <Option key={`key${option.id}`} border={`1px solid ${colors.gray[600]}`} id={option.id} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
                 }
               })
               }
-{/* 
-              {showStyledInput && (inputID === 'answer2') ?
-                <Option border={`1px solid ${colors.orange}`} id={`answer2`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-                : 
-                <Option border={`1px solid ${colors.gray[600]}`} id={`answer2`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-              }
-              {showStyledInput && (inputID === 'answer3') ?
-                <Option border={`1px solid ${colors.orange}`} id={`answer3`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-                :
-                <Option border={`1px solid ${colors.gray[600]}`} id={`answer3`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-              }
-              {showStyledInput && (inputID === 'answer4') ?
-                <Option border={`1px solid ${colors.orange}`} id={`answer4`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-                :
-                <Option border={`1px solid ${colors.gray[600]}`} id={`answer4`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-              } */}
               <Button width='88px' style={{ alignSelf: 'center', marginTop: '20px' }}> Enviar </Button>
             </OptionsSection>
           </InsideSection>
 
         </Section>
       </Container>
-    </>
+    </Wrapper1>
   )
 }
 
