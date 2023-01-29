@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
 import example from "../assets/example.svg";
 import { useAuth } from "../context/auth-context";
@@ -89,21 +90,22 @@ const Label = styled.label`
     border: 1px solid ${colors.orange};
     border-radius: 50%;
     position:absolute;
-    left: 0px; 
+    left: 0px;
   }
 `;
 
 
 function MultipleChoicePage() {
+  const navigate = useNavigate();
   const [showStyledInput, setShowStyledInput] = useState(false);
   const [inputID, setInputID] = useState(null);
   const {position, mulChoiceQuestions } = useAuth();
-  const [correctAnswer, setCorrectAnswer] = useState(null)
-  
+  const [correctAnswer, setCorrectAnswer] = useState(null);
+
   console.log('PREGUNTAS EN OTRA MCPG', mulChoiceQuestions)
   console.log( 'PREGUNTAS EN OTRA MCPG', mulChoiceQuestions.options )
 
-  
+
   function handleRadio(event) {
     event.preventDefault();
     setInputID(event.target.id)
@@ -131,10 +133,10 @@ function MultipleChoicePage() {
                 }
               })
               }
-{/* 
+{/*
               {showStyledInput && (inputID === 'answer2') ?
                 <Option border={`1px solid ${colors.orange}`} id={`answer2`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-                : 
+                :
                 <Option border={`1px solid ${colors.gray[600]}`} id={`answer2`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
               }
               {showStyledInput && (inputID === 'answer3') ?
@@ -147,7 +149,11 @@ function MultipleChoicePage() {
                 :
                 <Option border={`1px solid ${colors.gray[600]}`} id={`answer4`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
               } */}
-              <Button width='88px' style={{ alignSelf: 'center', marginTop: '20px' }}> Enviar </Button>
+              <Button
+                width='88px'
+                style={{ alignSelf: 'center', marginTop: '20px' }}
+                onClick={() => navigate("/test-question")}
+              > Enviar </Button>
             </OptionsSection>
           </InsideSection>
 
