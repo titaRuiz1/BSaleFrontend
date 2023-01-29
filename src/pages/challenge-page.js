@@ -63,9 +63,9 @@ function ChallengePage() {
     getMultipleChoiceQuestions().then(response =>{
       setMulChoiceQuestions(response);
     }).catch()
-    
+
   }, [user]);
-  
+
   return (
     <Wrapper1 style={{alignItems:"center", justifyContent:"center"}}>
       <Navbar />
@@ -75,7 +75,7 @@ function ChallengePage() {
           <Wrapper2 style={{ justifyContent: "space-between", alignItems: "center" }}>
             <Text2>{position ? position.title : "Loading..."}</Text2>
             <Wrapper2 style={{ gap: "38px", justifyContent: "center", alignItems: "center" }}>
-              <Button style={{ padding: "8px 12px" }} onClick={()=> navigate("/mul-choice-question")}>
+              <Button style={{ padding: "8px 12px" }} onClick={()=> navigate("/first-stage")}>
                 <Text3>Iniciar</Text3>
               </Button>
               <HiOutlineChevronDown onClick={() => setShow(!show)} />

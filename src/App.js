@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/login-page";
 import ChallengePage from "./pages/challenge-page";
 import MultipleChoicePage from "./pages/multiple_choice_question-page"
+import FirstStagePage from "./pages/first-stage-page";
 
 const Wrapper = styled.div`
 height: 100%;
@@ -24,6 +25,7 @@ function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="challenge" element={<ChallengePage />} />
         <Route path="results" element={<ResultsPage />} />
+        <Route path="first-stage" element={<FirstStagePage />} />
         <Route path="mul-choice-question" element={<MultipleChoicePage />} />
         {/* <Route path="/routes" element={<ChallengePage />} /> */}
       </Routes>
