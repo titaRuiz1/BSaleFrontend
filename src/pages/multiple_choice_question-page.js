@@ -104,19 +104,28 @@ const Label = styled.label`
 function MultipleChoicePage() {
   const [showStyledInput, setShowStyledInput] = useState(false);
   const [inputID, setInputID] = useState(null);
-  const { position, mulChoiceQuestions } = useAuth();
-  const [correctAnswer, setCorrectAnswer] = useState(null)
-
-  // console.log('PREGUNTAS EN OTRA MCPG', mulChoiceQuestions)
-  // console.log('OPCIONES', mulChoiceQuestions[0].options)
+  const { position, mulChoiceQuestions, sumCorrectAnswer, setSumCorrectAnswer } = useAuth();
+  const [correctAnswer, setCorrectAnswer] = useState(null);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
 
 
   function handleRadio(event) {
     event.preventDefault();
-    setInputID(+event.target.id)
+    setInputID(+event.target.id);
     setShowStyledInput(true)
+    setCorrectAnswer(event.target.value)
   }
-
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (correctAnswer === 'true') setSumCorrectAnswer(sumCorrectAnswer + 1);
+    // if (currentQuestion < 4) {
+    if (currentQuestion < 2) {
+      setCurrentQuestion(currentQuestion + 1)
+    } else {
+      // por mientras!!!!
+      setCurrentQuestion(0)
+    }
+  }
   return (
     <Wrapper1>
       <Navbar />
@@ -124,17 +133,17 @@ function MultipleChoicePage() {
         <Section>
           <p>{position.title}</p>
           <InsideSection>
-            <p>Pregunta 1 de 10</p>
+            <p>Pregunta {currentQuestion + 1} de 10</p>
             <TextSection>
-              {mulChoiceQuestions[0].question.description}
+              {mulChoiceQuestions[currentQuestion].question.description}
             </TextSection>
             <Img src={example} />
-            <OptionsSection >
-              {mulChoiceQuestions[0].options && mulChoiceQuestions[0].options.map(option => {
+            <OptionsSection onSubmit={handleSubmit}>
+              {mulChoiceQuestions[currentQuestion].options && mulChoiceQuestions[currentQuestion].options.map(option => {
                 if (showStyledInput && inputID === option.id) {
-                  return <Option key={`key${option.id}`} border={`1px solid ${colors.orange}`} id={option.id} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+                  return <Option key={`key${option.id}`} value={option.correct} border={`1px solid ${colors.orange}`} id={option.id} background={`${colors.orange}`} label={option.description} onClick={handleRadio} />
                 } else {
-                  return <Option key={`key${option.id}`} border={`1px solid ${colors.gray[600]}`} id={option.id} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+                  return <Option key={`key${option.id}`} value={option.correct} border={`1px solid ${colors.gray[600]}`} id={option.id} background={`none`} label={option.description} onClick={handleRadio} />
                 }
               })
               }
