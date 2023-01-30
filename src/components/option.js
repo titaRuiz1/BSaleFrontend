@@ -5,7 +5,7 @@ const OptionContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 12px 32px;
+  padding: ${(props) => props.padding || '12px 32px'};
   gap: 16px;
 
   width: 868px;
@@ -35,14 +35,14 @@ const Label = styled.label`
     border: 1px solid ${colors.orange};
     border-radius: 50%;
     position:absolute;
-    left: 0px; 
+    left: 0px;
   }
 `;
 
-export function Option({border, id, background, label, onClick}) {
+export function Option({padding, border, id, background, label, onClick}) {
 
   return (
-    <OptionContainer border={border}>
+    <OptionContainer padding={padding} border={border}>
       <InputRadio type='radio' name='opcion' id={id} value={id} onClick={onClick}/>
       <Label htmlFor={id} background={background}> {label} </Label>
     </OptionContainer>
