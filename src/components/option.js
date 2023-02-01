@@ -9,7 +9,7 @@ const OptionContainer = styled.div`
   gap: 16px;
 
   width: 868px;
-  height: 52px;
+  // height: 52px;
 
   border: ${(props) => props.border};
   border-radius: 8px;
@@ -44,6 +44,7 @@ export function Option({padding, border, id, background, label, onClick}) {
   return (
     <OptionContainer padding={padding} border={border}>
       <InputRadio type='radio' name='opcion' id={id} value={id} onClick={onClick}/>
+
       <Label htmlFor={id} background={background}> {label} </Label>
     </OptionContainer>
   )

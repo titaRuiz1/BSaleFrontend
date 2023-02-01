@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
-import example from "../assets/example.svg";
 import { useAuth } from "../context/auth-context";
 import { colors, typography } from "../styles";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { Option } from "../components/option"
+
+const Wrapper1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center
+`;
 
 const Container = styled.div`
   display: flex;
@@ -56,23 +62,7 @@ const OptionsSection = styled.form`
   width: 868px;
 `;
 
-const Options = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 12px 32px;
-  gap: 16px;
 
-  width: 868px;
-  height: 52px;
-
-  border: ${(props) => props.border};
-  border-radius: 8px;
-`;
-
-const InputRadio = styled.input`
-  display:none;
-`;
 
 const Label = styled.label`
   color: ${colors.blue};
@@ -99,40 +89,49 @@ function MultipleChoicePage() {
   const navigate = useNavigate();
   const [showStyledInput, setShowStyledInput] = useState(false);
   const [inputID, setInputID] = useState(null);
-  const {position, mulChoiceQuestions } = useAuth();
+  const { position, mulChoiceQuestions, sumCorrectAnswer, setSumCorrectAnswer } = useAuth();
   const [correctAnswer, setCorrectAnswer] = useState(null);
-
-  console.log('PREGUNTAS EN OTRA MCPG', mulChoiceQuestions)
-  console.log( 'PREGUNTAS EN OTRA MCPG', mulChoiceQuestions.options )
-
+  const [currentQuestion, setCurrentQuestion] = useState(0);
 
   function handleRadio(event) {
     event.preventDefault();
-    setInputID(event.target.id)
+    setInputID(+event.target.id);
     setShowStyledInput(true)
+    setCorrectAnswer(event.target.value)
   }
-
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (correctAnswer === 'true') setSumCorrectAnswer(sumCorrectAnswer + 1);
+    // if (currentQuestion < 4) {
+    if (currentQuestion < 4) {
+      setCurrentQuestion(currentQuestion + 1)
+    } else {
+      // por mientras!!!!
+      setCurrentQuestion(0)
+    }
+  }
   return (
-    <>
+    <Wrapper1>
       <Navbar />
       <Container>
         <Section>
           <p>{position.title}</p>
           <InsideSection>
-            <p>Pregunta 1 de 10</p>
+            <p>Pregunta {currentQuestion + 1} de 10</p>
             <TextSection>
-              {mulChoiceQuestions[0].question.description}
+              {mulChoiceQuestions[currentQuestion].question.description}
             </TextSection>
-            <Img src={example} />
-            <OptionsSection >
-              {mulChoiceQuestions.options && mulChoiceQuestions.options.map(option=>{
-                {showStyledInput && (inputID === 'answer1') ?
-                  <Option border={`1px solid ${colors.orange}`} id={`answer1`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-                  :
-                  <Option border={`1px solid ${colors.gray[600]}`} id={`answer1`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+            {mulChoiceQuestions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={mulChoiceQuestions[currentQuestion]?.url} />}
+            <OptionsSection onSubmit={handleSubmit}>
+              {mulChoiceQuestions[currentQuestion].options && mulChoiceQuestions[currentQuestion].options.map(option => {
+                if (showStyledInput && inputID === option.id) {
+                  return <Option key={`key${option.id}`} value={option.correct} border={`1px solid ${colors.orange}`} id={option.id} background={`${colors.orange}`} label={option.description} onClick={handleRadio} />
+                } else {
+                  return <Option key={`key${option.id}`} value={option.correct} border={`1px solid ${colors.gray[600]}`} id={option.id} background={`none`} label={option.description} onClick={handleRadio} />
                 }
               })
               }
+
 {/*
               {showStyledInput && (inputID === 'answer2') ?
                 <Option border={`1px solid ${colors.orange}`} id={`answer2`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
@@ -154,12 +153,13 @@ function MultipleChoicePage() {
                 style={{ alignSelf: 'center', marginTop: '20px' }}
                 onClick={() => navigate("/test-question")}
               > Enviar </Button>
+
             </OptionsSection>
           </InsideSection>
 
         </Section>
       </Container>
-    </>
+    </Wrapper1>
   )
 }
 

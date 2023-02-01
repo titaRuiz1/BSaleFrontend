@@ -13,7 +13,7 @@ export const Button = styled.button`
     border-radius: 4px;
     width: ${(props) => props.width || '100px'};
     height: ${(props) => props.height || '42px'};
-    background: ${colors.orange};
+    background: ${(props) => props.color || colors.orange};
     color: ${colors.white};
     ${typography.head.xxs};
     cursor:pointer
