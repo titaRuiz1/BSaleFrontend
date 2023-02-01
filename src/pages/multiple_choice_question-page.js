@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
 import { useAuth } from "../context/auth-context";
 import { colors, typography } from "../styles";
@@ -63,14 +64,34 @@ const OptionsSection = styled.form`
 
 
 
+const Label = styled.label`
+  color: ${colors.blue};
+  display: inline-block;
+  padding: 5px 0px 5px 44px;
+  position:relative;
+  ${typography.text.lg};
+  cursor:pointer;
+  &:before{
+    content:'';
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    background: ${(props) => props.background};
+    border: 1px solid ${colors.orange};
+    border-radius: 50%;
+    position:absolute;
+    left: 0px;
+  }
+`;
+
 
 function MultipleChoicePage() {
+  const navigate = useNavigate();
   const [showStyledInput, setShowStyledInput] = useState(false);
   const [inputID, setInputID] = useState(null);
   const { position, mulChoiceQuestions, sumCorrectAnswer, setSumCorrectAnswer } = useAuth();
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-
 
   function handleRadio(event) {
     event.preventDefault();
@@ -110,7 +131,29 @@ function MultipleChoicePage() {
                 }
               })
               }
-              <Button width='88px' style={{ alignSelf: 'center', marginTop: '20px' }}> Enviar </Button>
+
+{/*
+              {showStyledInput && (inputID === 'answer2') ?
+                <Option border={`1px solid ${colors.orange}`} id={`answer2`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+                :
+                <Option border={`1px solid ${colors.gray[600]}`} id={`answer2`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+              }
+              {showStyledInput && (inputID === 'answer3') ?
+                <Option border={`1px solid ${colors.orange}`} id={`answer3`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+                :
+                <Option border={`1px solid ${colors.gray[600]}`} id={`answer3`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+              }
+              {showStyledInput && (inputID === 'answer4') ?
+                <Option border={`1px solid ${colors.orange}`} id={`answer4`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+                :
+                <Option border={`1px solid ${colors.gray[600]}`} id={`answer4`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
+              } */}
+              <Button
+                width='88px'
+                style={{ alignSelf: 'center', marginTop: '20px' }}
+                onClick={() => navigate("/test-question")}
+              > Enviar </Button>
+
             </OptionsSection>
           </InsideSection>
 
