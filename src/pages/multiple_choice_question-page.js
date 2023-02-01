@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
-import example from "../assets/example.svg";
 import { useAuth } from "../context/auth-context";
 import { colors, typography } from "../styles";
 import { Navbar } from "../components/navbar";
@@ -62,43 +61,7 @@ const OptionsSection = styled.form`
   width: 868px;
 `;
 
-const Options = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 12px 32px;
-  gap: 16px;
 
-  width: 868px;
-  height: 52px;
-
-  border: ${(props) => props.border};
-  border-radius: 8px;
-`;
-
-const InputRadio = styled.input`
-  display:none;
-`;
-
-const Label = styled.label`
-  color: ${colors.blue};
-  display: inline-block;
-  padding: 5px 0px 5px 44px;
-  position:relative;
-  ${typography.text.lg};
-  cursor:pointer;
-  &:before{
-    content:'';
-    width: 28px;
-    height: 28px;
-    display: inline-block;
-    background: ${(props) => props.background};
-    border: 1px solid ${colors.orange};
-    border-radius: 50%;
-    position:absolute;
-    left: 0px; 
-  }
-`;
 
 
 function MultipleChoicePage() {
@@ -119,7 +82,7 @@ function MultipleChoicePage() {
     event.preventDefault();
     if (correctAnswer === 'true') setSumCorrectAnswer(sumCorrectAnswer + 1);
     // if (currentQuestion < 4) {
-    if (currentQuestion < 2) {
+    if (currentQuestion < 4) {
       setCurrentQuestion(currentQuestion + 1)
     } else {
       // por mientras!!!!
@@ -137,7 +100,7 @@ function MultipleChoicePage() {
             <TextSection>
               {mulChoiceQuestions[currentQuestion].question.description}
             </TextSection>
-            <Img src={example} />
+            {mulChoiceQuestions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={mulChoiceQuestions[currentQuestion]?.url} />}
             <OptionsSection onSubmit={handleSubmit}>
               {mulChoiceQuestions[currentQuestion].options && mulChoiceQuestions[currentQuestion].options.map(option => {
                 if (showStyledInput && inputID === option.id) {

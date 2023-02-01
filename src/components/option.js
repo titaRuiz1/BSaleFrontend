@@ -9,7 +9,7 @@ const OptionContainer = styled.div`
   gap: 16px;
 
   width: 868px;
-  height: 52px;
+  // height: 52px;
 
   border: ${(props) => props.border};
   border-radius: 8px;
