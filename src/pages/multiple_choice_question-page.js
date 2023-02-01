@@ -82,7 +82,7 @@ function MultipleChoicePage() {
     event.preventDefault();
     if (correctAnswer === 'true') setSumCorrectAnswer(sumCorrectAnswer + 1);
     // if (currentQuestion < 4) {
-    if (currentQuestion < 2) {
+    if (currentQuestion < 4) {
       setCurrentQuestion(currentQuestion + 1)
     } else {
       // por mientras!!!!
