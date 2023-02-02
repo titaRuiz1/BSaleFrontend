@@ -55,7 +55,7 @@ function FirstStagePage() {
         <Wrapper1  style={{justifyContent:"center", alignItems:"center"}}>
           <Button
             width="90px"
-            onClick={() => navigate("/mul-choice-question")}>
+            onClick={() => navigate("/stage1")}>
             Iniciar
           </Button>
         </Wrapper1>

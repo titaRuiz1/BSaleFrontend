@@ -89,9 +89,12 @@ function MultipleChoicePage() {
   const navigate = useNavigate();
   const [showStyledInput, setShowStyledInput] = useState(false);
   const [inputID, setInputID] = useState(null);
-  const { position, mulChoiceQuestions, sumCorrectAnswer, setSumCorrectAnswer } = useAuth();
+  const { position, mulChoiceQuestions, sumCorrectAnswer, setSumCorrectAnswer, solutions } = useAuth();
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+
+  const [ view, setView ] = useState("question")
+
 
   function handleRadio(event) {
     event.preventDefault();
@@ -102,8 +105,15 @@ function MultipleChoicePage() {
   function handleSubmit(event) {
     event.preventDefault();
     if (correctAnswer === 'true') setSumCorrectAnswer(sumCorrectAnswer + 1);
+    setView("solution")
+   
+  }
+
+  function handleNextQuestion(e){
+    e.preventDefault();
     if (currentQuestion < mulChoiceQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1)
+      setView("question")
     } else {
       navigate("/test-question")
     }
@@ -115,6 +125,8 @@ function MultipleChoicePage() {
         <Section>
           <p>{position.title}</p>
           <InsideSection>
+            { view === "question" ?
+            <>
             <p>Pregunta {currentQuestion + 1} de 10</p>
             <TextSection>
               {mulChoiceQuestions[currentQuestion].question.description}
@@ -136,6 +148,21 @@ function MultipleChoicePage() {
               > Enviar </Button>
 
             </OptionsSection>
+            </>
+            : 
+            <>
+              <p>Solución {currentQuestion + 1} de 10</p>
+            <TextSection>
+              {solutions[currentQuestion].solution.description}
+            </TextSection>
+            {solutions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={solutions[currentQuestion]?.url} />}
+            <Button
+              width='88px'
+              style={{ alignSelf: 'center', marginTop: '20px' }}
+              onClick={handleNextQuestion}
+            > Siguiente 
+            </Button>
+            </> }
           </InsideSection>
 
         </Section>
