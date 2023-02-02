@@ -39,11 +39,11 @@ const Label = styled.label`
   }
 `;
 
-export function Option({padding, border, id, background, label, onClick}) {
+export function Option({ padding, border, id, background, label, value, onClick }) {
 
   return (
     <OptionContainer padding={padding} border={border}>
-      <InputRadio type='radio' name='opcion' id={id} value={id} onClick={onClick}/>
+      <InputRadio type='radio' name='opcion' id={id} value={value} onClick={onClick} />
 
       <Label htmlFor={id} background={background}> {label} </Label>
     </OptionContainer>
