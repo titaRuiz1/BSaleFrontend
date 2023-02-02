@@ -107,7 +107,8 @@ function MultipleChoicePage() {
       setCurrentQuestion(currentQuestion + 1)
     } else {
       // por mientras!!!!
-      setCurrentQuestion(0)
+      navigate("/test-question")
+      // setCurrentQuestion(0)
     }
   }
   return (
@@ -131,27 +132,10 @@ function MultipleChoicePage() {
                 }
               })
               }
-
-{/*
-              {showStyledInput && (inputID === 'answer2') ?
-                <Option border={`1px solid ${colors.orange}`} id={`answer2`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-                :
-                <Option border={`1px solid ${colors.gray[600]}`} id={`answer2`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-              }
-              {showStyledInput && (inputID === 'answer3') ?
-                <Option border={`1px solid ${colors.orange}`} id={`answer3`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-                :
-                <Option border={`1px solid ${colors.gray[600]}`} id={`answer3`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-              }
-              {showStyledInput && (inputID === 'answer4') ?
-                <Option border={`1px solid ${colors.orange}`} id={`answer4`} background={`${colors.orange}`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-                :
-                <Option border={`1px solid ${colors.gray[600]}`} id={`answer4`} background={`none`} label={`Descripcion de Opcion`} onClick={handleRadio} />
-              } */}
               <Button
                 width='88px'
                 style={{ alignSelf: 'center', marginTop: '20px' }}
-                onClick={() => navigate("/test-question")}
+                onClick={handleSubmit}
               > Enviar </Button>
 
             </OptionsSection>
