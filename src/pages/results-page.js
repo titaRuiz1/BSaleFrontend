@@ -55,7 +55,6 @@ const Text4 = styled.p`
 function ResultsPage() {
   const navigate = useNavigate();
   const { position, sumCorrectAnswer } = useAuth();
-  console.log('RESPUESTAS EN RESULTS', sumCorrectAnswer)
 
   return (
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
