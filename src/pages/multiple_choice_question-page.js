@@ -102,13 +102,10 @@ function MultipleChoicePage() {
   function handleSubmit(event) {
     event.preventDefault();
     if (correctAnswer === 'true') setSumCorrectAnswer(sumCorrectAnswer + 1);
-    // if (currentQuestion < 4) {
-    if (currentQuestion < 4) {
+    if (currentQuestion < mulChoiceQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1)
     } else {
-      // por mientras!!!!
       navigate("/test-question")
-      // setCurrentQuestion(0)
     }
   }
   return (

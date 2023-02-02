@@ -8,9 +8,10 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
   const [sumCorrectAnswer, setSumCorrectAnswer] = useState(0);
   const [position, setPosition] = useState(null);
-  const [mulChoiceQuestions, setMulChoiceQuestions ] = useState([]);
+  const [mulChoiceQuestions, setMulChoiceQuestions] = useState([]);
+  const [solutions, setSolutions] = useState([]);
   // const navigate = useNavigate();
-  
+
   function handleLogin(credentials) {
     return login(credentials).then((response) => {
       setUser(response)
@@ -30,12 +31,14 @@ function AuthProvider({ children }) {
         position,
         sumCorrectAnswer,
         mulChoiceQuestions,
+        solutions,
         setUser,
         setSumCorrectAnswer,
         login: handleLogin,
         logout: handleLogout,
         setPosition,
         setMulChoiceQuestions,
+        setSolutions,
       }}
     >
       {children}
