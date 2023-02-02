@@ -6,6 +6,7 @@ import ChallengePage from "./pages/challenge-page";
 import MultipleChoicePage from "./pages/multiple_choice_question-page"
 import FirstStagePage from "./pages/first-stage-page";
 import TestQuestionPage from "./pages/test-question-page";
+import SolutionsPage from "./pages/solutions-page";
 
 const Wrapper = styled.div`
 height: 100%;
@@ -26,9 +27,10 @@ function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="challenge" element={<ChallengePage />} />
         <Route path="first-stage" element={<FirstStagePage />} />
-        <Route path="mul-choice-question" element={<MultipleChoicePage />} />
+        <Route path="stage1" element={<MultipleChoicePage />} />
         <Route path="test-question" element={<TestQuestionPage />} />
         <Route path="results" element={<ResultsPage />} />
+        <Route path="Solutions" element={<SolutionsPage />} />
         {/* <Route path="/routes" element={<ChallengePage />} /> */}
       </Routes>
     </Wrapper>
