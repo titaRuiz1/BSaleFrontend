@@ -9,3 +9,7 @@ export async function getPositions(){
 export async function getMultipleChoiceQuestions(){
   return await apiFetch(`positions_mchq`);
 }
+
+export async function getTestQuestions(){
+  return await apiFetch(`positions_tq`);
+}
