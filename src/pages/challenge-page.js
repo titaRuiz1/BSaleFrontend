@@ -5,7 +5,7 @@ import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { typography } from "../styles";
 import { useAuth } from "../context/auth-context";
-import { getMultipleChoiceQuestions, getPositions } from "../services/position-service";
+import { getMultipleChoiceQuestions, getPositions, getSolutions } from "../services/position-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
 
@@ -53,29 +53,34 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const {position, setPosition, user, setMulChoiceQuestions} = useAuth();
+  const { position, setPosition, user, setMulChoiceQuestions, setSolutions } = useAuth();
 
   useEffect(() => {
-    getPositions().then(response =>{
+    getPositions().then(response => {
       setPosition(response);
     }).catch()
 
-    getMultipleChoiceQuestions().then(response =>{
+    getMultipleChoiceQuestions().then(response => {
       setMulChoiceQuestions(response);
     }).catch()
+
+    getSolutions().then(response => {
+      setSolutions(response)
+    }).catch()
+
 
   }, [user]);
 
   return (
-    <Wrapper1 style={{alignItems:"center", justifyContent:"center"}}>
+    <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
       <Navbar />
-      <Wrapper1 style={{ width: "68%", gap: "32px", marginTop:"48px"}}>
+      <Wrapper1 style={{ width: "68%", gap: "32px", marginTop: "48px" }}>
         <Text1>Retos asignados</Text1>
         <Wrapper1 style={{ padding: "12px 32px", border: "1px solid #1E1E1E", borderRadius: "8px", gap: "16px" }}>
           <Wrapper2 style={{ justifyContent: "space-between", alignItems: "center" }}>
             <Text2>{position ? position.title : "Loading..."}</Text2>
             <Wrapper2 style={{ gap: "38px", justifyContent: "center", alignItems: "center" }}>
-              <Button style={{ padding: "8px 12px" }} onClick={()=> navigate("/first-stage")}>
+              <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
                 <Text3>Iniciar</Text3>
               </Button>
               <HiOutlineChevronDown onClick={() => setShow(!show)} />
