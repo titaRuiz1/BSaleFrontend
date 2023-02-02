@@ -41,7 +41,7 @@ const Text2 = styled.p`
 
 function TestQuestionPage() {
   const navigate = useNavigate();
-  const { position, sumCorrectAnswer, setSumCorrectAnswer, mulChoiceQuestions } = useAuth();
+  const { position, sumCorrectAnswer, setSumCorrectAnswer, mulChoiceQuestions, testQuestion } = useAuth();
   const [currentTestQuestion, setCurrentTestQuestion] = useState(0);
   const [code, setCode] = useState(
     `function myFunction(param1, param2) {\n  //happy coding\n\n\n}`
@@ -50,32 +50,30 @@ function TestQuestionPage() {
   const [test2Status, setTest2Status] = useState(true);
   const [test3Status, setTest3Status] = useState(false);
   const [test4Status, setTest4Status] = useState(false);
-
+    console.log(testQuestion)
   // const [testStatus, setTestStatus] = useState([null,null,null,null])
 
   function handleSubmit(event) {
     event.preventDefault();
     if (test1Status && test2Status && test3Status && test4Status) setSumCorrectAnswer(sumCorrectAnswer + 1);
-    navigate("/results")
 
-    // CUANDO TENGA TODOS LOS QUESTIONS
-    //  if (currentTestQuestion < testQuestions.length - 1) {
-    // if (currentTestQuestion < 5) {
-    //   setCurrentTestQuestion(currentTestQuestion + 1)
-    // } else {
-    //   navigate("/results")
-    // }
+     if (currentTestQuestion < testQuestion?.length - 1) {
+       setCurrentTestQuestion(currentTestQuestion + 1)
+    } else {
+      navigate("/results")
+     }
   }
-
-  console.log(code)
 
   function runTests(event) {
     event.preventDefault();
-    let test1 = eval(`(${code})`);
-    let result1 = test1(3, 5)
-    // if(result1 === testQuestion.output) setTest1Status(true)
+    let currentTest;
+    // testQuestion[currentTestQuestion].tests.map( test =>{
+    //   currentTest = eval(`(${code})`);
+    //   const input = test.input.split(",")
+    //   if(currentTest(...input) === test.output) //setTest1Status(true) "3,3".split(",")
+    // })
 
-    console.log('resutado', result1)
+    // console.log('resutado', result1)
   }
 
   return (

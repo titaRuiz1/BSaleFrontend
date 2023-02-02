@@ -5,7 +5,7 @@ import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { typography } from "../styles";
 import { useAuth } from "../context/auth-context";
-import { getMultipleChoiceQuestions, getPositions, getSolutions } from "../services/position-service";
+import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions } from "../services/position-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
 
@@ -53,7 +53,7 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { position, setPosition, user, setMulChoiceQuestions, setSolutions } = useAuth();
+  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions } = useAuth();
 
   useEffect(() => {
     getPositions().then(response => {
@@ -68,10 +68,13 @@ function ChallengePage() {
       setSolutions(response)
     }).catch()
 
+    getTestQuestions().then(response => {
+      setTestQuestions(response)
+    }).catch()
 
   }, [user]);
 
-  return (
+  return ( 
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
       <Navbar />
       <Wrapper1 style={{ width: "68%", gap: "32px", marginTop: "48px" }}>

@@ -5,13 +5,19 @@ import { useAuth } from "../context/auth-context";
 import { colors, typography } from "../styles";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
-import { Option } from "../components/option"
+import { Option } from "../components/option";
+import Editor from "@monaco-editor/react";
 
 const Wrapper1 = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center
+`;
+
+const Wrapper2 = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const Container = styled.div`
@@ -46,6 +52,20 @@ const TextSection = styled.p`
   ${typography.text.lg};
   text-align: justify
 `;
+
+const Text1 = styled.p`
+  ${typography.head.md}
+  font-size: 1.5rem;
+  line-height: 27.6px;
+  color: #051441;
+`;
+
+const Text2 = styled.p`
+  ${typography.text.lg}
+  line-height: 28px;
+  color: #677294;
+`;
+
 const Img = styled.img`
   margin: 36px 0px;
   width:700px;
@@ -127,42 +147,108 @@ function MultipleChoicePage() {
           <InsideSection>
             { view === "question" ?
             <>
-            <p>Pregunta {currentQuestion + 1} de 10</p>
-            <TextSection>
-              {mulChoiceQuestions[currentQuestion].question.description}
-            </TextSection>
-            {mulChoiceQuestions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={mulChoiceQuestions[currentQuestion]?.url} />}
-            <OptionsSection onSubmit={handleSubmit}>
-              {mulChoiceQuestions[currentQuestion].options && mulChoiceQuestions[currentQuestion].options.map(option => {
-                if (showStyledInput && inputID === option.id) {
-                  return <Option key={`key${option.id}`} value={option.correct} border={`1px solid ${colors.orange}`} id={option.id} background={`${colors.orange}`} label={option.description} onClick={handleRadio} />
-                } else {
-                  return <Option key={`key${option.id}`} value={option.correct} border={`1px solid ${colors.gray[600]}`} id={option.id} background={`none`} label={option.description} onClick={handleRadio} />
-                }
-              })
-              }
-              <Button
-                width='88px'
-                style={{ alignSelf: 'center', marginTop: '20px' }}
-                onClick={handleSubmit}
-              > Enviar </Button>
+                <p>Pregunta {currentQuestion + 1} de 10</p>
+                <TextSection>
+                  {mulChoiceQuestions[currentQuestion].question.description}
+                </TextSection>
+                {mulChoiceQuestions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={mulChoiceQuestions[currentQuestion]?.url} />}
+                <OptionsSection onSubmit={handleSubmit}>
+                  {mulChoiceQuestions[currentQuestion].options && mulChoiceQuestions[currentQuestion].options.map(option => {
+                    if (showStyledInput && inputID === option.id) {
+                      return <Option key={`key${option.id}`} value={option.correct} border={`1px solid ${colors.orange}`} id={option.id} background={`${colors.orange}`} label={option.description} onClick={handleRadio} />
+                    } else {
+                      return <Option key={`key${option.id}`} value={option.correct} border={`1px solid ${colors.gray[600]}`} id={option.id} background={`none`} label={option.description} onClick={handleRadio} />
+                    }
+                  })
+                  }
+                  <Button
+                    width='88px'
+                    style={{ alignSelf: 'center', marginTop: '20px' }}
+                    onClick={handleSubmit}
+                  > Enviar </Button>
 
-            </OptionsSection>
+                </OptionsSection>
             </>
-            : 
+             : 
+            // view === "question"?
             <>
-              <p>Solución {currentQuestion + 1} de 10</p>
-            <TextSection>
-              {solutions[currentQuestion].solution.description}
-            </TextSection>
-            {solutions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={solutions[currentQuestion]?.url} />}
-            <Button
-              width='88px'
-              style={{ alignSelf: 'center', marginTop: '20px' }}
-              onClick={handleNextQuestion}
-            > Siguiente 
-            </Button>
-            </> }
+                <p>Solución {currentQuestion + 1} de 10</p>
+                <TextSection>
+                  {solutions[currentQuestion].solution.description}
+                </TextSection>
+                {solutions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={solutions[currentQuestion]?.url} />}
+                <Button
+                  width='88px'
+                  style={{ alignSelf: 'center', marginTop: '20px' }}
+                  onClick={handleNextQuestion}
+                > Siguiente 
+                </Button>
+            </>
+            //  :
+            // <>
+            //   <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}>
+            //     <Wrapper2 style={{ gap: "32px" }}>
+            //       <Text1>{position.title}</Text1>
+            //       {/* <Text1>Pregunta {currentTestQuestion + mulChoiceQuestions?.length + 1} de 10</Text1> */}
+            //     </Wrapper2>
+            //     {/* {testQuestions[currentTestQuestion].question.description} */}
+            //     <Text2>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text2>
+            //     <Wrapper2 style={{ height: "270px", alignItems: "center", justifyContent: "center", padding: "0px 30px" }}>
+            //       <Editor
+            //         language="javascript"
+            //         theme="vs-dark"
+            //         // value={code}
+            //         // onChange={code => setCode(code)}
+            //         width="100%"
+            //         height="100%"
+            //       />
+            //     </Wrapper2>
+            //     <Wrapper1>
+            //       {/* <Button width="71px" onClick={runTests}>Test</Button> */}
+            //     </Wrapper1>
+            //     <TestsContainer>
+            //       {/* {testQuestions[currentTestQuestion].tests && testQuestions[currentTestQuestion].tests.map((option, idx )=> { */}
+            //       {test1Status === null ?
+            //         <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.white}`} label={`Descripcion de Opcion`} />
+            //         :
+            //         test1Status === true ?
+            //           <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.green}`} label={`Descripcion de Opcion`} />
+            //           :
+            //           <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.red}`} label={`Descripcion de Opcion`} />
+            //       }
+            //       {test2Status === null ?
+            //         <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.white}`} label={`Descripcion de Opcion`} />
+            //         :
+            //         test2Status === true ?
+            //           <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.green}`} label={`Descripcion de Opcion`} />
+            //           :
+            //           <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.red}`} label={`Descripcion de Opcion`} />
+            //       }
+            //       {test3Status === null ?
+            //         <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.white}`} label={`Descripcion de Opcion`} />
+            //         :
+            //         test3Status === true ?
+            //           <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.green}`} label={`Descripcion de Opcion`} />
+            //           :
+            //           <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.red}`} label={`Descripcion de Opcion`} />
+            //       }
+            //       {test4Status === null ?
+            //         <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.white}`} label={`Descripcion de Opcion`} />
+            //         :
+            //         test4Status === true ?
+            //           <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.green}`} label={`Descripcion de Opcion`} />
+            //           :
+            //           <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.red}`} label={`Descripcion de Opcion`} />
+            //       }
+            //     </TestsContainer>
+            //     <Wrapper1>
+            //       <Button width="90px" onClick={handleSubmit}>
+            //         Enviar
+            //       </Button>
+            //     </Wrapper1>
+            //   </Wrapper2> 
+            //     </>
+            }
           </InsideSection>
 
         </Section>
