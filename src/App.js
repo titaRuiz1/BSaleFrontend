@@ -1,14 +1,12 @@
 import ResultsPage from "./pages/results-page";
 import styled from "@emotion/styled";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/login-page";
 import ChallengePage from "./pages/challenge-page";
 import MultipleChoicePage from "./pages/multiple_choice_question-page"
 import FirstStagePage from "./pages/first-stage-page";
 import TestQuestionPage from "./pages/test-question-page";
 import { useAuth } from "./context/auth-context";
-import { useEffect } from "react";
-
 
 const Wrapper = styled.div`
 height: 100%;

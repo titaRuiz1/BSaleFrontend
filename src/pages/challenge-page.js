@@ -53,7 +53,7 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions } = useAuth();
+  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, testQuestions } = useAuth();
 
   useEffect(() => {
     getPositions().then(response => {
@@ -73,6 +73,8 @@ function ChallengePage() {
     }).catch()
 
   }, [user]);
+
+  // console.log('EN EL CHALLEGE Page', testQuestions)
 
   return ( 
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>

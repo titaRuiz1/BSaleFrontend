@@ -22,7 +22,8 @@ function AuthProvider({ children }) {
   }
 
   function handleLogout() {
-    return logout().finally(() => {
+    return logout().then((response) => {
+      sessionStorage.removeItem("user")
     });
   }
 
