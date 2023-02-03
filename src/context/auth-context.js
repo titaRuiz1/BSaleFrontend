@@ -9,18 +9,21 @@ function AuthProvider({ children }) {
   const [sumCorrectAnswer, setSumCorrectAnswer] = useState(0);
   const [position, setPosition] = useState(null);
   const [mulChoiceQuestions, setMulChoiceQuestions] = useState([]);
+  const [testQuestions, setTestQuestions] = useState([]);
   const [solutions, setSolutions] = useState([]);
   // const navigate = useNavigate();
 
   function handleLogin(credentials) {
     return login(credentials).then((response) => {
       setUser(response)
+      sessionStorage.setItem("user", JSON.stringify(response))
     }).catch(error => {
     });
   }
 
   function handleLogout() {
-    return logout().finally(() => {
+    return logout().then((response) => {
+      sessionStorage.removeItem("user")
     });
   }
 
@@ -39,6 +42,8 @@ function AuthProvider({ children }) {
         setPosition,
         setMulChoiceQuestions,
         setSolutions,
+        testQuestions,
+        setTestQuestions
       }}
     >
       {children}
