@@ -5,7 +5,7 @@ import LoginPage from "./pages/login-page";
 import ChallengePage from "./pages/challenge-page";
 import MultipleChoicePage from "./pages/multiple_choice_question-page"
 import FirstStagePage from "./pages/first-stage-page";
-import TestQuestionPage from "./pages/test-question-page";
+// import TestQuestionPage from "./pages/test-question-page";
 import { useAuth } from "./context/auth-context";
 
 const Wrapper = styled.div`
@@ -22,14 +22,14 @@ function App() {
   return (
     <Wrapper>
       <Routes>
-      <Route index element={user ? <Navigate to="challenge" /> : <Navigate to="login" />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="challenge" element={<ChallengePage />} />
-          <Route path="first-stage" element={<FirstStagePage />} />
-          <Route path="stage1" element={<MultipleChoicePage />} />
-          <Route path="test-question" element={<TestQuestionPage />} />
-          <Route path="results" element={<ResultsPage />} />
-      </Routes>   
+        <Route index element={user ? <Navigate to="challenge" /> : <Navigate to="login" />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="challenge" element={<ChallengePage />} />
+        <Route path="first-stage" element={<FirstStagePage />} />
+        <Route path="stage1" element={<MultipleChoicePage />} />
+        {/* <Route path="test-question" element={<TestQuestionPage />} /> */}
+        <Route path="results" element={<ResultsPage />} />
+      </Routes>
     </Wrapper>
 
   );
