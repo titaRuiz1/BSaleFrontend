@@ -1,12 +1,12 @@
 import apiFetch from "./api-fetch";
 
 
-export async function sendFeedbacks(answers) {
-  console.log('answers en SERVICE', answers)
+export async function sendFeedbacks(body) {
+  console.log('answers en SERVICE', body)
   const feedback = await apiFetch(`feedback`, {
-    body: answers,
+    body: body,
   })
-  console.log('answers en FEEDBACK', feedback)
+  console.log('feedback en Service', feedback)
   // sessionStorage.setItem('feedback', feedback);
   return feedback;
 }

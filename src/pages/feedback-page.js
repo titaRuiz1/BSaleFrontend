@@ -78,6 +78,7 @@ const StarCheck = styled.div`
   flex-direction: column;
   width: 72px;
   height: 72px;
+
 `;
 const Labels = styled.div`
   display: flex;
@@ -107,7 +108,6 @@ const InputDiv = styled.form`
   margin-bottom: 76px;
 
   width: 868px;
-  // height: 198px;
 `;
 
 const Input = styled.input`
@@ -120,20 +120,22 @@ function FeedbackPage() {
   const navigate = useNavigate();
   const [currentCriteria, setCurrentCriteria] = useState();
   const [colorStar, setColorStar] = useState(false);
-  const [id, setId] = useState(null)
+  const [id, setId] = useState(null);
+  const [average, setAverage] = useState(1.25);
   const [form, setForm] = useState({
     answerDidWell: "",
     answerToImprove: "",
+    // challenge_evaluation: challenge_evaluation[currentCriteria].id,
   });
 
   function handleStar(event) {
     const icon = event.currentTarget;
     if (icon.hasAttribute("data-icon-id")) {
       const iconId = icon.getAttribute("data-icon-id");
-      console.log(`Icon with id "${iconId}" was clicked.`);
       setId(iconId)
     }
-    setColorStar(true);
+    setColorStar(!colorStar);
+    // setColorStar(true);
   }
 
   function handleFormChange(event) {
@@ -144,21 +146,32 @@ function FeedbackPage() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log('hace handle')
-    sendFeedbacks(form).then((response) => {
-      console.log('QUE ENVIA', response)
-    }).catch((error) => console.log(error))
-    // navigate("/results")
+    sendFeedbacks(form).then().catch((error) => console.log(error))
+    setAverage(average + (id * 0.25))
+    // if (currentCriteria < challenge_evaluation.length - 1) {
+    //   setCurrentQuestion(currentQuestion + 1)
+    //   setColorStar(false);
+    //   setAverage(average + (id * challenge_evaluation[currentCriteria].weighting))
+    //   setForm({
+    //     answerDidWell: "",
+    //     answerToImprove: "",
+    //     // challenge_evaluation: challenge_evaluation[currentCriteria].id,
+    //   });
+    // } else {
+    //   // navigate("/results")
+    // }
 
   }
 
   console.log('PRIMIS', form)
+
+  console.log('average', average)
   return (
     <>
       <Navbar />
       <Container>
         <Section>
-          {/* <p>{position.title}</p> */}
+          {/* <Title>{position.title}</Title> */}
           <Title>Desarrollador Web</Title>
           <InsideSection>
             <Title>Criterio {currentCriteria + 1} de 4: guidelines & principles of accesability</Title>
@@ -174,22 +187,22 @@ function FeedbackPage() {
               <StarsDiv>
                 <Stars>
                   <StarCheck>
-                    {(colorStar && (id === '1')) ? <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                      : <AiOutlineStar onClick={handleStar} data-icon-id="1" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
+                    {colorStar ? <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                      : <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ width: '72px', height: '72px', color: `${colors.lowOrange}` }} />
                     }
                   </StarCheck>
                   <StarCheck>
-                    {(colorStar && (id === '2')) ? <AiTwotoneStar onClick={handleStar} data-icon-id="2" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                    {(colorStar && (['2', '3', '4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="2" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
                       : <AiOutlineStar onClick={handleStar} data-icon-id="2" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
                     }
                   </StarCheck>
                   <StarCheck>
-                    {(colorStar && (id === '3')) ? <AiTwotoneStar onClick={handleStar} data-icon-id="3" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                    {(colorStar && (['3', '4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="3" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
                       : <AiOutlineStar onClick={handleStar} data-icon-id="3" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
                     }
                   </StarCheck>
                   <StarCheck>
-                    {(colorStar && (id === '4')) ? <AiTwotoneStar onClick={handleStar} data-icon-id="4" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                    {(colorStar && (['4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="4" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
                       : <AiOutlineStar onClick={handleStar} data-icon-id="4" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
                     }
                   </StarCheck>
@@ -214,6 +227,7 @@ function FeedbackPage() {
                   name='answerDidWell'
                   value={form.answerDidWell}
                   onChange={handleFormChange}
+                  placeholder='Escribe tu respuesta aqui'
                 />
 
                 <Subtitle marginB='0px'>¿Qué consideras que puedes mejorar?</Subtitle>
@@ -223,8 +237,9 @@ function FeedbackPage() {
                   name='answerToImprove'
                   value={form.answerToImprove}
                   onChange={handleFormChange}
+                  placeholder='Escribe tu respuesta aqui'
                 />
-                <Button width='120px' style={{ alignSelf: 'center', marginTop: '76px' }}>Enviar</Button>
+                <Button width='120px' style={{ alignSelf: 'center', marginTop: '76px' }}>Siguiente</Button>
               </InputDiv>
             </BottomSection>
           </InsideSection>
