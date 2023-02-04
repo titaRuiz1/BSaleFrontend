@@ -8,6 +8,7 @@ import FirstStagePage from "./pages/first-stage-page";
 import SecondStagePage from "./pages/second-stage-page";
 // import TestQuestionPage from "./pages/test-question-page";
 import { useAuth } from "./context/auth-context";
+import Table1 from "./components/table1/table1";
 
 const Wrapper = styled.div`
 height: 100%;
@@ -25,7 +26,7 @@ function App() {
       <Routes>
           <Route index element={user ? <Navigate to="challenge" /> : <Navigate to="login" />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="challenge" element={<ChallengePage />} />
+          <Route path="challenge" element={<SecondStagePage />} />
           <Route path="first-stage" element={<FirstStagePage />} />
           <Route path="stage1" element={<MultipleChoicePage />} />
           <Route path="results" element={<ResultsPage />} />
