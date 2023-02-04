@@ -8,6 +8,7 @@ import { useAuth } from "../context/auth-context";
 import { colors, typography } from "../styles";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
+import { sendFeedbacks } from "../services/feedback-service"
 
 const Container = styled.div`
   display: flex;
@@ -97,16 +98,16 @@ const Subtitle = styled.p`
   margin-bottom: ${(props) => props.marginB || '32px'};
 `;
 
-const InputDiv = styled.div`
+const InputDiv = styled.form`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
   gap: 8px;
-  margin-bottom: 64px;
+  margin-bottom: 76px;
 
   width: 868px;
-  height: 148px;
+  // height: 198px;
 `;
 
 const Input = styled.input`
@@ -120,8 +121,10 @@ function FeedbackPage() {
   const [currentCriteria, setCurrentCriteria] = useState();
   const [colorStar, setColorStar] = useState(false);
   const [id, setId] = useState(null)
-  const [commentary1, setCommentary1] = useState("");
-  const [commentary2, setCommentary2] = useState("");
+  const [form, setForm] = useState({
+    answerDidWell: "",
+    answerToImprove: "",
+  });
 
   function handleStar(event) {
     const icon = event.currentTarget;
@@ -133,11 +136,23 @@ function FeedbackPage() {
     setColorStar(true);
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    navigate("/results")
+  function handleFormChange(event) {
+    const { name, value } = event.target;
+
+    setForm({ ...form, [name]: value });
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log('hace handle')
+    sendFeedbacks(form).then((response) => {
+      console.log('QUE ENVIA', response)
+    }).catch((error) => console.log(error))
+    // navigate("/results")
+
+  }
+
+  console.log('PRIMIS', form)
   return (
     <>
       <Navbar />
@@ -183,36 +198,34 @@ function FeedbackPage() {
                       : <AiOutlineStar onClick={handleStar} data-icon-id="5" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
                     }
                   </StarCheck>
-
                 </Stars>
                 <Labels>
                   <StarLabel>En desacuerdo</StarLabel>
                   <StarLabel>Parcialmente de acuerdo</StarLabel>
                   <StarLabel>Totalmente de acuerdo</StarLabel>
                 </Labels>
-
               </StarsDiv>
-              <InputDiv>
+
+              <InputDiv onSubmit={handleSubmit}>
                 <Subtitle marginB='0px'>¿Qué consideras que hiciste bien?</Subtitle>
                 <Input
                   type='text'
-                  id='didWell'
-                  name='didWell'
-                  value={commentary1}
-                  onChange={commentary1 => setCommentary1(commentary1)}
+                  id='answerDidWell'
+                  name='answerDidWell'
+                  value={form.answerDidWell}
+                  onChange={handleFormChange}
                 />
-              </InputDiv>
-              <InputDiv>
+
                 <Subtitle marginB='0px'>¿Qué consideras que puedes mejorar?</Subtitle>
                 <Input
                   type='text'
-                  id='didWell'
-                  name='didWell'
-                  value={commentary2}
-                  onChange={commentary2 => setCommentary2(commentary2)}
+                  id='answerToImprove'
+                  name='answerToImprove'
+                  value={form.answerToImprove}
+                  onChange={handleFormChange}
                 />
+                <Button width='120px' style={{ alignSelf: 'center', marginTop: '76px' }}>Enviar</Button>
               </InputDiv>
-              <Button width='120px' onClick={handleSubmit}>Enviar</Button>
             </BottomSection>
           </InsideSection>
         </Section>
