@@ -5,6 +5,7 @@ import LoginPage from "./pages/login-page";
 import ChallengePage from "./pages/challenge-page";
 import MultipleChoicePage from "./pages/multiple_choice_question-page"
 import FirstStagePage from "./pages/first-stage-page";
+import FeedbackPage from "./pages/feedback-page"
 // import TestQuestionPage from "./pages/test-question-page";
 import { useAuth } from "./context/auth-context";
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="first-stage" element={<FirstStagePage />} />
         <Route path="stage1" element={<MultipleChoicePage />} />
         {/* <Route path="test-question" element={<TestQuestionPage />} /> */}
+        <Route path="feedback" element={<FeedbackPage />} />
         <Route path="results" element={<ResultsPage />} />
       </Routes>
     </Wrapper>
