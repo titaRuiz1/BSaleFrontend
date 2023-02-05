@@ -74,9 +74,8 @@ function ChallengePage() {
 
   }, [user]);
 
-  // console.log('EN EL CHALLEGE Page', testQuestions)
 
-  return ( 
+  return (
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
       <Navbar />
       <Wrapper1 style={{ width: "68%", gap: "32px", marginTop: "48px" }}>

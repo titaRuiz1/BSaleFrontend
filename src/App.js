@@ -26,7 +26,7 @@ function App() {
       <Routes>
           <Route index element={user ? <Navigate to="challenge" /> : <Navigate to="login" />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="challenge" element={<SecondStagePage />} />
+          <Route path="challenge" element={<ChallengePage />} />
           <Route path="first-stage" element={<FirstStagePage />} />
           <Route path="stage1" element={<MultipleChoicePage />} />
           <Route path="results" element={<ResultsPage />} />

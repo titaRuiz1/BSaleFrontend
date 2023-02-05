@@ -49,6 +49,23 @@ const Text3 = styled.p`
   color: ${colors.gray[600]};
 `;
 
+const Text4 = styled.p`
+  ${typography.head.xxs}
+  color: ${colors.black};
+`;
+
+const Text5 = styled.p`
+  ${typography.text.md}
+  color: ${colors.gray[600]};
+`;
+
+const Text6 = styled.p`
+  ${typography.text.lg}
+  line-height: 28px;
+  color: ${colors.blue};
+`;
+
+
 const Input = styled.input`
   padding: 0.5rem;
   ${typography.lg};
@@ -72,11 +89,11 @@ function SecondStagePage() {
   return (
     <Wrapper1>
       <Navbar />
-      <Wrapper2 style={{ maxWidth:"868px", gap: "32px", marginTop:"48px"}}>
+      <Wrapper2 style={{ width: "58%", gap: "32px", marginTop:"48px"}}>
         <Text1>Desarrollador Web Junior </Text1>
         <Text1>Etapa 2:Desarrollo web</Text1>
         <Text2>Requerimientos</Text2>
-        <Text3>With almost every business application process being linked with a web portal, the website has become an integral part of any organization. Satisfying the end user's needs is one of the key principles of designing an effective website. Because there are different users for any given website, there are different criteria to consider for ranking the website. Therefore, the evaluation the website will proceed as a multi-criteria process</Text3>
+        <Text3>With almost every business application process being linked with a web portal, the website has become an integral part of any organization. Satisfying the end user's needs is one of the key principles of designing an effective website. Because there are different users for any given website, there are different criteria to consider for ranking the website. Therefore, the evaluation of the website will proceed as a multi-criteria process</Text3>
         <Text2>Criterio de evaluacion</Text2>
         <Text3>Some people consider only the aesthetics or beauty of a website. Others are only concerned with accuracy of the information on webpages. The purpose of this stage is to approach a more wholistic and well rounded set of evaluation criteria. Let’s start with the criteria listed below:</Text3>
         <Table1 />
@@ -132,7 +149,17 @@ function SecondStagePage() {
         </TestsContainer>
         <Text2>Envio de proyecto</Text2>
         <Text3>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. </Text3>
-        <Wrapper1>
+        <Wrapper2>
+          <ul>
+            <li style={{ listStyleType: "disc", marginLeft:"17px" }}>
+              <Text6>Brindar acceso a Bsale-IO a tu repositorio privado de GitHub</Text6>
+            </li>
+            <li style={{ listStyleType: "disc", marginLeft:"17px" }}>
+              <Text6>Registra la URL de tu proyecto en el siguiente campo</Text6>
+            </li>
+          </ul>
+        </Wrapper2>
+        <Wrapper1 style={{marginBottom:"32px"}}>
           <Wrapper3 style={{gap:"4px"}}>
             <Input
               name="github-repo-url"

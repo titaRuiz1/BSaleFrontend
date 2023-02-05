@@ -28,12 +28,12 @@ function FieldRow() {
         Categoria
         </Text4>
       </FieldContainer>
-      <FieldContainer style={{ width: "241px", borderWidth:"1px 0px 1px 1px"}}>
+      <FieldContainer style={{width: "241px", borderWidth:"1px 0px 1px 1px"}}>
         <Text4>
         Criterio
         </Text4>
       </FieldContainer>
-      <FieldContainer style={{ width: "401px", borderWidth:"1px 1px 1px 1px"}}>
+      <FieldContainer style={{width: "401px", borderWidth:"1px 1px 1px 1px"}}>
         <Text4>
         Ponderacion
         </Text4>

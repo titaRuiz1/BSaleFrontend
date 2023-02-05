@@ -11,7 +11,7 @@ const Wrapper1 = styled.div`
 
 function Table1({records}) {
   return (
-    <Wrapper1 style={{marginTop:"20px"}}>
+    <Wrapper1 style={{maxWidth:"824px"}}>
       <FieldRow />
       <RecordRow />
       <RecordRow />
