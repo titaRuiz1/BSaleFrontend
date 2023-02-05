@@ -8,6 +8,7 @@ import { useAuth } from "../context/auth-context";
 import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions } from "../services/position-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
+import { stateUser } from "../services/user-service";
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -50,10 +51,14 @@ const Text5 = styled.p`
   color: #677294;
 `;
 
+const ButtonInit = styled(Button)`
+padding: "8px 12px"
+`
+
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, testQuestions } = useAuth();
+  const { position, setPosition, user, setUser, setMulChoiceQuestions, setSolutions, setTestQuestions, testQuestions } = useAuth();
 
   useEffect(() => {
     getPositions().then(response => {
@@ -74,6 +79,14 @@ function ChallengePage() {
 
   }, [user]);
 
+  function handleInit(e){
+    stateUser().then(response=>{
+      setUser(response)
+    })
+    navigate("/first-stage")
+
+  }
+
   // console.log('EN EL CHALLEGE Page', testQuestions)
 
   return ( 
@@ -85,9 +98,16 @@ function ChallengePage() {
           <Wrapper2 style={{ justifyContent: "space-between", alignItems: "center" }}>
             <Text2>{position ? position.title : "Loading..."}</Text2>
             <Wrapper2 style={{ gap: "38px", justifyContent: "center", alignItems: "center" }}>
-              <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
-                <Text3>Iniciar</Text3>
-              </Button>
+              {user ? 
+                user.state ?
+                  <ButtonInit onClick={handleInit}>
+                    <Text3>Iniciar</Text3>
+                  </ButtonInit>
+                  :
+                  <ButtonInit style={{background:"gray"}}>
+                    <Text3>Finalizado</Text3>
+                  </ButtonInit>
+                  : null } 
               <HiOutlineChevronDown onClick={() => setShow(!show)} />
             </Wrapper2>
           </Wrapper2>
