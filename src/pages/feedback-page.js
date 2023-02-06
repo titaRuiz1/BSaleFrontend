@@ -118,7 +118,7 @@ const Input = styled.input`
 function FeedbackPage() {
   const { position } = useAuth();
   const navigate = useNavigate();
-  const [currentCriteria, setCurrentCriteria] = useState();
+  const [currentCriteria, setCurrentCriteria] = useState(0);
   const [colorStar, setColorStar] = useState(false);
   const [id, setId] = useState(null);
   const [average, setAverage] = useState(1.25);
@@ -163,9 +163,6 @@ function FeedbackPage() {
 
   }
 
-  console.log('PRIMIS', form)
-
-  console.log('average', average)
   return (
     <>
       <Navbar />
