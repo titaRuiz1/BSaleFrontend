@@ -6,6 +6,9 @@ import ChallengePage from "./pages/challenge-page";
 import MultipleChoicePage from "./pages/multiple_choice_question-page"
 import FirstStagePage from "./pages/first-stage-page";
 import FeedbackPage from "./pages/feedback-page"
+import SecondStagePage from "./pages/second-stage-page";
+
+
 // import TestQuestionPage from "./pages/test-question-page";
 import { useAuth } from "./context/auth-context";
 
@@ -23,6 +26,7 @@ function App() {
   return (
     <Wrapper>
       <Routes>
+        <Route path="stage2" element={<SecondStagePage />} />
         <Route index element={user ? <Navigate to="challenge" /> : <Navigate to="login" />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="challenge" element={<ChallengePage />} />

@@ -172,14 +172,9 @@ function MultipleChoicePage() {
           if (idx === 3) setTest4Status(false)
         }
       }
-
       if (test.input_type === 'string') {
-        console.log('soy string')
         currentTest = eval(`(${code})`);
-        console.log('CURRENT Test', currentTest)
         const input = test.input
-        console.log('Input', currentTest(input))
-        console.log('Output', test.output)
         if (currentTest(input) === test.output) {
           if (idx === 0) setTest1Status(true)
           if (idx === 1) setTest2Status(true)
@@ -192,7 +187,6 @@ function MultipleChoicePage() {
           if (idx === 3) setTest4Status(false)
         }
       }
-
       if (test.input_type === 'array') {
         currentTest = eval(`(${code})`);
         const input = test.input.slice(1, test.input.length - 1).split(',').map(Number)
@@ -208,7 +202,6 @@ function MultipleChoicePage() {
           if (idx === 3) setTest4Status(false)
         }
       }
-
       if (test.input_type === 'boolean') {
         currentTest = eval(`(${code})`);
         const input = test.input.split(',').map(Boolean)
@@ -241,12 +234,6 @@ function MultipleChoicePage() {
       if (currentQuestion < testQuestions.length - 1) {
         setCurrentQuestion(currentQuestion + 1)
         setCode(testQuestions[currentQuestion + 1].question.code)
-        // por mientraaaassss!!!
-        setTest1Status(null)
-        setTest2Status(null)
-        setTest3Status(null)
-        setTest4Status(null)
-
       } else {
         navigate("/results")
       }
@@ -339,7 +326,7 @@ function MultipleChoicePage() {
                       }
                     </TestsContainer>
                     <Wrapper1>
-                      <Button width="90px" onClick={handleNextQuestion}>
+                      <Button width="90px" onClick={handleSubmitTest}>
                         Enviar
                       </Button>
                     </Wrapper1>
@@ -347,11 +334,19 @@ function MultipleChoicePage() {
                 </>
               :
               <>
-                <p>Solución {currentQuestion + 1} de 10</p>
+                <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de 10</p>
                 <TextSection>
-                  {solutions[currentQuestion].solution.description}
+                  {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion+5].solution.description}
                 </TextSection>
-                {solutions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={solutions[currentQuestion]?.url} />}
+                {question_type === "multiple" ? 
+                  solutions[currentQuestion]?.url === 'sin imagen' ? 
+                    null : 
+                    <Img src={solutions[currentQuestion]?.url} />
+                  :
+                  solutions[currentQuestion+6]?.url === 'sin imagen' ? 
+                    null : 
+                    <Img src={solutions[currentQuestion+5]?.url} />
+                }
                 <Button
                   width='88px'
                   style={{ alignSelf: 'center', marginTop: '20px' }}
