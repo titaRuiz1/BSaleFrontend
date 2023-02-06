@@ -120,16 +120,13 @@ function MultipleChoicePage() {
     solutions, testQuestions } = useAuth();
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [ view, setView ] = useState("question")
+  const [view, setView] = useState("question")
   const [question_type, setQuestion_type] = useState("multiple");
   const [code, setCode] = useState(null);
   const [test1Status, setTest1Status] = useState(null);
-  const [test2Status, setTest2Status] = useState(true);
-  const [test3Status, setTest3Status] = useState(false);
-  const [test4Status, setTest4Status] = useState(false);
-
-  // console.log('TEST QUESTIONS', testQuestions)
-  // console.log(view)
+  const [test2Status, setTest2Status] = useState(null);
+  const [test3Status, setTest3Status] = useState(null);
+  const [test4Status, setTest4Status] = useState(null);
   console.log(sumCorrectAnswer)
 
   function handleRadio(event) {
@@ -144,28 +141,88 @@ function MultipleChoicePage() {
     setView("solution")
   }
 
-  function handleSubmitTest(event){
+  function handleSubmitTest(event) {
     event.preventDefault();
     if (test1Status && test2Status && test3Status && test4Status) setSumCorrectAnswer(sumCorrectAnswer + 1);
+    setTest1Status(null)
+    setTest2Status(null)
+    setTest3Status(null)
+    setTest4Status(null)
     setView("solution")
   }
 
   function runTests(event) {
     event.preventDefault();
-    console.log(code)
     let currentTest;
-    // testQuestion[currentTestQuestion].tests.map( test =>{
-    //   currentTest = eval(`(${code})`);
-    //   const input = test.input.split(",")
-    //   if(currentTest(...input) === test.output) //setTest1Status(true) "3,3".split(",")
-    // })
 
-    // console.log('resutado', result1)
+    testQuestions[currentQuestion].tests.map((test, idx) => {
+      if (test.input_type === 'number') {
+        currentTest = eval(`(${code})`);
+        const input = test.input.split(",").map(Number)
+
+        if (currentTest(...input) === +test.output) {
+          if (idx === 0) setTest1Status(true)
+          if (idx === 1) setTest2Status(true)
+          if (idx === 2) setTest3Status(true)
+          if (idx === 3) setTest4Status(true)
+        } else {
+          if (idx === 0) setTest1Status(false)
+          if (idx === 1) setTest2Status(false)
+          if (idx === 2) setTest3Status(false)
+          if (idx === 3) setTest4Status(false)
+        }
+      }
+      if (test.input_type === 'string') {
+        currentTest = eval(`(${code})`);
+        const input = test.input
+        if (currentTest(input) === test.output) {
+          if (idx === 0) setTest1Status(true)
+          if (idx === 1) setTest2Status(true)
+          if (idx === 2) setTest3Status(true)
+          if (idx === 3) setTest4Status(true)
+        } else {
+          if (idx === 0) setTest1Status(false)
+          if (idx === 1) setTest2Status(false)
+          if (idx === 2) setTest3Status(false)
+          if (idx === 3) setTest4Status(false)
+        }
+      }
+      if (test.input_type === 'array') {
+        currentTest = eval(`(${code})`);
+        const input = test.input.slice(1, test.input.length - 1).split(',').map(Number)
+        if (currentTest(...input) === +test.output) {
+          if (idx === 0) setTest1Status(true)
+          if (idx === 1) setTest2Status(true)
+          if (idx === 2) setTest3Status(true)
+          if (idx === 3) setTest4Status(true)
+        } else {
+          if (idx === 0) setTest1Status(false)
+          if (idx === 1) setTest2Status(false)
+          if (idx === 2) setTest3Status(false)
+          if (idx === 3) setTest4Status(false)
+        }
+      }
+      if (test.input_type === 'boolean') {
+        currentTest = eval(`(${code})`);
+        const input = test.input.split(',').map(Boolean)
+        if (currentTest(...input) === +test.output) {
+          if (idx === 0) setTest1Status(true)
+          if (idx === 1) setTest2Status(true)
+          if (idx === 2) setTest3Status(true)
+          if (idx === 3) setTest4Status(true)
+        } else {
+          if (idx === 0) setTest1Status(false)
+          if (idx === 1) setTest2Status(false)
+          if (idx === 2) setTest3Status(false)
+          if (idx === 3) setTest4Status(false)
+        }
+      }
+    })
   }
 
-  function handleNextQuestion(e){
+  function handleNextQuestion(e) {
     e.preventDefault();
-    if(question_type === "multiple"){
+    if (question_type === "multiple") {
       if (currentQuestion < mulChoiceQuestions.length - 1) {
         setCurrentQuestion(currentQuestion + 1)
       } else {
@@ -173,17 +230,17 @@ function MultipleChoicePage() {
         setCode(testQuestions[0].question.code)
         setCurrentQuestion(0)
       }
-    }else{
-      if(currentQuestion <  testQuestions.length -1 ){
+    } else {
+      if (currentQuestion < testQuestions.length - 1) {
         setCurrentQuestion(currentQuestion + 1)
         setCode(testQuestions[currentQuestion+1].question.code)
       } else{
         navigate("/stage2")
+
       }
     }
     setView("question")
   }
-
   return (
     <Wrapper1>
       <Navbar />
@@ -191,7 +248,7 @@ function MultipleChoicePage() {
         <Section>
           <p>{position.title}</p>
           <InsideSection>
-            { view === "question" ?
+            {view === "question" ?
               question_type === "multiple" ?
                 <>
                   <p>Pregunta {currentQuestion + 1} de 10</p>
@@ -214,15 +271,14 @@ function MultipleChoicePage() {
 
                   </OptionsSection>
                 </>
-              :
+                :
                 <>
                   <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}>
                     <Wrapper2 style={{ gap: "32px" }}>
                       <Text1>{position.title}</Text1>
                       <Text1>Pregunta {currentQuestion + mulChoiceQuestions?.length + 1} de {solutions.length}</Text1>
                     </Wrapper2>
-                    {/* {testQuestions[currentTestQuestion].question.description} */}
-                    <Text2>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text2>
+                    <Text2>{testQuestions[currentQuestion].question.description} </Text2>
                     <Wrapper2 style={{ height: "270px", alignItems: "center", justifyContent: "center", padding: "0px 30px" }}>
                       <Editor
                         language="javascript"
@@ -237,59 +293,66 @@ function MultipleChoicePage() {
                       <Button width="71px" onClick={runTests}>Test</Button>
                     </Wrapper1>
                     <TestsContainer>
-                      {/* {testQuestions[currentTestQuestion].tests && testQuestions[currentTestQuestion].tests.map((option, idx )=> { */}
                       {test1Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.white}`} label={`Descripcion de Opcion`} />
+                        <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[0].test} />
                         :
                         test1Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.green}`} label={`Descripcion de Opcion`} />
+                          <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[0].test} />
                           :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.red}`} label={`Descripcion de Opcion`} />
+                          <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[0].test} />
                       }
                       {test2Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.white}`} label={`Descripcion de Opcion`} />
+                        <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[1].test} />
                         :
                         test2Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.green}`} label={`Descripcion de Opcion`} />
+                          <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[1].test} />
                           :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.red}`} label={`Descripcion de Opcion`} />
+                          <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[1].test} />
                       }
                       {test3Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.white}`} label={`Descripcion de Opcion`} />
+                        <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[2].test} />
                         :
                         test3Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.green}`} label={`Descripcion de Opcion`} />
+                          <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[2].test} />
                           :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.red}`} label={`Descripcion de Opcion`} />
+                          <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[2].test} />
                       }
                       {test4Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.white}`} label={`Descripcion de Opcion`} />
+                        <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[3].test} />
                         :
                         test4Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.green}`} label={`Descripcion de Opcion`} />
+                          <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[3].test} />
                           :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.red}`} label={`Descripcion de Opcion`} />
+                          <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[3].test} />
                       }
                     </TestsContainer>
                     <Wrapper1>
-                      <Button width="90px" onClick={handleNextQuestion}>
+                      <Button width="90px" onClick={handleSubmitTest}>
                         Enviar
                       </Button>
                     </Wrapper1>
                   </Wrapper2>
                 </>
-             :
+              :
               <>
-                  <p>Solución {currentQuestion + 1} de 10</p>
-                  <TextSection>
-                    {solutions[currentQuestion].solution.description}
-                  </TextSection>
-                  {solutions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={solutions[currentQuestion]?.url} />}
-                  <Button
-                    width='88px'
-                    style={{ alignSelf: 'center', marginTop: '20px' }}
-                    onClick={handleNextQuestion}
-                  > Siguiente
+                <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de 10</p>
+                <TextSection>
+                  {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion+5].solution.description}
+                </TextSection>
+                {question_type === "multiple" ? 
+                  solutions[currentQuestion]?.url === 'sin imagen' ? 
+                    null : 
+                    <Img src={solutions[currentQuestion]?.url} />
+                  :
+                  solutions[currentQuestion+6]?.url === 'sin imagen' ? 
+                    null : 
+                    <Img src={solutions[currentQuestion+5]?.url} />
+                }
+                <Button
+                  width='88px'
+                  style={{ alignSelf: 'center', marginTop: '20px' }}
+                  onClick={handleNextQuestion}
+                > Siguiente
                   </Button>
               </>
             }
