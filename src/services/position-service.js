@@ -14,6 +14,10 @@ export async function getTestQuestions(){
   return await apiFetch(`positions_tq`);
 }
 
+export async function getChallengeEvaluations(){
+  return await apiFetch(`positions_ev`);
+}
+
 export async function getSolutions() {
   const solutions = await apiFetch(`solutions`);
   return solutions;

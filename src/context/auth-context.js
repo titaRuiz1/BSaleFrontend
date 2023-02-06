@@ -8,6 +8,7 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
   const [sumCorrectAnswer, setSumCorrectAnswer] = useState(0);
   const [position, setPosition] = useState(null);
+  const [challengeEvaluations, setChallengeEvaluations] = useState(null);
   const [mulChoiceQuestions, setMulChoiceQuestions] = useState([]);
   const [testQuestions, setTestQuestions] = useState([]);
   const [solutions, setSolutions] = useState([]);
@@ -43,7 +44,9 @@ function AuthProvider({ children }) {
         setMulChoiceQuestions,
         setSolutions,
         testQuestions,
-        setTestQuestions
+        setTestQuestions,
+        challengeEvaluations,
+        setChallengeEvaluations
       }}
     >
       {children}

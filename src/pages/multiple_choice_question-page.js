@@ -233,9 +233,10 @@ function MultipleChoicePage() {
     } else {
       if (currentQuestion < testQuestions.length - 1) {
         setCurrentQuestion(currentQuestion + 1)
-        setCode(testQuestions[currentQuestion + 1].question.code)
-      } else {
-        navigate("/results")
+        setCode(testQuestions[currentQuestion+1].question.code)
+      } else{
+        navigate("/stage2")
+
       }
     }
     setView("question")

@@ -11,6 +11,7 @@ import SecondStagePage from "./pages/second-stage-page";
 
 // import TestQuestionPage from "./pages/test-question-page";
 import { useAuth } from "./context/auth-context";
+import Table1 from "./components/table1/table1";
 
 const Wrapper = styled.div`
 height: 100%;
