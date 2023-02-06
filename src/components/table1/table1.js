@@ -9,14 +9,13 @@ const Wrapper1 = styled.div`
   justify-content: center;
 `;
 
-function Table1({records}) {
+function Table1({ records }) {
   return (
     <Wrapper1 style={{maxWidth:"824px"}}>
       <FieldRow />
-      <RecordRow />
-      <RecordRow />
-      <RecordRow />
-      <RecordRow />
+      {records.map((record) => (
+        <RecordRow record={record}/>
+      ))}
     </Wrapper1>
   );
 }

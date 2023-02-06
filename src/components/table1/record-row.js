@@ -26,17 +26,17 @@ function RecordRow({record}) {
     <Wrapper3>
       <RecordContainer style={{width:"182px", borderWidth:"0px 1px 1px 1px"}}>
         <Text5>
-        Cat
+        {record.category}
         </Text5>
       </RecordContainer>
       <RecordContainer style={{ width: "241px", borderWidth:"0px 0px 1px 0px"}}>
         <Text5>
-        Crit
+        {record.criteria}
         </Text5>
       </RecordContainer>
       <RecordContainer style={{ width: "401px", borderWidth:"0px 1px 1px 1px"}}>
         <Text5>
-        Pond
+        {record.weighting}
         </Text5>
       </RecordContainer>
     </Wrapper3>

@@ -5,7 +5,7 @@ import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { typography } from "../styles";
 import { useAuth } from "../context/auth-context";
-import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions } from "../services/position-service";
+import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions, getChallengeEvaluations } from "../services/position-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
 
@@ -53,7 +53,7 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, testQuestions } = useAuth();
+  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, testQuestions, setChallengeEvaluations } = useAuth();
 
   useEffect(() => {
     getPositions().then(response => {
@@ -70,6 +70,10 @@ function ChallengePage() {
 
     getTestQuestions().then(response => {
       setTestQuestions(response)
+    }).catch()
+
+    getChallengeEvaluations().then(response => {
+      setChallengeEvaluations(response);
     }).catch()
 
   }, [user]);

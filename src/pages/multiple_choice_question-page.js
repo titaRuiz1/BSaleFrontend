@@ -178,7 +178,7 @@ function MultipleChoicePage() {
         setCurrentQuestion(currentQuestion + 1)
         setCode(testQuestions[currentQuestion+1].question.code)
       } else{
-        navigate("/results")
+        navigate("/stage2")
       }
     }
     setView("question")
@@ -276,9 +276,9 @@ function MultipleChoicePage() {
                         Enviar
                       </Button>
                     </Wrapper1>
-                  </Wrapper2> 
+                  </Wrapper2>
                 </>
-             : 
+             :
               <>
                   <p>Solución {currentQuestion + 1} de 10</p>
                   <TextSection>
@@ -289,7 +289,7 @@ function MultipleChoicePage() {
                     width='88px'
                     style={{ alignSelf: 'center', marginTop: '20px' }}
                     onClick={handleNextQuestion}
-                  > Siguiente 
+                  > Siguiente
                   </Button>
               </>
             }
