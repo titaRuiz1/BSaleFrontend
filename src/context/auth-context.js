@@ -12,6 +12,7 @@ function AuthProvider({ children }) {
   const [mulChoiceQuestions, setMulChoiceQuestions] = useState([]);
   const [testQuestions, setTestQuestions] = useState([]);
   const [solutions, setSolutions] = useState([]);
+  const [average, setAverage] = useState(0);
   // const navigate = useNavigate();
 
   function handleLogin(credentials) {
@@ -36,6 +37,8 @@ function AuthProvider({ children }) {
         sumCorrectAnswer,
         mulChoiceQuestions,
         solutions,
+        average,
+        setAverage,
         setUser,
         setSumCorrectAnswer,
         login: handleLogin,

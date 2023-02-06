@@ -87,7 +87,7 @@ function SecondStagePage() {
   const { challengeEvaluations } = useAuth();
 
   function handleNextButtonClick() {
-    navigate("/results")
+    navigate("/feedback")
   }
 
   return (
