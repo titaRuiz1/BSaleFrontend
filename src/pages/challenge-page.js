@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { HiOutlineChevronDown } from "react-icons/hi";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
-import { typography } from "../styles";
+import { typography, colors } from "../styles";
 import { useAuth } from "../context/auth-context";
 import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions, getChallengeEvaluations } from "../services/position-service";
 import { tokenKey } from "../config";
@@ -91,6 +91,12 @@ function ChallengePage() {
               <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
                 <Text3>Iniciar</Text3>
               </Button>
+              {/* <Button width="107px" color={colors.teal} style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
+                <Text3>Continuar</Text3>
+              </Button> */}
+              {/* <Button width="107px" color={colors.gray[600]} style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
+                <Text3>Finalizado</Text3>
+              </Button> */}
               <HiOutlineChevronDown onClick={() => setShow(!show)} />
             </Wrapper2>
           </Wrapper2>

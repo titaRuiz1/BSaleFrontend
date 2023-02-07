@@ -12,6 +12,7 @@ function AuthProvider({ children }) {
   const [mulChoiceQuestions, setMulChoiceQuestions] = useState([]);
   const [testQuestions, setTestQuestions] = useState([]);
   const [solutions, setSolutions] = useState([]);
+  const [positionApplicants, setPositionApplicants] = useState([]);
   // const navigate = useNavigate();
 
   function handleLogin(credentials) {
@@ -46,7 +47,9 @@ function AuthProvider({ children }) {
         testQuestions,
         setTestQuestions,
         challengeEvaluations,
-        setChallengeEvaluations
+        setChallengeEvaluations,
+        positionApplicants,
+        setPositionApplicants
       }}
     >
       {children}

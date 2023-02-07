@@ -7,6 +7,7 @@ import MultipleChoicePage from "./pages/multiple_choice_question-page"
 import FirstStagePage from "./pages/first-stage-page";
 import FeedbackPage from "./pages/feedback-page"
 import SecondStagePage from "./pages/second-stage-page";
+import PositionApplicantsPage from "./pages/position-applicants-page"
 
 
 // import TestQuestionPage from "./pages/test-question-page";
@@ -36,6 +37,7 @@ function App() {
         {/* <Route path="test-question" element={<TestQuestionPage />} /> */}
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="results" element={<ResultsPage />} />
+        <Route path="admin/applicants" element={<PositionApplicantsPage/>}/>
       </Routes>
     </Wrapper>
 
