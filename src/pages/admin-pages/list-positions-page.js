@@ -42,7 +42,6 @@ const Wrapper1 = styled.div`
 function PositionsListPage() {
   const { user, allPositions, setAllPositions, results } = useAuth();
 
-  console.log('RESULTADOS en ADMI', results)
   useEffect(() => {
     if (user?.email.includes('test3')) {
       getAllPositions().then(response => {
@@ -58,11 +57,11 @@ function PositionsListPage() {
     console.log(event.target.id)
     console.log('ENTRE AL CLICK')
   }
-  console.log('POSISIONES', allPositions)
+  console.log('POSICIONES', allPositions)
   return (
     <>
       <Navbar />
-      {user?.email.includes('test3') ?
+      {user.user_type === "admin" ?
         <Container>
           <Title>Posiciones</Title>
           {!allPositions ? "Loading..." : (allPositions.map((pos) =>

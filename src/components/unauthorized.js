@@ -37,7 +37,7 @@ const Img = styled.img`
 function Unauthorized() {
   return (
     <Container>
-      <Title>Page No Found</Title>
+      <Title>Page Not Found</Title>
       <Img width='700px' src={logo} alt="video" />
       <Anchor href="/challenge">Challenge Page</Anchor>
     </Container>

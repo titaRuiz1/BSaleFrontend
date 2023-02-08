@@ -39,7 +39,7 @@ const SubtitleLogo = styled.p`
 `;
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -51,7 +51,8 @@ export default function LoginPage() {
     event.preventDefault();
 
     login(form).catch((error) => console.log(error));
-    form.email.includes('test3') ? navigate("/admin/index") : navigate("/challenge")
+    console.log(user)
+    user.user_type === "admin" ? navigate("/admin/index") : navigate("/challenge")
 
   }
 
