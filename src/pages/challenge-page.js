@@ -6,6 +6,7 @@ import { Button } from "../components/buttons";
 import { typography } from "../styles";
 import { useAuth } from "../context/auth-context";
 import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions, getChallengeEvaluations } from "../services/position-service";
+import { getResult } from "../services/results-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
 
@@ -53,11 +54,19 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, testQuestions, setChallengeEvaluations } = useAuth();
+  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, testQuestions, setChallengeEvaluations, setSumCorrectAnswer, setAverage } = useAuth();
 
   useEffect(() => {
+    console.log('entre al useEffect')
     getPositions().then(response => {
       setPosition(response);
+    }).catch()
+
+    getResult().then(response => {
+      console.log('EL RESULTADO:', response)
+      console.log('EL RESULTADO con stage', response.stage3)
+      setSumCorrectAnswer(response.stage1);
+      setAverage(response.stage3)
     }).catch()
 
     getMultipleChoiceQuestions().then(response => {
@@ -73,6 +82,7 @@ function ChallengePage() {
     }).catch()
 
     getChallengeEvaluations().then(response => {
+      console.log('EL EVAL:', response)
       setChallengeEvaluations(response);
     }).catch()
 

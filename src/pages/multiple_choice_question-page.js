@@ -8,6 +8,7 @@ import { Button } from "../components/buttons";
 import { Option } from "../components/option";
 import Editor from "@monaco-editor/react";
 import { getMultipleChoiceQuestions } from "../services/position-service";
+import { sendResults } from "../services/results-service"
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -117,7 +118,7 @@ function MultipleChoicePage() {
   const [inputID, setInputID] = useState(null);
   const { position, mulChoiceQuestions,
     sumCorrectAnswer, setSumCorrectAnswer,
-    solutions, testQuestions } = useAuth();
+    solutions, testQuestions, setResults, results } = useAuth();
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [view, setView] = useState("question")
@@ -127,7 +128,7 @@ function MultipleChoicePage() {
   const [test2Status, setTest2Status] = useState(null);
   const [test3Status, setTest3Status] = useState(null);
   const [test4Status, setTest4Status] = useState(null);
-  console.log(sumCorrectAnswer)
+  console.log('correct answerß', sumCorrectAnswer)
 
   function handleRadio(event) {
     event.preventDefault();
@@ -137,13 +138,33 @@ function MultipleChoicePage() {
   }
   function handleSubmitMultipleChoice(event) {
     event.preventDefault();
-    if (correctAnswer === 'true') setSumCorrectAnswer(sumCorrectAnswer + 1);
+    if (correctAnswer === 'true') {
+      setSumCorrectAnswer(sumCorrectAnswer + 1)
+      sendResults(
+        {
+          stage1: sumCorrectAnswer + 1,
+          stage2: 0,
+          stage3: 0
+        }
+      ).then().catch((error) => console.log(error))
+
+    };
     setView("solution")
   }
 
   function handleSubmitTest(event) {
     event.preventDefault();
-    if (test1Status && test2Status && test3Status && test4Status) setSumCorrectAnswer(sumCorrectAnswer + 1);
+    if (test1Status && test2Status && test3Status && test4Status) {
+      setResults({ ...results, stage1: sumCorrectAnswer + 1 })
+      setSumCorrectAnswer(sumCorrectAnswer + 1)
+      sendResults(
+        {
+          stage1: sumCorrectAnswer + 1,
+          stage2: 0,
+          stage3: 0
+        }
+      ).then().catch((error) => console.log(error))
+    };
     setTest1Status(null)
     setTest2Status(null)
     setTest3Status(null)
@@ -233,8 +254,8 @@ function MultipleChoicePage() {
     } else {
       if (currentQuestion < testQuestions.length - 1) {
         setCurrentQuestion(currentQuestion + 1)
-        setCode(testQuestions[currentQuestion+1].question.code)
-      } else{
+        setCode(testQuestions[currentQuestion + 1].question.code)
+      } else {
         navigate("/stage2")
 
       }
@@ -337,16 +358,16 @@ function MultipleChoicePage() {
               <>
                 <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de 10</p>
                 <TextSection>
-                  {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion+5].solution.description}
+                  {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion + 5].solution.description}
                 </TextSection>
-                {question_type === "multiple" ? 
-                  solutions[currentQuestion]?.url === 'sin imagen' ? 
-                    null : 
+                {question_type === "multiple" ?
+                  solutions[currentQuestion]?.url === 'sin imagen' ?
+                    null :
                     <Img src={solutions[currentQuestion]?.url} />
                   :
-                  solutions[currentQuestion+6]?.url === 'sin imagen' ? 
-                    null : 
-                    <Img src={solutions[currentQuestion+5]?.url} />
+                  solutions[currentQuestion + 6]?.url === 'sin imagen' ?
+                    null :
+                    <Img src={solutions[currentQuestion + 5]?.url} />
                 }
                 <Button
                   width='88px'

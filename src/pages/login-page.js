@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useAuth } from "../context/auth-context";
-import {Button }from "../components/buttons";
+import { Button } from "../components/buttons";
 import Input from "../components/input";
 import { ReactComponent as Logo } from "../assets/logo-bsale.svg";
 import { typography } from "../styles";
@@ -51,8 +51,8 @@ export default function LoginPage() {
     event.preventDefault();
 
     login(form).catch((error) => console.log(error));
-    
-    navigate("/challenge")
+    form.email.includes('test3') ? navigate("/admin/index") : navigate("/challenge")
+
   }
 
   function handleFormChange(event) {
@@ -64,8 +64,8 @@ export default function LoginPage() {
   return (
     <Section>
       <Container>
-            <Logo />
-            <SubtitleLogo>Desafíate!</SubtitleLogo>
+        <Logo />
+        <SubtitleLogo>Desafíate!</SubtitleLogo>
         <StyledForm onSubmit={handleSubmit}>
           <Input
             id="email"
