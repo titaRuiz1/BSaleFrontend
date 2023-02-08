@@ -51,6 +51,7 @@ export default function LoginPage() {
     event.preventDefault();
 
     login(form).catch((error) => console.log(error));
+    
     navigate("/challenge")
   }
 
