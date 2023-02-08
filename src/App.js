@@ -8,6 +8,9 @@ import FirstStagePage from "./pages/first-stage-page";
 import FeedbackPage from "./pages/feedback-page"
 import SecondStagePage from "./pages/second-stage-page";
 import PositionsListPage from "./pages/admin-pages/list-positions-page"
+import AdminPage from "./pages/admin-page";
+import NewUserForm from "./components/new-user-form";
+
 
 
 // import TestQuestionPage from "./pages/test-question-page";
@@ -40,6 +43,10 @@ function App() {
 
         {/* <Route path="positions-list" element={user?.email.includes('admi') ? <PositionsListPage /> : <ChallengePage />} /> */}
         <Route path="admin/index" element={<PositionsListPage />} />
+
+        <Route path="admin-page" element={<AdminPage />} />
+        <Route path="new-user" element={<NewUserForm />} />
+
       </Routes>
     </Wrapper>
 

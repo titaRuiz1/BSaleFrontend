@@ -52,6 +52,7 @@ export default function LoginPage() {
 
     login(form).catch((error) => console.log(error));
     form.email.includes('test3') ? navigate("/admin/index") : navigate("/challenge")
+
   }
 
   function handleFormChange(event) {
