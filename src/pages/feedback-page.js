@@ -9,6 +9,7 @@ import { colors, typography } from "../styles";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { sendFeedbacks } from "../services/feedback-service"
+import { sendResults } from "../services/results-service"
 
 const Container = styled.div`
   display: flex;
@@ -116,11 +117,12 @@ const Input = styled.input`
   padding: 16px
 `;
 function FeedbackPage() {
-  const { position, challengeEvaluations, average, setAverage } = useAuth();
+  const { position, challengeEvaluations, average, setAverage, results, setResults } = useAuth();
   const navigate = useNavigate();
   const [currentCriteria, setCurrentCriteria] = useState(0);
   const [colorStar, setColorStar] = useState(false);
   const [id, setId] = useState(null);
+  console.log('challengeEvaluations', challengeEvaluations)
   const [form, setForm] = useState({
     answerDidWell: "",
     answerToImprove: "",
@@ -141,12 +143,16 @@ function FeedbackPage() {
 
     setForm({ ...form, [name]: value });
   }
+
   function handleSubmit(event) {
-    console.log("asdfsd",challengeEvaluations[currentCriteria])
-    console.log("criterio", currentCriteria)
     event.preventDefault();
     sendFeedbacks(form).then().catch((error) => console.log(error))
     console.log(currentCriteria)
+    sendResults(
+      {
+        stage3: average + (id * challengeEvaluations[currentCriteria].weighting)
+      }
+    ).then().catch((error) => console.log(error))
     setAverage(average + (id * challengeEvaluations[currentCriteria].weighting))
     if (currentCriteria < challengeEvaluations.length - 1) {
       setCurrentCriteria(currentCriteria + 1)
@@ -154,7 +160,7 @@ function FeedbackPage() {
       setForm({
         answerDidWell: "",
         answerToImprove: "",
-        challenge_evaluation_id: challengeEvaluations[currentCriteria].id+1,
+        challenge_evaluation_id: challengeEvaluations[currentCriteria].id + 1,
       });
     } else {
       navigate("/results")
