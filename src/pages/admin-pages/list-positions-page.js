@@ -26,6 +26,9 @@ const Subtitle = styled.a`
   ${typography.text.xl};
   color: ${colors.blue};
   cursor:pointer;
+  &:hover{
+    color: ${colors.orange}
+  }
 `;
 
 const Wrapper1 = styled.div`
@@ -36,17 +39,18 @@ const Wrapper1 = styled.div`
   border: 1px solid ${colors.black};
   border-radius: 8px; 
   gap: 16px;
-  width:100%
+  width:100%;
+  
 `;
 
 function PositionsListPage() {
   const { user, allPositions, setAllPositions, results } = useAuth();
 
   useEffect(() => {
-    if (user?.email.includes('test3')) {
+    if (user.user_type === "admin") {
       getAllPositions().then(response => {
         setAllPositions(response);
-        console.log(response)
+        console.log("estado",response)
       }).catch()
     }
 
@@ -54,10 +58,7 @@ function PositionsListPage() {
 
   function handlePosition(event) {
     event.preventDefault();
-    console.log(event.target.id)
-    console.log('ENTRE AL CLICK')
   }
-  console.log('POSICIONES', allPositions)
   return (
     <>
       <Navbar />
