@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { GrAddCircle } from "react-icons/gr";
 import { getAllPositions } from "../../services/position-service"
 import { useAuth } from "../../context/auth-context"
 import { colors, typography } from "../../styles";
@@ -25,10 +26,12 @@ const Title = styled.p`
 const Subtitle = styled.a`
   ${typography.text.xl};
   color: ${colors.blue};
+  display: flex;
   cursor:pointer;
   &:hover{
     color: ${colors.orange}
-  }
+  };
+  gap: 4px
 `;
 
 const Wrapper1 = styled.div`
@@ -36,7 +39,9 @@ const Wrapper1 = styled.div`
   flex-direction: row;
   padding: 12px 32px;
   align-items: center;
-  border: 1px solid ${colors.black};
+  border-width: 1px;
+  border-color: ${colors.black};
+  border-style: ${(props) => props.border || 'solid'};
   border-radius: 8px; 
   gap: 16px;
   width:100%;
@@ -50,7 +55,7 @@ function PositionsListPage() {
     if (user.user_type === "admin") {
       getAllPositions().then(response => {
         setAllPositions(response);
-        console.log("estado",response)
+        console.log("estado", response)
       }).catch()
     }
 
@@ -58,6 +63,15 @@ function PositionsListPage() {
 
   function handlePosition(event) {
     event.preventDefault();
+  }
+
+
+
+
+
+  function handleAddPosition(event) {
+    event.preventDefault();
+    console.log('añadir')
   }
   return (
     <>
@@ -70,6 +84,9 @@ function PositionsListPage() {
               <Subtitle onClick={handlePosition} id={pos.id}>• {pos.title}</Subtitle>
             </Wrapper1>
           ))}
+          <Wrapper1 border='dashed' style={{ justifyContent: 'center' }}>
+            <Subtitle onClick={handleAddPosition}>Add new position <GrAddCircle style={{ alignSelf: 'center' }} /> </Subtitle>
+          </Wrapper1>
         </Container> :
         <Unauthorized />
       }
