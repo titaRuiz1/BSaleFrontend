@@ -1,12 +1,15 @@
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
 import { GrAddCircle } from "react-icons/gr";
+import { Navigate, useNavigate } from "react-router";
+import { Link } from "react-router-dom"
 import { getAllPositions } from "../../services/position-service"
 import { useAuth } from "../../context/auth-context"
 import { colors, typography } from "../../styles";
 import { Navbar } from "../../components/navbar";
-import Unauthorized from "../../components/unauthorized"
+import Unauthorized from "../../components/unauthorized";
+import { getPositionApplicants } from "../../services/user-service";
+import PositionApplicantsPage from "./position-applicants-page";
 
 const Container = styled.div`
   display: flex;
@@ -45,11 +48,15 @@ const Wrapper1 = styled.div`
   border-radius: 8px; 
   gap: 16px;
   width:100%;
-  
+
 `;
 
 function PositionsListPage() {
-  const { user, allPositions, setAllPositions, results } = useAuth();
+  const { user, allPositions, setAllPositions, results, setPositionApplicants } = useAuth();
+  const navigate = useNavigate();
+  const [showTable, setShowTable] = useState(false);
+
+  console.log("POSITIONSSSSSSSSSS", allPositions)
 
   useEffect(() => {
     if (user.user_type === "admin") {
@@ -63,11 +70,18 @@ function PositionsListPage() {
 
   function handlePosition(event) {
     event.preventDefault();
+
+
+    console.log("ID", event.target.id)
+
+    getPositionApplicants(event.target.id).then(response => {
+      console.log("RESPONSE", response)
+      setPositionApplicants(response)
+    }).catch()
+
+    setShowTable(true);
+    // navigate(`/admin/applicants`)
   }
-
-
-
-
 
   function handleAddPosition(event) {
     event.preventDefault();
@@ -77,17 +91,24 @@ function PositionsListPage() {
     <>
       <Navbar />
       {user.user_type === "admin" ?
-        <Container>
-          <Title>Posiciones</Title>
-          {!allPositions ? "Loading..." : (allPositions.map((pos) =>
-            <Wrapper1>
-              <Subtitle onClick={handlePosition} id={pos.id}>• {pos.title}</Subtitle>
-            </Wrapper1>
-          ))}
-          <Wrapper1 border='dashed' style={{ justifyContent: 'center' }}>
-            <Subtitle onClick={handleAddPosition}>Add new position <GrAddCircle style={{ alignSelf: 'center' }} /> </Subtitle>
-          </Wrapper1>
-        </Container> :
+        <>
+          {showTable ? <PositionApplicantsPage /> : (
+            <Container>
+              <Title>Posiciones</Title>
+              {!allPositions ? "Loading..." : (allPositions.map((pos) =>
+                <Wrapper1>
+                  <Subtitle
+                    onClick={handlePosition}
+                    id={pos.id}>• {pos.title}</Subtitle>
+                </Wrapper1>
+              ))}
+              <Wrapper1 border='dashed' style={{ justifyContent: 'center' }}>
+                <Subtitle onClick={handleAddPosition}>Add new position <GrAddCircle style={{ alignSelf: 'center' }} /> </Subtitle>
+              </Wrapper1>
+            </Container>
+          )}
+        </>
+        :
         <Unauthorized />
       }
     </>
