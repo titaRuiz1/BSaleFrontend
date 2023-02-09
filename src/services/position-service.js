@@ -20,7 +20,6 @@ export async function getTestQuestions() {
 }
 export async function getChallengeEvaluations() {
   const challenge = await apiFetch(`positions_ev`);
-  console.log('CHALLENGE:', challenge)
   return challenge
 }
 

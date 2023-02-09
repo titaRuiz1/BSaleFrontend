@@ -72,7 +72,9 @@ function PositionsListPage() {
     getPositionApplicants(event.target.id).then(response=> {
       console.log("RESPONSE", response)
       setPositionApplicants(response)
-    }).catch()
+    }).catch(error=>{
+      console.log("ERROR",error)
+    })
 
     setShowTable(true);
     // navigate(`/admin/applicants`)
@@ -86,8 +88,8 @@ function PositionsListPage() {
           { showTable? <PositionApplicantsPage /> : (
               <Container>
                 <Title>Posiciones</Title>
-                {!allPositions ? "Loading..." : (allPositions.map((pos) =>
-                  <Wrapper1>
+                {!allPositions ? "Loading..." : (allPositions.map((pos, index) =>
+                  <Wrapper1 key={index}>
                       <Subtitle
                         onClick={handlePosition}
                         id={pos.id}>• {pos.title}</Subtitle>

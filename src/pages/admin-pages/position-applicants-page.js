@@ -69,7 +69,6 @@ function PositionApplicantsPage() {
     // user
   } = useAuth();
 
-
   // useEffect(() => {
     // getPositionApplicants(id).then(response=> {
     //   console.log("RESPONSE", response)
@@ -80,7 +79,6 @@ function PositionApplicantsPage() {
 
   return (
     <Wrapper1>
-      <Navbar />
       <Wrapper2 style={{ width: "68%", gap: "32px", marginTop: "48px", padding: "12px 32px" }}>
         <Text2>Position: </Text2>
         {positionApplicants ? (
@@ -89,7 +87,7 @@ function PositionApplicantsPage() {
 
             <Wrapper3 style={{justifyContent:"space-between", alignItems:"center"}}>
               <Text2>Applicants: </Text2>
-              <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/admin/users-create")}>
+              <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/new-user")}>
                 <Text3>New user</Text3>
               </Button>
             </Wrapper3>

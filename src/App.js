@@ -9,11 +9,7 @@ import FeedbackPage from "./pages/feedback-page"
 import SecondStagePage from "./pages/second-stage-page";
 import PositionApplicantsPage from "./pages/admin-pages/position-applicants-page"
 import PositionsListPage from "./pages/admin-pages/list-positions-page"
-import AdminPage from "./pages/admin-pages/admin-page";
 import NewUserForm from "./components/new-user-form";
-
-
-// import TestQuestionPage from "./pages/test-question-page";
 import { useAuth } from "./context/auth-context";
 import Table1 from "./components/table1/table1";
 
@@ -40,10 +36,12 @@ function App() {
         {/* <Route path="test-question" element={<TestQuestionPage />} /> */}
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="results" element={<ResultsPage />} />
+        
+        {/* ADMIN */}
+
         <Route path="admin/applicants" element={<PositionApplicantsPage/>}/>
         {/* <Route path="positions-list" element={user?.email.includes('admi') ? <PositionsListPage /> : <ChallengePage />} /> */}
-        <Route path="admin/index" element={<PositionsListPage />} />
-        <Route path="admin-page" element={<AdminPage />} />
+        <Route path="admin" element={<PositionsListPage />} />
         <Route path="new-user" element={<NewUserForm />} />
 
       </Routes>

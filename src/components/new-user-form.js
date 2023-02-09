@@ -6,6 +6,7 @@ import { createUser } from "../services/user-service"
 import Input from "./input"
 import { useNavigate } from "react-router-dom"
 import { Button } from "./buttons"
+import { useAuth } from "../context/auth-context"
 
 const Section = styled.div`
   margin: 96px auto;
@@ -30,7 +31,6 @@ height:32px;
 margin-top:-40px;
 color: #051441;
 text-align:center;
-
 `;
 
 const Form = styled.form`
@@ -44,10 +44,11 @@ const Form = styled.form`
 
 export default function NewUserForm(){
     const navigate = useNavigate();
+    const { positionApplicants } = useAuth();
     const [formdata, setFormdata] = useState({
         email:"",
         password:"",
-        position_id:"2"
+        position_id: positionApplicants.position.id
       })
 
 
@@ -61,7 +62,7 @@ export default function NewUserForm(){
        
         createUser(formdata).then(console.log).catch(console.log)
         console.log(formdata)
-        navigate("/admin-page");
+        navigate("/admin/index");
       }
 
   return (
@@ -85,14 +86,6 @@ export default function NewUserForm(){
             value={formdata.password}
             onChange={handleChange}
             placeholder="******"/>
-          <Input
-            label={"Position"}
-            id="position"
-            name="position"
-            type="text"
-            value={formdata.position_id}
-            onChange={handleChange}
-            placeholder="asignar position" />
           <Button>Create</Button>
         </Form>
       </Container>
