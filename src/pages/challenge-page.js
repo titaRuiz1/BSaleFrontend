@@ -57,7 +57,6 @@ function ChallengePage() {
   const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, setChallengeEvaluations, setSumCorrectAnswer, setAverage } = useAuth();
 
   useEffect(() => {
-    console.log('entre al useEffect')
     getPositions().then(response => {
       setPosition(response);
     }).catch()
@@ -82,7 +81,6 @@ function ChallengePage() {
     }).catch()
 
     getChallengeEvaluations().then(response => {
-      console.log('EL EVAL:', response)
       setChallengeEvaluations(response);
     }).catch()
 
