@@ -13,6 +13,7 @@ function AuthProvider({ children }) {
   const [mulChoiceQuestions, setMulChoiceQuestions] = useState([]);
   const [testQuestions, setTestQuestions] = useState([]);
   const [solutions, setSolutions] = useState([]);
+  const [positionApplicants, setPositionApplicants] = useState([]);
   const [average, setAverage] = useState(0);
   const [results, setResults] = useState({
     stage1: 0,
@@ -59,7 +60,9 @@ function AuthProvider({ children }) {
         testQuestions,
         setTestQuestions,
         challengeEvaluations,
-        setChallengeEvaluations
+        setChallengeEvaluations,
+        positionApplicants,
+        setPositionApplicants
       }}
     >
       {children}

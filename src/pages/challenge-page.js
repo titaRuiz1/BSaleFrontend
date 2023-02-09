@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { HiOutlineChevronDown } from "react-icons/hi";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
-import { typography } from "../styles";
+import { typography, colors } from "../styles";
 import { useAuth } from "../context/auth-context";
 import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions, getChallengeEvaluations } from "../services/position-service";
 import { getResult } from "../services/results-service";
@@ -103,6 +103,7 @@ function ChallengePage() {
           <Wrapper2 style={{ justifyContent: "space-between", alignItems: "center" }}>
             <Text2>{position ? position.title : "Loading..."}</Text2>
             <Wrapper2 style={{ gap: "38px", justifyContent: "center", alignItems: "center" }}>
+
               {user.current_stage === 1 && user.current_question === 1 ? 
                 <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
                   <Text3>Iniciar</Text3>
