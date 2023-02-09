@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { HiOutlineChevronDown } from "react-icons/hi";
-import { Navbar } from "../components/navbar";
-import { Button } from "../components/buttons";
-import { typography, colors } from "../styles";
-import { useAuth } from "../context/auth-context";
-import { getPositionApplicants } from "../services/user-service"
-import { tokenKey } from "../config";
+import { Navbar } from "../../components/navbar";
+import { Button } from "../../components/buttons";
+import { typography, colors } from "../../styles";
+import { useAuth } from "../../context/auth-context";
+import { getPositionApplicants } from "../../services/user-service"
+import { tokenKey } from "../../config";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
-import Table2 from "../components/table2/table2"
+import Table2 from "../../components/table2/table2"
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -60,18 +60,22 @@ const Text5 = styled.p`
 
 function PositionApplicantsPage() {
   // const { id } = useParams();
-  let id = 1
+  // // let id = 1
+  // console.log("APP ID", id);
+
   const navigate = useNavigate();
   const { positionApplicants,
-        setPositionApplicants, user } = useAuth();
+    // setPositionApplicants,
+    // user
+  } = useAuth();
 
 
-  useEffect(() => {
-    getPositionApplicants(id).then(response=> {
-      console.log("RESPONSE", response)
-      setPositionApplicants(response)
-    }).catch()
-  }, [user]);
+  // useEffect(() => {
+    // getPositionApplicants(id).then(response=> {
+    //   console.log("RESPONSE", response)
+    //   setPositionApplicants(response)
+    // }).catch()
+  // }, []);
 
 
   return (
