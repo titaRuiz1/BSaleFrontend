@@ -7,8 +7,9 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../context/auth-context";
 import Table1 from "../components/table1";
 import { Option } from "../components/option";
-import { sendDataTestE2E, sendUrl } from "../services/teste2e-service";
-
+import { sendDataTestE2E, sendGithubUrl, sendUrl } from "../services/teste2e-service";
+import { FiCheckCircle } from "react-icons/fi";
+import { MdOutlineCancel } from "react-icons/md"
 const Wrapper1 = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,6 +25,7 @@ const Wrapper2 = styled.div`
 const Wrapper3 = styled.div`
   display: flex;
   flex-direction: row;
+  align-items:center;
 `;
 
 const TestsContainer = styled.div`
@@ -84,7 +86,7 @@ function SecondStagePage() {
   const [test4Status, setTest4Status] = useState(false);
   const [projectUrl, setProjectUrl] = useState("");
   const [githubRepoUrl, setGithubRepoUrl]=useState("")
-  const [statusGithub, setStatusGithub] = useState(false)
+  const [statusGithub, setStatusGithub] = useState(null)
   const navigate = useNavigate();
   const { challengeEvaluations } = useAuth();
 
@@ -98,7 +100,6 @@ function SecondStagePage() {
 
   function handleTeste2e(event){
     event.preventDefault();
-    console.log(projectUrl)
     sendUrl({url: projectUrl})
       .then(response=> console.log(response))
       .catch(error=> console.log(error))
@@ -106,8 +107,12 @@ function SecondStagePage() {
 
   function handleGithub(e){
     e.preventDefault();
-    //ejecuta metodo de github, si se crea, retorna true
-    //setStatusGithub(true)
+    sendGithubUrl({repo: githubRepoUrl})
+      .then(response=>{
+        console.log(response)
+        setStatusGithub(response.response)
+      })
+      .catch(error=> console.log(error))
   }
 
   return (
@@ -173,7 +178,10 @@ function SecondStagePage() {
           }
         </TestsContainer>
         <Text2>Envio de proyecto</Text2>
-        <Text3>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. </Text3>
+        <Text3>Para poder revisar el código deployado en su proyecto necesitamos que ingrese el link de su repositorio en GITHUB teniendo en cuenta la siguiente nomenclatura: 
+          "nombre_usuario/nombre_repositorio"
+        NOTA: No deberá incluir un "/" al final del link. Puede extraer la url desde el mismo repositorio.
+        </Text3>
         <Wrapper2>
           <ul>
             <li style={{ listStyleType: "disc", marginLeft:"17px" }}>
@@ -186,13 +194,21 @@ function SecondStagePage() {
         </Wrapper2>
         <Wrapper1 style={{marginBottom:"32px"}}>
           <Wrapper3 style={{gap:"4px"}}>
+            { statusGithub === null ? 
+                null 
+              :
+                statusGithub ?  
+                  <FiCheckCircle style={{color:"green", width:25, height:25}}/>
+                :
+                  <MdOutlineCancel style={{color:"red", width:30, height:30}}/>
+            }
             <Input
               name="github-repo-url"
               id="github-repo-url"
               type="text"
               placeholder="github-repo-url"
               value={githubRepoUrl}
-              onChange={(e)=> setProjectUrl(e.target.value)}
+              onChange={(e)=> setGithubRepoUrl(e.target.value)}
             />
             <Button width="83px" onClick={handleGithub}>
               Enviar

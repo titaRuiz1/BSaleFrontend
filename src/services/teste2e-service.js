@@ -12,3 +12,9 @@ export async function sendDataTestE2E(body){
     body:body
   })
 }
+
+export async function sendGithubUrl(body){
+  return await apiFetch('github_repo',{
+    body:body
+  })
+}
