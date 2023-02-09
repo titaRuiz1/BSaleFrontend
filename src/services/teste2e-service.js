@@ -6,3 +6,9 @@ export async function sendUrl(body) {
   })
   return responseTest;
 }
+
+export async function sendDataTestE2E(body){
+  return await apiFetch('create_teste2e',{
+    body:body
+  })
+}

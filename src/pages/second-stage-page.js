@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../context/auth-context";
 import Table1 from "../components/table1";
 import { Option } from "../components/option";
-import { sendUrl } from "../services/teste2e-service";
+import { sendDataTestE2E, sendUrl } from "../services/teste2e-service";
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -83,11 +83,16 @@ function SecondStagePage() {
   const [test3Status, setTest3Status] = useState(false);
   const [test4Status, setTest4Status] = useState(false);
   const [projectUrl, setProjectUrl] = useState("");
-  const [githubRepoUrl, setGithubRepoUrl]=useState(null)
+  const [githubRepoUrl, setGithubRepoUrl]=useState("")
+  const [statusGithub, setStatusGithub] = useState(false)
   const navigate = useNavigate();
   const { challengeEvaluations } = useAuth();
 
   function handleNextButtonClick() {
+    sendDataTestE2E({
+      link:projectUrl,
+      github: statusGithub
+    })
     navigate("/feedback")
   }
 
@@ -97,6 +102,12 @@ function SecondStagePage() {
     sendUrl({url: projectUrl})
       .then(response=> console.log(response))
       .catch(error=> console.log(error))
+  }
+
+  function handleGithub(e){
+    e.preventDefault();
+    //ejecuta metodo de github, si se crea, retorna true
+    //setStatusGithub(true)
   }
 
   return (
@@ -181,8 +192,9 @@ function SecondStagePage() {
               type="text"
               placeholder="github-repo-url"
               value={githubRepoUrl}
+              onChange={(e)=> setProjectUrl(e.target.value)}
             />
-            <Button width="83px">
+            <Button width="83px" onClick={handleGithub}>
               Enviar
             </Button>
           </Wrapper3>
