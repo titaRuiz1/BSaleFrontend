@@ -8,6 +8,9 @@ import FirstStagePage from "./pages/first-stage-page";
 import FeedbackPage from "./pages/feedback-page"
 import SecondStagePage from "./pages/second-stage-page";
 import PositionApplicantsPage from "./pages/position-applicants-page"
+import PositionsListPage from "./pages/admin-pages/list-positions-page"
+import AdminPage from "./pages/admin-page";
+import NewUserForm from "./components/new-user-form";
 
 
 // import TestQuestionPage from "./pages/test-question-page";
@@ -29,7 +32,7 @@ function App() {
     <Wrapper>
       <Routes>
         <Route path="stage2" element={<SecondStagePage />} />
-        <Route index element={user ? <Navigate to="challenge" /> : <Navigate to="login" />} />
+        <Route index element={!user ? <Navigate to="login" /> : user.user_type === "admin" ? <Navigate to="admin/index" /> : <Navigate to="challenge" />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="challenge" element={<ChallengePage />} />
         <Route path="first-stage" element={<FirstStagePage />} />
@@ -38,6 +41,11 @@ function App() {
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="results" element={<ResultsPage />} />
         <Route path="admin/applicants" element={<PositionApplicantsPage/>}/>
+        {/* <Route path="positions-list" element={user?.email.includes('admi') ? <PositionsListPage /> : <ChallengePage />} /> */}
+        <Route path="admin/index" element={<PositionsListPage />} />
+        <Route path="admin-page" element={<AdminPage />} />
+        <Route path="new-user" element={<NewUserForm />} />
+
       </Routes>
     </Wrapper>
 

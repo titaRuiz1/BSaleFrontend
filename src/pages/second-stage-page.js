@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../context/auth-context";
 import Table1 from "../components/table1";
 import { Option } from "../components/option";
+import { sendUrl } from "../services/teste2e-service";
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -81,13 +82,21 @@ function SecondStagePage() {
   const [test2Status, setTest2Status] = useState(true);
   const [test3Status, setTest3Status] = useState(false);
   const [test4Status, setTest4Status] = useState(false);
-  const [projectUrl, setProjectUrl] = useState(null);
+  const [projectUrl, setProjectUrl] = useState("");
   const [githubRepoUrl, setGithubRepoUrl]=useState(null)
   const navigate = useNavigate();
   const { challengeEvaluations } = useAuth();
 
   function handleNextButtonClick() {
-    navigate("/results")
+    navigate("/feedback")
+  }
+
+  function handleTeste2e(event){
+    event.preventDefault();
+    console.log(projectUrl)
+    sendUrl({url: projectUrl})
+      .then(response=> console.log(response))
+      .catch(error=> console.log(error))
   }
 
   return (
@@ -111,8 +120,9 @@ function SecondStagePage() {
               type="text"
               placeholder="project-url"
               value={projectUrl}
+              onChange={(e)=> setProjectUrl(e.target.value)}
             />
-            <Button width="127px" style={{background:"#31B9DD"}}>
+            <Button onClick={handleTeste2e} width="127px" style={{background:"#31B9DD"}}>
               Iniciar tests
             </Button>
           </Wrapper3>

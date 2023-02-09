@@ -54,7 +54,9 @@ const Text4 = styled.p`
 
 function ResultsPage() {
   const navigate = useNavigate();
-  const { position, sumCorrectAnswer, solutions } = useAuth();
+  const { position, sumCorrectAnswer, solutions, average, challengeEvaluations, results } = useAuth();
+
+  console.log('RESULTADOS en RESULTS', results)
 
   return (
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
@@ -72,7 +74,7 @@ function ResultsPage() {
         </StageResultsContainer>
         <StageResultsContainer>
           <Text2>Etapa 3: Revision de codigo</Text2>
-          <Text3>Promedio de 3.5 sobre 5</Text3>
+          <Text3>Promedio de {average} sobre 5</Text3>
         </StageResultsContainer>
         <Text4>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text4>
         <Wrapper1 style={{ justifyContent: "center", alignItems: "center" }}>

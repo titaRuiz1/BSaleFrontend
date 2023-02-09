@@ -8,11 +8,18 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
   const [sumCorrectAnswer, setSumCorrectAnswer] = useState(0);
   const [position, setPosition] = useState(null);
+  const [allPositions, setAllPositions] = useState([])
   const [challengeEvaluations, setChallengeEvaluations] = useState(null);
   const [mulChoiceQuestions, setMulChoiceQuestions] = useState([]);
   const [testQuestions, setTestQuestions] = useState([]);
   const [solutions, setSolutions] = useState([]);
   const [positionApplicants, setPositionApplicants] = useState([]);
+  const [average, setAverage] = useState(0);
+  const [results, setResults] = useState({
+    stage1: 0,
+    stage2: 0,
+    stage3: 0
+  })
   // const navigate = useNavigate();
 
   function handleLogin(credentials) {
@@ -37,6 +44,12 @@ function AuthProvider({ children }) {
         sumCorrectAnswer,
         mulChoiceQuestions,
         solutions,
+        average,
+        allPositions,
+        results,
+        setResults,
+        setAllPositions,
+        setAverage,
         setUser,
         setSumCorrectAnswer,
         login: handleLogin,

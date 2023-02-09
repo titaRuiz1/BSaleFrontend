@@ -6,6 +6,7 @@ import { Button } from "../components/buttons";
 import { typography, colors } from "../styles";
 import { useAuth } from "../context/auth-context";
 import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions, getChallengeEvaluations } from "../services/position-service";
+import { getResult } from "../services/results-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
 
@@ -53,12 +54,20 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, testQuestions, setChallengeEvaluations } = useAuth();
+  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, setChallengeEvaluations, setSumCorrectAnswer, setAverage } = useAuth();
 
   useEffect(() => {
+    console.log('entre al useEffect')
     getPositions().then(response => {
       setPosition(response);
     }).catch()
+
+    getResult().then(response => {
+      console.log('EL RESULTADOasdasdasdas:', response)
+      console.log('EL RESULTADO con stage', response.stage3)
+      setSumCorrectAnswer(response.stage1);
+      setAverage(response.stage3)
+    }).catch(error => console.log(error))
 
     getMultipleChoiceQuestions().then(response => {
       setMulChoiceQuestions(response);
@@ -73,11 +82,17 @@ function ChallengePage() {
     }).catch()
 
     getChallengeEvaluations().then(response => {
+      console.log('EL EVAL:', response)
       setChallengeEvaluations(response);
     }).catch()
 
   }, [user]);
 
+  function handleContinue(e){
+    e.preventDefault();
+    //...se debe actualizar el current question (CUIDADO CON EL MULTIPLE CHOICE Y TEST)
+    //... se debe actualizar el current criteria
+  }
 
   return (
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
@@ -88,15 +103,22 @@ function ChallengePage() {
           <Wrapper2 style={{ justifyContent: "space-between", alignItems: "center" }}>
             <Text2>{position ? position.title : "Loading..."}</Text2>
             <Wrapper2 style={{ gap: "38px", justifyContent: "center", alignItems: "center" }}>
-              <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
-                <Text3>Iniciar</Text3>
-              </Button>
-              {/* <Button width="107px" color={colors.teal} style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
-                <Text3>Continuar</Text3>
-              </Button> */}
-              {/* <Button width="107px" color={colors.gray[600]} style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
-                <Text3>Finalizado</Text3>
-              </Button> */}
+
+              {user.current_stage === 1 && user.current_question === 1 ? 
+                <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
+                  <Text3>Iniciar</Text3>
+                </Button>
+              :
+                user.current_stage === 3 && user.current_question === 4 ?
+                  <Button style={{ padding: "8px 12px" }} disabled>
+                    <Text3>Finalizado</Text3>
+                  </Button>
+                :
+                  <Button style={{ padding: "8px 12px" }} onClick={handleContinue}>
+                    <Text3>Continuar</Text3>
+                  </Button>
+              }
+
               <HiOutlineChevronDown onClick={() => setShow(!show)} />
             </Wrapper2>
           </Wrapper2>

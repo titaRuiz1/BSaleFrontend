@@ -9,6 +9,7 @@ import { colors, typography } from "../styles";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { sendFeedbacks } from "../services/feedback-service"
+import { sendResults } from "../services/results-service"
 
 const Container = styled.div`
   display: flex;
@@ -116,16 +117,16 @@ const Input = styled.input`
   padding: 16px
 `;
 function FeedbackPage() {
-  const { position } = useAuth();
+  const { position, challengeEvaluations, average, setAverage, results, setResults } = useAuth();
   const navigate = useNavigate();
   const [currentCriteria, setCurrentCriteria] = useState(0);
   const [colorStar, setColorStar] = useState(false);
   const [id, setId] = useState(null);
-  const [average, setAverage] = useState(1.25);
+  console.log('challengeEvaluations', challengeEvaluations)
   const [form, setForm] = useState({
     answerDidWell: "",
     answerToImprove: "",
-    // challenge_evaluation: challenge_evaluation[currentCriteria].id,
+    challenge_evaluation_id: challengeEvaluations[currentCriteria].id,
   });
 
   function handleStar(event) {
@@ -134,8 +135,7 @@ function FeedbackPage() {
       const iconId = icon.getAttribute("data-icon-id");
       setId(iconId)
     }
-    setColorStar(!colorStar);
-    // setColorStar(true);
+    setColorStar(true);
   }
 
   function handleFormChange(event) {
@@ -147,19 +147,24 @@ function FeedbackPage() {
   function handleSubmit(event) {
     event.preventDefault();
     sendFeedbacks(form).then().catch((error) => console.log(error))
-    setAverage(average + (id * 0.25))
-    // if (currentCriteria < challenge_evaluation.length - 1) {
-    //   setCurrentQuestion(currentQuestion + 1)
-    //   setColorStar(false);
-    //   setAverage(average + (id * challenge_evaluation[currentCriteria].weighting))
-    //   setForm({
-    //     answerDidWell: "",
-    //     answerToImprove: "",
-    //     // challenge_evaluation: challenge_evaluation[currentCriteria].id,
-    //   });
-    // } else {
-    //   // navigate("/results")
-    // }
+    console.log(currentCriteria)
+    sendResults(
+      {
+        stage3: average + (id * challengeEvaluations[currentCriteria].weighting)
+      }
+    ).then().catch((error) => console.log(error))
+    setAverage(average + (id * challengeEvaluations[currentCriteria].weighting))
+    if (currentCriteria < challengeEvaluations.length - 1) {
+      setCurrentCriteria(currentCriteria + 1)
+      setColorStar(false);
+      setForm({
+        answerDidWell: "",
+        answerToImprove: "",
+        challenge_evaluation_id: challengeEvaluations[currentCriteria].id + 1,
+      });
+    } else {
+      navigate("/results")
+    }
 
   }
 
@@ -168,8 +173,7 @@ function FeedbackPage() {
       <Navbar />
       <Container>
         <Section>
-          {/* <Title>{position.title}</Title> */}
-          <Title>Desarrollador Web</Title>
+          <Title>{position.title}</Title>
           <InsideSection>
             <Title>Criterio {currentCriteria + 1} de 4: guidelines & principles of accesability</Title>
             <Img width='576px' src={video} alt="video" />
