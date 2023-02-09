@@ -7,9 +7,9 @@ import MultipleChoicePage from "./pages/multiple_choice_question-page"
 import FirstStagePage from "./pages/first-stage-page";
 import FeedbackPage from "./pages/feedback-page"
 import SecondStagePage from "./pages/second-stage-page";
-import PositionApplicantsPage from "./pages/position-applicants-page"
+import PositionApplicantsPage from "./pages/admin-pages/position-applicants-page"
 import PositionsListPage from "./pages/admin-pages/list-positions-page"
-import AdminPage from "./pages/admin-page";
+import AdminPage from "./pages/admin-pages/admin-page";
 import NewUserForm from "./components/new-user-form";
 
 
