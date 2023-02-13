@@ -62,8 +62,6 @@ function ChallengePage() {
     }).catch()
 
     getResult().then(response => {
-      console.log('EL RESULTADOasdasdasdas:', response)
-      console.log('EL RESULTADO con stage', response.stage3)
       setSumCorrectAnswer(response.stage1);
       setAverage(response.stage3)
     }).catch(error => console.log(error))
@@ -102,7 +100,7 @@ function ChallengePage() {
             <Text2>{position ? position.title : "Loading..."}</Text2>
             <Wrapper2 style={{ gap: "38px", justifyContent: "center", alignItems: "center" }}>
 
-              {user.current_stage === 1 && user.current_question === 1 ? 
+              {user.current_stage === 1 && user.current_question === 1 ?
                 <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
                   <Text3>Iniciar</Text3>
                 </Button>

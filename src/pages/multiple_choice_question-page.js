@@ -128,7 +128,6 @@ function MultipleChoicePage() {
   const [test2Status, setTest2Status] = useState(null);
   const [test3Status, setTest3Status] = useState(null);
   const [test4Status, setTest4Status] = useState(null);
-  console.log('correct answerß', sumCorrectAnswer)
 
   function handleRadio(event) {
     event.preventDefault();

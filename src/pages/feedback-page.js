@@ -85,7 +85,7 @@ const Labels = styled.div`
   display: flex;
   gap:100px;
   justify-content: space-between;
-  width: 680px;  
+  width: 680px;
 `;
 const StarLabel = styled.p`
   ${typography.text.lg};
@@ -122,7 +122,6 @@ function FeedbackPage() {
   const [currentCriteria, setCurrentCriteria] = useState(0);
   const [colorStar, setColorStar] = useState(false);
   const [id, setId] = useState(null);
-  console.log('challengeEvaluations', challengeEvaluations)
   const [form, setForm] = useState({
     answerDidWell: "",
     answerToImprove: "",
@@ -147,7 +146,6 @@ function FeedbackPage() {
   function handleSubmit(event) {
     event.preventDefault();
     sendFeedbacks(form).then().catch((error) => console.log(error))
-    console.log(currentCriteria)
     sendResults(
       {
         stage3: average + (id * challengeEvaluations[currentCriteria].weighting)

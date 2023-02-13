@@ -1,6 +1,11 @@
 import styled from "@emotion/styled";
 import { typography, colors } from "../../styles";
 
+const Wrapper2 = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const Wrapper3 = styled.div`
   display: flex;
   flex-direction: row;
@@ -9,6 +14,7 @@ const Wrapper3 = styled.div`
 const Text4 = styled.p`
   ${typography.head.xxs}
   color: ${colors.black};
+  font-size: 0.8rem;
 `;
 
 const FieldContainer = styled.div`
@@ -25,24 +31,53 @@ const FieldContainer = styled.div`
 function FieldRow() {
   return (
     <Wrapper3>
-      <FieldContainer style={{width:"182px", borderWidth:"1px 0px 1px 1px"}}>
+      <FieldContainer style={{width:"40px", borderWidth:"1px 0px 1px 1px"}}>
         <Text4>
         ID
         </Text4>
       </FieldContainer>
-      <FieldContainer style={{width: "182px", borderWidth:"1px 0px 1px 1px"}}>
+      <FieldContainer style={{width: "150px", borderWidth:"1px 0px 1px 1px"}}>
         <Text4>
-        EMAIL
+        CORREO
         </Text4>
       </FieldContainer>
-      <FieldContainer style={{width: "182px", borderWidth:"1px 0px 1px 1px"}}>
+      <Wrapper2>
+        <FieldContainer style={{width: "300px", borderWidth:"1px 0px 0px 1px"}}>
+            <Text4>
+            PUNTAJE
+            </Text4>
+        </FieldContainer>
+        <Wrapper3>
+          <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+            <Text4>
+            ETAPA 1
+            </Text4>
+          </FieldContainer>
+          <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+            <Text4>
+            ETAPA 2
+            </Text4>
+          </FieldContainer>
+          <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+            <Text4>
+            ETAPA 3
+            </Text4>
+          </FieldContainer>
+        </Wrapper3>
+      </Wrapper2>
+      <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
         <Text4>
-        STATE
+        ENLACE DEL PROYECTO
         </Text4>
       </FieldContainer>
-      <FieldContainer style={{width: "182px", borderWidth:"1px 1px 1px 1px"}}>
+      <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+        <Text4>
+        ESTADO
+        </Text4>
+      </FieldContainer>
+      <FieldContainer style={{width: "100px", borderWidth:"1px 1px 1px 1px"}}>
         <Text4 style={{textAlign:"center"}}>
-        CURRENT PROGRESS
+        COMENTARIOS
         </Text4>
       </FieldContainer>
     </Wrapper3>
