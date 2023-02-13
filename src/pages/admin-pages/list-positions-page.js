@@ -74,6 +74,7 @@ function PositionsListPage() {
 
     getPositionApplicants(event.target.id).then(response=> {
       setPositionApplicants(response)
+      console.log("respuestaaaaa", response)
     }).catch(error=>{
       console.log("ERROR",error)
     })

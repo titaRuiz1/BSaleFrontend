@@ -6,9 +6,7 @@ export async function getPositionApplicants(positionId){
 }
 
 export async function createUser(newUser) {
-  const { token, ...user } = await apiFetch("admin/create", { body: newUser });
-  sessionStorage.setItem(tokenKey, token);
-  return user;
+  return await apiFetch("admin/create", { body: newUser });
 }
 
 export async function updateUser(body) {

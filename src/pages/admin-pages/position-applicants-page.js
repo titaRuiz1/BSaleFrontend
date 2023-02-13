@@ -82,12 +82,12 @@ function PositionApplicantsPage() {
   function handleFeedbacksClose() {
     setIsOpenFeedback(false);
   }
-
+  console.log("position aplicants",positionApplicants)
   return (
     <Wrapper1>
       <Wrapper2 style={{ width: "68%", gap: "32px", marginTop: "48px", padding: "12px 32px" }}>
         <Text2>Position: </Text2>
-        {positionApplicants ?
+        {positionApplicants.position ?
         (
           <>
             <Text5> {positionApplicants.position.title}</Text5>

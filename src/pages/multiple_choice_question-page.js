@@ -151,13 +151,14 @@ function MultipleChoicePage() {
 
     if (correctAnswer === 'true') {
       setSumCorrectAnswer(sumCorrectAnswer + 1)
+      console.log(sumCorrectAnswer)
       sendResults(
         {
           stage1: sumCorrectAnswer + 1,
           stage2: 0,
           stage3: 0
         }
-      ).then().catch((error) => console.log(error))
+      ).then(console.log).catch((error) => console.log(error))
 
     };
     setView("solution")
@@ -302,7 +303,7 @@ function MultipleChoicePage() {
             {view === "question" ?
               question_type === "multiple" ?
                 <>
-                  <p>Pregunta {currentQuestion + 1} de 10</p>
+                  <p>Pregunta {currentQuestion + 1} de {solutions.length}</p>
                   <TextSection>
                     {mulChoiceQuestions[currentQuestion].question.description}
                   </TextSection>

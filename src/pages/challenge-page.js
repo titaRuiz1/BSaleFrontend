@@ -62,8 +62,11 @@ function ChallengePage() {
     }).catch()
 
     getResult().then(response => {
-      setSumCorrectAnswer(response.stage1);
-      setAverage(response.stage3)
+      console.log("respuesta results", response)
+      if (response !== []) {
+        setSumCorrectAnswer(response.stage1);
+        setAverage(response.stage3)
+      }
     }).catch(error => console.log(error))
 
     getMultipleChoiceQuestions().then(response => {

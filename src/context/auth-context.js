@@ -36,7 +36,7 @@ function AuthProvider({ children }) {
     test_questions_attributes: null,
     challenge_evaluations_attributes: null
   });
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
   function handleLogin(credentials) {

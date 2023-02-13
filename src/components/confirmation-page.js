@@ -55,7 +55,7 @@ function Confirmation() {
     event.preventDefault();
     createPosition(newPosition).then().catch((error) => console.log(error))
     console.log('entre')
-    navigate(`/admin/index`)
+    navigate(`/admin`)
   };
   console.log('TODO EL REQUEST', newPosition)
   return (

@@ -57,9 +57,9 @@ function Feedbacks({ feedbacks, onCloseClick }) {
           />
         </HeaderContainer>
       {feedbacks.length > 0 ?
-        feedbacks.map((feedback) => (
+        feedbacks.map((feedback, index) => (
           <>
-            <Text2>Criterio {feedback.id}: </Text2>
+            <Text2>Criterio {index+1}: </Text2>
             <Text4>Did well: </Text4>
             <Text5>{feedback.answerDidWell}</Text5>
             <Text4>To improve: </Text4>

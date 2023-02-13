@@ -43,26 +43,26 @@ const Form = styled.form`
 
 
 export default function NewUserForm(){
-    const navigate = useNavigate();
-    const { positionApplicants } = useAuth();
-    const [formdata, setFormdata] = useState({
-        email:"",
-        password:"",
-        position_id: positionApplicants.position.id
-      })
+  const navigate = useNavigate();
+  const { positionApplicants } = useAuth();
+  const [formdata, setFormdata] = useState({
+      email:"",
+      password:"",
+      position_id: positionApplicants.position.id
+    })
 
 
-      function handleChange(event){
-        const {name, value} = event.target
-        setFormdata({...formdata, [name]:value})
-      }
+    function handleChange(event){
+      const {name, value} = event.target
+      setFormdata({...formdata, [name]:value})
+    }
 
-      function handleSubmit(event){
-        event.preventDefault();
+    function handleSubmit(event){
+      event.preventDefault();
 
-        createUser(formdata).then(console.log).catch(console.log)
-        navigate("/admin/index");
-      }
+      createUser(formdata).then(console.log).catch(console.log)
+      navigate("/admin");
+    }
 
   return (
     <Section>

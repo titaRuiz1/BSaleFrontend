@@ -3,6 +3,7 @@ import {useState} from "react"
 import { typography, colors } from "../../styles";
 import { useAuth } from "../../context/auth-context";
 import { getApplicantFeedback } from "../../services/feedback-service";
+import { Link, useNavigate } from "react-router-dom";
 
 const Wrapper3 = styled.div`
   display: flex;
@@ -29,7 +30,7 @@ const Text5 = styled.p`
 function RecordRow({ record, users }) {
   const [feedbackUserId, setFeedbackUserId]= useState(null)
   const { isOpenFeedback, setIsOpenFeedback, setSelectedUserFeedbacks } = useAuth();
-
+  const navigate = useNavigate();
   console.log("RECORD INSIDE RECORD ROW", record)
 
 
@@ -38,9 +39,6 @@ function RecordRow({ record, users }) {
     setFeedbackUserId(userId);
 
     getApplicantFeedback(userId).then(response => {
-      console.log("FEEDBACK 0000000 INSIDE HANDLE CLICK", response);
-      console.log("FEEDBACK 1111111 INSIDE HANDLE CLICK", response.feedback);
-      console.log("FEEDBACK 2222222 INSIDE HANDLE CLICK", response.feedback.length);
       setSelectedUserFeedbacks(response.feedback)
     }).catch(error=>{
       console.log("ERROR",error)
@@ -48,10 +46,10 @@ function RecordRow({ record, users }) {
 
     setIsOpenFeedback(true)
   }
-
+  console.log(record)
   return (
     <>
-      {users == "+0" ?
+      {users === "+0" ?
         record.results.length?
         <Wrapper3>
           <RecordContainer style={{width:"40px", borderWidth:"0px 0px 1px 1px"}}>
@@ -70,9 +68,9 @@ function RecordRow({ record, users }) {
             </Text5>
           </RecordContainer>
           <RecordContainer style={{width:"100px", borderWidth:"0px 0px 1px 1px"}}>
-            <Text5>
-              https://fanciful-praline-7ff529.netlify.app/
-            </Text5>
+            <button onClick={()=> navigate("//fanciful-praline-7ff529.netlify.app")}>
+              enlace
+            </button>
           </RecordContainer>
           <RecordContainer style={{ width: "100px", borderWidth: "0px 0px 1px 1px" }}>
             { (record.user.current_stage ==1 && record.user.current_question == 1)?
@@ -116,9 +114,9 @@ function RecordRow({ record, users }) {
             </Text5>
           </RecordContainer>
           <RecordContainer style={{width:"100px", borderWidth:"0px 0px 1px 1px"}}>
-            <Text5>
-              https://fanciful-praline-7ff529.netlify.app/
-            </Text5>
+            <button onClick={()=> navigate("//fanciful-praline-7ff529.netlify.app")}>
+              enlace
+            </button>
           </RecordContainer>
           <RecordContainer style={{width:"100px", borderWidth:"0px 0px 1px 1px"}}>
             { (record.user.current_stage ==1 && record.user.current_question == 1)?
