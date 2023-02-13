@@ -13,7 +13,9 @@ function AuthProvider({ children }) {
   const [mulChoiceQuestions, setMulChoiceQuestions] = useState([]);
   const [testQuestions, setTestQuestions] = useState([]);
   const [solutions, setSolutions] = useState([]);
-
+  const [isOpenFeedback, setIsOpenFeedback] = useState(false)
+  const [selectedUserFeedbacks, setSelectedUserFeedbacks]= useState([])
+  const [applicantResult, setApplicantResult] = useState(null);
   const [view, setView] = useState('position');
   const [arrMultiChoiceQuestion, setArrMultiChoiceQuestion] = useState([]);
   const [arrTestQuestion, setArrTestQuestion] = useState([]);
@@ -88,7 +90,11 @@ function AuthProvider({ children }) {
         challengeEvaluations,
         setChallengeEvaluations,
         positionApplicants,
-        setPositionApplicants
+        setPositionApplicants,
+        isOpenFeedback,
+        setIsOpenFeedback,
+        selectedUserFeedbacks,
+        setSelectedUserFeedbacks
       }}
     >
       {children}

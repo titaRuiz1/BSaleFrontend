@@ -9,7 +9,8 @@ import { getPositionApplicants } from "../../services/user-service"
 import { tokenKey } from "../../config";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
-import Table2 from "../../components/table2/table2"
+import Table2 from "../../components/table2/table2";
+import Feedbacks from "../../components/feedbacks";
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -48,40 +49,46 @@ const Text3 = styled.p`
 `;
 
 const Text4 = styled.p`
-  ${typography.text.md}
-  line-height: 27.9px;
-  color: #677294;
+  ${typography.head.xxs}
+  color: ${colors.black};
+  font-size: 0.8rem;
 `;
 
 const Text5 = styled.p`
-  ${typography.text.md}
+  ${typography.text.xxs}
   color: ${colors.gray[600]};
 `;
 
+const FeedbacksModal = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgb(23 23 23 / 75%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 function PositionApplicantsPage() {
-  // const { id } = useParams();
-  // // let id = 1
-  // console.log("APP ID", id);
 
   const navigate = useNavigate();
-  const { positionApplicants,
-    // setPositionApplicants,
-    // user
-  } = useAuth();
+  const { positionApplicants, isOpenFeedback, selectedUserFeedbacks, setIsOpenFeedback } = useAuth();
 
-  // useEffect(() => {
-    // getPositionApplicants(id).then(response=> {
-    //   console.log("RESPONSE", response)
-    //   setPositionApplicants(response)
-    // }).catch()
-  // }, []);
+  console.log("FEEDBACKS IN POSITION APLICANTS PAGE 33333", selectedUserFeedbacks)
+  console.log("IS OPEN FEEDBACK", isOpenFeedback)
 
+  function handleFeedbacksClose() {
+    setIsOpenFeedback(false);
+  }
 
   return (
     <Wrapper1>
       <Wrapper2 style={{ width: "68%", gap: "32px", marginTop: "48px", padding: "12px 32px" }}>
         <Text2>Position: </Text2>
-        {positionApplicants ? (
+        {positionApplicants ?
+        (
           <>
             <Text5> {positionApplicants.position.title}</Text5>
 
@@ -93,9 +100,31 @@ function PositionApplicantsPage() {
             </Wrapper3>
 
             <Table2 records={positionApplicants.users} />
+
+            {/* {isOpenFeedback ? (
+              <>
+                <FeedbacksModal>
+                <Feedbacks
+                  feedbacks={selectedFeedbacks}
+                  onCloseClick={handleFeedbacksClose}
+                />
+              </>
+            )
+            : null} */}
+            {isOpenFeedback ? (
+                <FeedbacksModal>
+                  <Feedbacks
+                    feedbacks={selectedUserFeedbacks}
+                    onCloseClick={handleFeedbacksClose}
+                  />
+                </FeedbacksModal>
+            ) : null}
+
           </>
 
-        ) : <Text5> Loading...</Text5>}
+        )
+        :
+        <Text5> Loading...</Text5>}
 
       </Wrapper2>
     </Wrapper1>

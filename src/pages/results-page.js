@@ -56,8 +56,6 @@ function ResultsPage() {
   const navigate = useNavigate();
   const { position, sumCorrectAnswer, solutions, average, challengeEvaluations, results } = useAuth();
 
-  console.log('RESULTADOS en RESULTS', results)
-
   return (
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
       <Navbar />

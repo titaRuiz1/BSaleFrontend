@@ -119,7 +119,6 @@ function SecondStagePage() {
     e.preventDefault();
     sendGithubUrl({repo: githubRepoUrl})
       .then(response=>{
-        console.log(response)
         setStatusGithub(response.response)
       })
       .catch(error=> console.log(error))
@@ -188,7 +187,7 @@ function SecondStagePage() {
           }
         </TestsContainer>
         <Text2>Envio de proyecto</Text2>
-        <Text3>Para poder revisar el código deployado en su proyecto necesitamos que ingrese el link de su repositorio en GITHUB teniendo en cuenta la siguiente nomenclatura: 
+        <Text3>Para poder revisar el código deployado en su proyecto necesitamos que ingrese el link de su repositorio en GITHUB teniendo en cuenta la siguiente nomenclatura:
           "nombre_usuario/nombre_repositorio"
         NOTA: No deberá incluir un "/" al final del link. Puede extraer la url desde el mismo repositorio.
         </Text3>
@@ -204,10 +203,10 @@ function SecondStagePage() {
         </Wrapper2>
         <Wrapper1 style={{marginBottom:"32px"}}>
           <Wrapper3 style={{gap:"4px"}}>
-            { statusGithub === null ? 
-                null 
+            { statusGithub === null ?
+                null
               :
-                statusGithub ?  
+                statusGithub ?
                   <FiCheckCircle style={{color:"green", width:25, height:25}}/>
                 :
                   <MdOutlineCancel style={{color:"red", width:30, height:30}}/>

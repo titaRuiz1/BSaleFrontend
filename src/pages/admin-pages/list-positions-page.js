@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { GrClose } from "react-icons/gr";
 import { useState, useEffect } from "react";
 import { GrAddCircle } from "react-icons/gr";
 import { Navigate, useNavigate } from "react-router";
@@ -9,7 +10,10 @@ import { colors, typography } from "../../styles";
 import { Navbar } from "../../components/navbar";
 import Unauthorized from "../../components/unauthorized";
 import { getPositionApplicants } from "../../services/user-service";
+import { getApplicantResult } from "../../services/results-service";
 import PositionApplicantsPage from "./position-applicants-page";
+import { getResult } from "../../services/results-service";
+
 
 const Container = styled.div`
   display: flex;
@@ -56,13 +60,10 @@ function PositionsListPage() {
   const navigate = useNavigate();
   const [showTable, setShowTable] = useState(false);
 
-  console.log("POSITIONSSSSSSSSSS", allPositions)
-
   useEffect(() => {
     if (user.user_type === "admin") {
       getAllPositions().then(response => {
         setAllPositions(response);
-        console.log("estado", response)
       }).catch()
     }
 
@@ -71,18 +72,13 @@ function PositionsListPage() {
   function handlePosition(event) {
     event.preventDefault();
 
-
-    console.log("ID", event.target.id)
-
-    getPositionApplicants(event.target.id).then(response => {
-      console.log("RESPONSE", response)
+    getPositionApplicants(event.target.id).then(response=> {
       setPositionApplicants(response)
     }).catch(error=>{
       console.log("ERROR",error)
     })
 
     setShowTable(true);
-    // navigate(`/admin/applicants`)
   }
 
   function handleAddPosition(event) {

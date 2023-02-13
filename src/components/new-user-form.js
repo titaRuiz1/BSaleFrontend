@@ -56,12 +56,11 @@ export default function NewUserForm(){
         const {name, value} = event.target
         setFormdata({...formdata, [name]:value})
       }
-      
+
       function handleSubmit(event){
         event.preventDefault();
-       
+
         createUser(formdata).then(console.log).catch(console.log)
-        console.log(formdata)
         navigate("/admin/index");
       }
 
@@ -81,8 +80,8 @@ export default function NewUserForm(){
           <Input
             label={"Password"}
             id="password"
-            name="password" 
-            type="text" 
+            name="password"
+            type="text"
             value={formdata.password}
             onChange={handleChange}
             placeholder="******"/>

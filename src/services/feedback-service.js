@@ -8,3 +8,6 @@ export async function sendFeedbacks(body) {
   return feedback;
 }
 
+export async function getApplicantFeedback(userId){
+  return await apiFetch(`feedback/`+ userId);
+}

@@ -11,14 +11,22 @@ const Wrapper1 = styled.div`
 
 function Table2({ records }) {
   return (
-    <Wrapper1 style={{maxWidth:"824px"}}>
-      <FieldRow />
-      {records
-        .sort((a, b) => (a.id > b.id) ? 1 : -1)
-        .map((record) => (
-        <RecordRow record={record}/>
-      ))}
-    </Wrapper1>
+    <>
+      {records.length> 0? (
+      <Wrapper1 style={{maxWidth:"824px"}}>
+        <FieldRow />
+        {records
+          .map((record) => (
+          <RecordRow record={record} users="+0"/>
+        ))}
+      </Wrapper1>
+      ): (
+      <Wrapper1 style={{maxWidth:"824px"}}>
+        <FieldRow />
+        <RecordRow record={"No se han encontrado candidatos para esta posicion"} users="0"/>
+      </Wrapper1>
+      )}
+    </>
   );
 }
 
