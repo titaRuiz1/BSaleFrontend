@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
+import { GrAddCircle } from "react-icons/gr";
 import { Navigate, useNavigate } from "react-router";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 import { getAllPositions } from "../../services/position-service"
 import { useAuth } from "../../context/auth-context"
 import { colors, typography } from "../../styles";
@@ -28,10 +29,12 @@ const Title = styled.p`
 const Subtitle = styled.a`
   ${typography.text.xl};
   color: ${colors.blue};
+  display: flex;
   cursor:pointer;
   &:hover{
     color: ${colors.orange}
-  }
+  };
+  gap: 4px
 `;
 
 const Wrapper1 = styled.div`
@@ -39,8 +42,10 @@ const Wrapper1 = styled.div`
   flex-direction: row;
   padding: 12px 32px;
   align-items: center;
-  border: 1px solid ${colors.black};
-  border-radius: 8px;
+  border-width: 1px;
+  border-color: ${colors.black};
+  border-style: ${(props) => props.border || 'solid'};
+  border-radius: 8px; 
   gap: 16px;
   width:100%;
 
@@ -49,15 +54,15 @@ const Wrapper1 = styled.div`
 function PositionsListPage() {
   const { user, allPositions, setAllPositions, results, setPositionApplicants } = useAuth();
   const navigate = useNavigate();
-  const [showTable, setShowTable]= useState(false);
+  const [showTable, setShowTable] = useState(false);
 
-  console.log("POSITIONSSSSSSSSSS",allPositions)
+  console.log("POSITIONSSSSSSSSSS", allPositions)
 
   useEffect(() => {
     if (user.user_type === "admin") {
       getAllPositions().then(response => {
         setAllPositions(response);
-        console.log("estado",response)
+        console.log("estado", response)
       }).catch()
     }
 
@@ -69,7 +74,7 @@ function PositionsListPage() {
 
     console.log("ID", event.target.id)
 
-    getPositionApplicants(event.target.id).then(response=> {
+    getPositionApplicants(event.target.id).then(response => {
       console.log("RESPONSE", response)
       setPositionApplicants(response)
     }).catch(error=>{
@@ -80,23 +85,33 @@ function PositionsListPage() {
     // navigate(`/admin/applicants`)
   }
 
+  function handleAddPosition(event) {
+    event.preventDefault();
+    console.log('añadir')
+    navigate(`/new-position`)
+  }
   return (
     <>
       <Navbar />
       {user.user_type === "admin" ?
         <>
-          { showTable? <PositionApplicantsPage /> : (
-              <Container>
-                <Title>Posiciones</Title>
-                {!allPositions ? "Loading..." : (allPositions.map((pos, index) =>
-                  <Wrapper1 key={index}>
-                      <Subtitle
-                        onClick={handlePosition}
-                        id={pos.id}>• {pos.title}</Subtitle>
-                  </Wrapper1>
-                ))}
-              </Container>
-            )}
+
+          {showTable ? <PositionApplicantsPage /> : (
+            <Container>
+              <Title>Posiciones</Title>
+              {!allPositions ? "Loading..." : (allPositions.map((pos) =>
+                <Wrapper1>
+                  <Subtitle
+                    onClick={handlePosition}
+                    id={pos.id}>• {pos.title}</Subtitle>
+                </Wrapper1>
+              ))}
+              <Wrapper1 border='dashed' style={{ justifyContent: 'center' }}>
+                <Subtitle onClick={handleAddPosition}>Add new position <GrAddCircle style={{ alignSelf: 'center' }} /> </Subtitle>
+              </Wrapper1>
+            </Container>
+          )}
+
         </>
         :
         <Unauthorized />
