@@ -77,7 +77,9 @@ function PositionsListPage() {
     getPositionApplicants(event.target.id).then(response => {
       console.log("RESPONSE", response)
       setPositionApplicants(response)
-    }).catch()
+    }).catch(error=>{
+      console.log("ERROR",error)
+    })
 
     setShowTable(true);
     // navigate(`/admin/applicants`)
@@ -93,6 +95,7 @@ function PositionsListPage() {
       <Navbar />
       {user.user_type === "admin" ?
         <>
+
           {showTable ? <PositionApplicantsPage /> : (
             <Container>
               <Title>Posiciones</Title>
@@ -108,6 +111,7 @@ function PositionsListPage() {
               </Wrapper1>
             </Container>
           )}
+
         </>
         :
         <Unauthorized />

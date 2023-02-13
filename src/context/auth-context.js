@@ -13,16 +13,19 @@ function AuthProvider({ children }) {
   const [mulChoiceQuestions, setMulChoiceQuestions] = useState([]);
   const [testQuestions, setTestQuestions] = useState([]);
   const [solutions, setSolutions] = useState([]);
+
   const [view, setView] = useState('position');
   const [arrMultiChoiceQuestion, setArrMultiChoiceQuestion] = useState([]);
   const [arrTestQuestion, setArrTestQuestion] = useState([]);
   const [arrChallengeEvaluation, setArrChallengeEvaluation] = useState([]);
   const [positionApplicants, setPositionApplicants] = useState([]);
+
   const [average, setAverage] = useState(0);
   const [results, setResults] = useState({
     stage1: 0,
     stage2: 0,
     stage3: 0
+
   });
   const [newPosition, setNewPosition] = useState({
     title: '',
@@ -33,9 +36,11 @@ function AuthProvider({ children }) {
   });
   // const navigate = useNavigate();
 
+
   function handleLogin(credentials) {
     return login(credentials).then((response) => {
       setUser(response)
+      response.user_type === "admin" ? navigate("/admin") : navigate("/challenge")
       sessionStorage.setItem("user", JSON.stringify(response))
     }).catch(error => {
     });

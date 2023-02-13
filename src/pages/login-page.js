@@ -49,10 +49,7 @@ export default function LoginPage() {
 
   function handleSubmit(event) {
     event.preventDefault();
-
     login(form).catch((error) => console.log(error));
-    console.log(user)
-    user.user_type === "admin" ? navigate("/admin/index") : navigate("/challenge")
 
   }
 
