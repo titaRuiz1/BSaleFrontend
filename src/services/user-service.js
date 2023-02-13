@@ -11,3 +11,11 @@ export async function createUser(newUser) {
   sessionStorage.setItem(tokenKey, token);
   return user;
 }
+
+export async function updateUser(body) {
+  return await apiFetch("update_current", { 
+    body: body,
+    method: "PATCH",
+   });
+
+}
