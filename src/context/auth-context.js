@@ -15,15 +15,29 @@ function AuthProvider({ children }) {
   const [solutions, setSolutions] = useState([]);
   const [isOpenFeedback, setIsOpenFeedback] = useState(false)
   const [selectedUserFeedbacks, setSelectedUserFeedbacks]= useState([])
-  const [positionApplicants, setPositionApplicants] = useState(null);
   const [applicantResult, setApplicantResult] = useState(null);
+  const [view, setView] = useState('position');
+  const [arrMultiChoiceQuestion, setArrMultiChoiceQuestion] = useState([]);
+  const [arrTestQuestion, setArrTestQuestion] = useState([]);
+  const [arrChallengeEvaluation, setArrChallengeEvaluation] = useState([]);
+  const [positionApplicants, setPositionApplicants] = useState([]);
+
   const [average, setAverage] = useState(0);
   const [results, setResults] = useState({
     stage1: 0,
     stage2: 0,
     stage3: 0
-  })
-  const navigate = useNavigate();
+
+  });
+  const [newPosition, setNewPosition] = useState({
+    title: '',
+    description: '',
+    multiple_choice_questions_attributes: null,
+    test_questions_attributes: null,
+    challenge_evaluations_attributes: null
+  });
+  // const navigate = useNavigate();
+
 
   function handleLogin(credentials) {
     return login(credentials).then((response) => {
@@ -51,6 +65,16 @@ function AuthProvider({ children }) {
         average,
         allPositions,
         results,
+        view,
+        arrMultiChoiceQuestion,
+        arrTestQuestion,
+        arrChallengeEvaluation,
+        newPosition,
+        setNewPosition,
+        setArrChallengeEvaluation,
+        setArrTestQuestion,
+        setArrMultiChoiceQuestion,
+        setView,
         setResults,
         setAllPositions,
         setAverage,

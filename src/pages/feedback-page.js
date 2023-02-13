@@ -10,6 +10,7 @@ import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { sendFeedbacks } from "../services/feedback-service"
 import { sendResults } from "../services/results-service"
+import { updateUser } from "../services/user-service";
 
 const Container = styled.div`
   display: flex;
@@ -117,9 +118,9 @@ const Input = styled.input`
   padding: 16px
 `;
 function FeedbackPage() {
-  const { position, challengeEvaluations, average, setAverage, results, setResults } = useAuth();
+  const { position, challengeEvaluations, average, setAverage, results, setResults, user, setUser } = useAuth();
   const navigate = useNavigate();
-  const [currentCriteria, setCurrentCriteria] = useState(0);
+  const [currentCriteria, setCurrentCriteria] = useState(user.current_question-1);
   const [colorStar, setColorStar] = useState(false);
   const [id, setId] = useState(null);
   const [form, setForm] = useState({
@@ -145,6 +146,14 @@ function FeedbackPage() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    updateUser({
+      "current_question": user.current_question + 1 
+    })
+      .then(response=>{
+      setUser(response)
+      console.log("Aquiiiii",response)
+    }).catch(console.log())
+
     sendFeedbacks(form).then().catch((error) => console.log(error))
     sendResults(
       {

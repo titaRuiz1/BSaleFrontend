@@ -10,6 +10,8 @@ import { Option } from "../components/option";
 import { sendDataTestE2E, sendGithubUrl, sendUrl } from "../services/teste2e-service";
 import { FiCheckCircle } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md"
+import { updateUser } from "../services/user-service";
+
 const Wrapper1 = styled.div`
   display: flex;
   flex-direction: column;
@@ -88,9 +90,17 @@ function SecondStagePage() {
   const [githubRepoUrl, setGithubRepoUrl]=useState("")
   const [statusGithub, setStatusGithub] = useState(null)
   const navigate = useNavigate();
-  const { challengeEvaluations } = useAuth();
+  const { challengeEvaluations, setUser } = useAuth();
 
   function handleNextButtonClick() {
+    updateUser({
+      "current_stage": 3,  
+    })
+      .then(response=>{
+      setUser(response)
+      console.log("Aquiiiii",response)
+    }).catch(console.log())
+    
     sendDataTestE2E({
       link:projectUrl,
       github: statusGithub

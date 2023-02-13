@@ -86,6 +86,16 @@ function ChallengePage() {
 
   function handleContinue(e){
     e.preventDefault();
+    console.log("funcionaaa")
+    if(user.current_stage===1){
+      navigate("/first-stage")
+    }
+    else if(user.current_stage===2){
+      navigate("/stage2")
+    }
+    else{
+      navigate("/feedback")
+    }
     //...se debe actualizar el current question (CUIDADO CON EL MULTIPLE CHOICE Y TEST)
     //... se debe actualizar el current criteria
   }
@@ -105,12 +115,12 @@ function ChallengePage() {
                   <Text3>Iniciar</Text3>
                 </Button>
               :
-                user.current_stage === 3 && user.current_question === 4 ?
-                  <Button style={{ padding: "8px 12px" }} disabled>
+                user.current_stage === 3 && user.current_question === 5 ?
+                  <Button style={{ padding: "8px 12px", background:"#677294" }} disabled>
                     <Text3>Finalizado</Text3>
                   </Button>
                 :
-                  <Button style={{ padding: "8px 12px" }} onClick={handleContinue}>
+                  <Button style={{ padding: "8px 12px",background:"#31B9DD"}} onClick={handleContinue}>
                     <Text3>Continuar</Text3>
                   </Button>
               }

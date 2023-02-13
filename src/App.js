@@ -10,6 +10,7 @@ import SecondStagePage from "./pages/second-stage-page";
 import PositionApplicantsPage from "./pages/admin-pages/position-applicants-page"
 import PositionsListPage from "./pages/admin-pages/list-positions-page"
 import NewUserForm from "./components/new-user-form";
+import NewPositionPage from "./pages/admin-pages/new-position-page"
 import { useAuth } from "./context/auth-context";
 import Table1 from "./components/table1/table1";
 
@@ -36,6 +37,7 @@ function App() {
         {/* <Route path="test-question" element={<TestQuestionPage />} /> */}
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="results" element={<ResultsPage />} />
+
         
         {/* ADMIN */}
 
@@ -43,6 +45,7 @@ function App() {
         {/* <Route path="positions-list" element={user?.email.includes('admi') ? <PositionsListPage /> : <ChallengePage />} /> */}
         <Route path="admin" element={<PositionsListPage />} />
         <Route path="new-user" element={<NewUserForm />} />
+        <Route path="new-position" element={<NewPositionPage />} />
 
       </Routes>
     </Wrapper>

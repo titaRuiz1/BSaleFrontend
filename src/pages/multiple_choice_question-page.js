@@ -9,6 +9,7 @@ import { Option } from "../components/option";
 import Editor from "@monaco-editor/react";
 import { getMultipleChoiceQuestions } from "../services/position-service";
 import { sendResults } from "../services/results-service"
+import { updateUser } from "../services/user-service";
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -118,12 +119,14 @@ function MultipleChoicePage() {
   const [inputID, setInputID] = useState(null);
   const { position, mulChoiceQuestions,
     sumCorrectAnswer, setSumCorrectAnswer,
-    solutions, testQuestions, setResults, results } = useAuth();
+    solutions, testQuestions, setResults, results, user, setUser } = useAuth();
   const [correctAnswer, setCorrectAnswer] = useState(null);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(
+    user.current_question <= mulChoiceQuestions.length ? user.current_question-1 : user.current_question-mulChoiceQuestions.length-1);
+  const [question_type, setQuestion_type] = useState(
+    user.current_question > mulChoiceQuestions.length ? "test" : "multiple");
   const [view, setView] = useState("question")
-  const [question_type, setQuestion_type] = useState("multiple");
-  const [code, setCode] = useState(null);
+  const [code, setCode] = useState(user.current_question > mulChoiceQuestions.length ? testQuestions[user.current_question-mulChoiceQuestions.length-1].question.code : null);
   const [test1Status, setTest1Status] = useState(null);
   const [test2Status, setTest2Status] = useState(null);
   const [test3Status, setTest3Status] = useState(null);
@@ -137,6 +140,15 @@ function MultipleChoicePage() {
   }
   function handleSubmitMultipleChoice(event) {
     event.preventDefault();
+    
+    updateUser({
+      "current_question": user.current_question + 1
+    })
+      .then(response=>{
+      setUser(response)
+      console.log("Aquiiiii",response)
+    }).catch(console.log())
+
     if (correctAnswer === 'true') {
       setSumCorrectAnswer(sumCorrectAnswer + 1)
       sendResults(
@@ -153,6 +165,25 @@ function MultipleChoicePage() {
 
   function handleSubmitTest(event) {
     event.preventDefault();
+   
+    let body;
+    if(solutions.length===user.current_question){
+      body={
+        "current_stage": 2,
+        "current_question":1
+      }
+    }
+    else{
+      body={
+        "current_question": user.current_question + 1
+      }
+    }
+    updateUser(body)
+    .then(response=>{
+      setUser(response)
+      console.log("Aquiiiii",response)
+    }).catch(console.log())
+
     if (test1Status && test2Status && test3Status && test4Status) {
       setResults({ ...results, stage1: sumCorrectAnswer + 1 })
       setSumCorrectAnswer(sumCorrectAnswer + 1)
