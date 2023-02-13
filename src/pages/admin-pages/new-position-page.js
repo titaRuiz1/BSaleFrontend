@@ -5,8 +5,11 @@ import Input from "../../components/input";
 import TextArea from "../../components/textArea";
 import { useAuth } from "../../context/auth-context"
 import { Navbar } from "../../components/navbar";
-import { Button } from "../../components/buttons"
-import MultipleChoiceQuestionForm from "../../components/new-multiple-question-form"
+import { Button } from "../../components/buttons";
+import MultipleChoiceQuestionForm from "../../components/new-multiple-question-form";
+import TestQuestionForm from "../../components/test-question-form";
+import ChallengeEvluationForm from "../../components/challenge-evaluation-form";
+import Confirmation from "../../components/confirmation-page"
 
 const Container = styled.div`
   display: flex;
@@ -60,8 +63,8 @@ const Title = styled.p`
 `;
 
 function NewPositionPage() {
-  const [newPosition, setNewPosition] = useState({ title: '', description: '' });
-  const { view, setView } = useAuth();
+  // const [newPosition, setNewPosition] = useState({ title: '', description: '' });
+  const { view, setView, newPosition, setNewPosition } = useAuth();
 
   function handleSubmitPosition(event) {
     event.preventDefault();
@@ -116,8 +119,11 @@ function NewPositionPage() {
             </Form>
           </FormContainer>
           : view === 'multiple_choice' ?
-            <MultipleChoiceQuestionForm /> : null
-
+            <MultipleChoiceQuestionForm /> :
+            view === 'test_question' ?
+              <TestQuestionForm /> :
+              view === 'challenge_evaluation' ? <ChallengeEvluationForm /> :
+                view === 'confirmation' ? <Confirmation /> : null
         }
 
       </Container>

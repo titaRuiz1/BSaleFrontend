@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import { colors, typography } from "../styles";
 import Input from "../components/input";
+import TextArea from "../components/textArea"
 import { Button } from "./buttons";
 import { useAuth } from "../context/auth-context"
 
@@ -52,11 +53,12 @@ const DivButtons = styled.div`
 `;
 
 function MultipleChoiceQuestionForm() {
-  const [newMultiQuestion, setNewMultiQuestion] = useState({ description: '', options_attributes: [] });
+  const [newMultiQuestion, setNewMultiQuestion] = useState({ description: '', options_attributes: [], solution_attributes: null });
   const [option1, setOption1] = useState({ description: '', correct: 'false' });
   const [option2, setOption2] = useState({ description: '', correct: 'false' });
   const [option3, setOption3] = useState({ description: '', correct: 'false' });
   const [option4, setOption4] = useState({ description: '', correct: 'false' });
+  const [newSolution, setNewSolution] = useState({ description: '' })
   const [showAdd, setShowAdd] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState({});
   const { view, setView, arrMultiChoiceQuestion, setArrMultiChoiceQuestion } = useAuth();
@@ -65,6 +67,8 @@ function MultipleChoiceQuestionForm() {
     const { name, value } = event.target
     if (event.target.id === 'mchq1') {
       setNewMultiQuestion({ ...newMultiQuestion, [name]: value })
+    } else if (event.target.id === 'solution1') {
+      setNewSolution({ description: value })
     } else {
       name === 'op1' ?
         setOption1({ ...option1, description: value })
@@ -108,7 +112,7 @@ function MultipleChoiceQuestionForm() {
   function handleSubmitMultipleChoiceQuestion(event) {
     event.preventDefault();
     console.log('hace submit')
-    setNewMultiQuestion({ ...newMultiQuestion, options_attributes: [option1, option2, option3, option4] })
+    setNewMultiQuestion({ ...newMultiQuestion, options_attributes: [option1, option2, option3, option4], solution_attributes: newSolution })
     setShowAdd(true)
   };
 
@@ -128,14 +132,17 @@ function MultipleChoiceQuestionForm() {
     setOption2({ description: '', correct: 'false' });
     setOption3({ description: '', correct: 'false' });
     setOption4({ description: '', correct: 'false' });
-    setSelectedOptions({})
+    setNewSolution({ description: '' });
+    setSelectedOptions({});
     setShowAdd(false)
   };
 
   function handleNext(event) {
     event.preventDefault();
+    arrMultiChoiceQuestion.length === 0 ? setArrMultiChoiceQuestion([newMultiQuestion])
+      : setArrMultiChoiceQuestion([...arrMultiChoiceQuestion, newMultiQuestion]);
     console.log('next')
-    // setView('test-question')
+    setView('test_question')
   }
 
   console.log('el arreglo', arrMultiChoiceQuestion)
@@ -311,14 +318,31 @@ function MultipleChoiceQuestionForm() {
                   style={{ accentColor: colors.red }} />
               </div>
             </FieldSet>
+            <FieldSet>
+              <Legend2>Solución</Legend2>
+              <TextArea
+                label={"Solución"}
+                id="solution1"
+                name="description"
+                cols='40'
+                value={newSolution.description}
+                onChange={handleChange}
+                placeholder="The solution is..." />
+            </FieldSet>
           </FieldSet>
           <Button color={`${colors.teal}`}>Agregar</Button>
         </Form>
-        <DivButtons>
-          <Button onClick={handleBack}>Atras</Button>
-          {showAdd ? <Button width='100%' onClick={handleAdd}>Añadir nueva pregunta multiple</Button> : null}
-          <Button onClick={handleNext}>Siguiente</Button>
-        </DivButtons>
+        {showAdd ?
+          <DivButtons>
+            <Button onClick={handleBack}>Atras</Button>
+            <Button width='100%' onClick={handleAdd}>Añadir nueva pregunta multiple</Button>
+            <Button onClick={handleNext}>Siguiente</Button>
+          </DivButtons>
+          :
+          <DivButtons>
+            <Button onClick={handleBack}>Atras</Button>
+          </DivButtons>
+        }
       </FormContainer>
     </>
   )

@@ -29,3 +29,10 @@ export async function getSolutions() {
   return solutions;
 }
 
+export async function createPosition(body) {
+  const position = await apiFetch(`/admin/create_position`, {
+    body: body,
+  })
+  return position;
+}
+
