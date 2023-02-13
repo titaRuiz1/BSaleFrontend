@@ -86,6 +86,7 @@ function PositionsListPage() {
   function handleAddPosition(event) {
     event.preventDefault();
     console.log('añadir')
+    navigate(`/new-position`)
   }
   return (
     <>

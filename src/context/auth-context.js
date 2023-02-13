@@ -13,6 +13,8 @@ function AuthProvider({ children }) {
   const [mulChoiceQuestions, setMulChoiceQuestions] = useState([]);
   const [testQuestions, setTestQuestions] = useState([]);
   const [solutions, setSolutions] = useState([]);
+  const [view, setView] = useState('position');
+  const [arrMultiChoiceQuestion, setArrMultiChoiceQuestion] = useState([]);
   const [positionApplicants, setPositionApplicants] = useState([]);
   const [average, setAverage] = useState(0);
   const [results, setResults] = useState({
@@ -47,6 +49,10 @@ function AuthProvider({ children }) {
         average,
         allPositions,
         results,
+        view,
+        arrMultiChoiceQuestion,
+        setArrMultiChoiceQuestion,
+        setView,
         setResults,
         setAllPositions,
         setAverage,
