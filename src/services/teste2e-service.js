@@ -18,3 +18,7 @@ export async function sendGithubUrl(body){
     body:body
   })
 }
+
+export async function getTestsDescription() {
+  return await apiFetch(`stage2`);
+}

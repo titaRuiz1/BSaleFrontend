@@ -9,6 +9,7 @@ import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestion
 import { getResult } from "../services/results-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
+import { getTestsDescription } from "../services/teste2e-service";
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -54,7 +55,8 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, setChallengeEvaluations, setSumCorrectAnswer, setAverage } = useAuth();
+  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions,
+     setChallengeEvaluations, setSumCorrectAnswer, setAverage, setTestDescription } = useAuth();
 
   useEffect(() => {
     getPositions().then(response => {
@@ -75,6 +77,10 @@ function ChallengePage() {
 
     getSolutions().then(response => {
       setSolutions(response)
+    }).catch()
+
+    getTestsDescription().then(response => {
+      setTestDescription(response)
     }).catch()
 
     getTestQuestions().then(response => {
