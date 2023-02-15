@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { colors, typography } from "../styles";
 import Input from "../components/input";
+import TextArea from "../components/textArea"
 import { Button } from "./buttons";
 import { useAuth } from "../context/auth-context"
 
@@ -114,7 +115,8 @@ function ChallengeEvluationForm() {
       challenge_evaluations_attributes: arrChallengeEvaluation
     })
     setShowAdd(false)
-    setView('confirmation')
+    // setView('confirmation')
+    navigate(`/output`)
   };
 
   console.log('TODO EL REQUEST', newPosition)
@@ -135,7 +137,7 @@ function ChallengeEvluationForm() {
                 onChange={handleChange}
                 placeholder="La categoría es..."
                 style={{ borderRadius: '8px' }} />
-              <Input
+              {/* <Input
                 label={"Criterio"}
                 id="criterio1"
                 name="criteria"
@@ -143,7 +145,15 @@ function ChallengeEvluationForm() {
                 value={newChallengeEvaluation1.criteria}
                 onChange={handleChange}
                 placeholder="El criterio a evaluar es..."
-                style={{ borderRadius: '8px' }} />
+                style={{ borderRadius: '8px' }} /> */}
+              <TextArea
+                label={"Criterio"}
+                id="criterio1"
+                name="criteria"
+                cols='40'
+                value={newChallengeEvaluation1.criteria}
+                onChange={handleChange}
+                placeholder="El criterio a evaluar es..." />
 
               <Input
                 label={"Peso"}

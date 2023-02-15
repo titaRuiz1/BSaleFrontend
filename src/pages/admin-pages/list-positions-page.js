@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { GrClose } from "react-icons/gr";
 import { useState, useEffect } from "react";
+import ReactMarkdown from 'react-markdown';
 import { GrAddCircle } from "react-icons/gr";
 import { Navigate, useNavigate } from "react-router";
 import { Link } from "react-router-dom"
@@ -56,7 +57,7 @@ const Wrapper1 = styled.div`
 `;
 
 function PositionsListPage() {
-  const { user, allPositions, setAllPositions, results, setPositionApplicants } = useAuth();
+  const { user, allPositions, setAllPositions, results, setPositionApplicants, value } = useAuth();
   const navigate = useNavigate();
   const [showTable, setShowTable] = useState(false);
 
@@ -72,11 +73,11 @@ function PositionsListPage() {
   function handlePosition(event) {
     event.preventDefault();
 
-    getPositionApplicants(event.target.id).then(response=> {
+    getPositionApplicants(event.target.id).then(response => {
       setPositionApplicants(response)
       console.log("respuestaaaaa", response)
-    }).catch(error=>{
-      console.log("ERROR",error)
+    }).catch(error => {
+      console.log("ERROR", error)
     })
 
     setShowTable(true);
