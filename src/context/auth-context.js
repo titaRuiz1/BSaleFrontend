@@ -100,7 +100,7 @@ function AuthProvider({ children }) {
         isOpenFeedback,
         setIsOpenFeedback,
         selectedUserFeedbacks,
-        setSelectedUserFeedbacks
+        setSelectedUserFeedbacks,
       }}
     >
       {children}

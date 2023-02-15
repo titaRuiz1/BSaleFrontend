@@ -86,7 +86,7 @@ function SecondStagePage() {
   const [testStatus, setTestStatus] = useState(null);  
   const [projectUrl, setProjectUrl] = useState("");
   const [githubRepoUrl, setGithubRepoUrl]=useState("")
-  const [statusGithub, setStatusGithub] = useState(null)
+  const [requestGithubResponse, setRequestGithubResponse] = useState(null)
   const navigate = useNavigate();
   const { challengeEvaluations, setUser, position, setSumTest, sumTest, testDescription } = useAuth();
 
@@ -100,12 +100,15 @@ function SecondStagePage() {
     
     sendDataTestE2E({
       link:projectUrl,
-      github: statusGithub
+      github: requestGithubResponse
     }).then(console.log).catch(console.log)
-    navigate("/feedback")
+    
     sendResults({
       stage2: sumTest
     }).then().catch((error) => console.log(error))
+    navigate("/feedback")
+
+    // console.log("PROJECT",)
     
   }
 
@@ -120,15 +123,14 @@ function SecondStagePage() {
         })
         setSumTest(sumCurrentTest)
       })
-      .catch(error=> console.log(error))
-    
+      .catch(error=> console.log(error))  
   }
 
   function handleGithub(e){
     e.preventDefault();
     sendGithubUrl({repo: githubRepoUrl})
       .then(response=>{
-        setStatusGithub(response.response)
+        setRequestGithubResponse(response.response)
       })
       .catch(error=> console.log(error))
   }
@@ -195,13 +197,13 @@ function SecondStagePage() {
         </Wrapper2>
         <Wrapper1 style={{marginBottom:"32px"}}>
           <Wrapper3 style={{gap:"4px"}}>
-            { statusGithub === null ?
+            { requestGithubResponse === null ?
                 null
               :
-                statusGithub ?
-                  <FiCheckCircle style={{color:"green", width:25, height:25}}/>
-                :
+                requestGithubResponse === false ?
                   <MdOutlineCancel style={{color:"red", width:30, height:30}}/>
+                :
+                  <FiCheckCircle style={{color:"green", width:25, height:25}}/>
             }
             <Input
               name="github-repo-url"

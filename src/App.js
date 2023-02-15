@@ -38,7 +38,6 @@ function App() {
         {/* <Route path="test-question" element={<TestQuestionPage />} /> */}
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="results" element={<ResultsPage />} />
-        <Route path="third-stage" element={<ThirdStagePage />} />
         
         {/* ADMIN */}
 

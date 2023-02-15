@@ -76,13 +76,10 @@ function PositionApplicantsPage() {
   const navigate = useNavigate();
   const { positionApplicants, isOpenFeedback, selectedUserFeedbacks, setIsOpenFeedback } = useAuth();
 
-  console.log("FEEDBACKS IN POSITION APLICANTS PAGE 33333", selectedUserFeedbacks)
-  console.log("IS OPEN FEEDBACK", isOpenFeedback)
-
   function handleFeedbacksClose() {
     setIsOpenFeedback(false);
   }
-  console.log("position aplicants",positionApplicants)
+
   return (
     <Wrapper1>
       <Wrapper2 style={{ width: "68%", gap: "32px", marginTop: "48px", padding: "12px 32px" }}>
@@ -100,17 +97,6 @@ function PositionApplicantsPage() {
             </Wrapper3>
 
             <Table2 records={positionApplicants.users} />
-
-            {/* {isOpenFeedback ? (
-              <>
-                <FeedbacksModal>
-                <Feedbacks
-                  feedbacks={selectedFeedbacks}
-                  onCloseClick={handleFeedbacksClose}
-                />
-              </>
-            )
-            : null} */}
             {isOpenFeedback ? (
                 <FeedbacksModal>
                   <Feedbacks

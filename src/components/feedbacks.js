@@ -2,18 +2,17 @@ import { GrClose } from "react-icons/gr";
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { typography, colors } from "../styles";
+import { useAuth } from "../context/auth-context";
 
 const Text2 = styled.p`
   ${typography.head.md}
-  font-size: 1.25rem;
-  line-height: 28px;
-  color: #051441;
+  color: ${colors.orange};
 `;
 
 const Text3 = styled.p`
   ${typography.head.xxs}
-  line-height: 16px;
-  color: #FFFFFF;
+  line-height: 120%;
+  color: ${colors.lowOrange};
 `;
 
 const Text4 = styled.p`
@@ -28,23 +27,34 @@ const Text5 = styled.p`
 `;
 
 const HeaderContainer = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom:8px;
 `;
 
-const Wrapper3 = styled.div`
+const Wrapper1 = styled.div`
   display: flex;
   flex-direction: column;
   background: #FFFFFF;
+  padding:20px;
+  border-radius:8px;
+  max-width: 600px;
+`;
+
+const Wrapper2= styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 function Feedbacks({ feedbacks, onCloseClick }) {
 
+  const { positionApplicants } = useAuth();
+
 
   return (
-    <Wrapper3>
+    <Wrapper1>
        <HeaderContainer>
           <Text2>Feedback</Text2>
           <GrClose
@@ -58,18 +68,18 @@ function Feedbacks({ feedbacks, onCloseClick }) {
         </HeaderContainer>
       {feedbacks.length > 0 ?
         feedbacks.map((feedback, index) => (
-          <>
-            <Text2>Criterio {index+1}: </Text2>
+          <div style={{marginBottom:"20px"}}>
+            <Text3>Criterio {index+1}: {positionApplicants.criterias[index].criteria}</Text3>
             <Text4>Did well: </Text4>
             <Text5>{feedback.answerDidWell}</Text5>
             <Text4>To improve: </Text4>
             <Text5>{feedback.answerToImprove}</Text5>
-          </>
+          </div>
           ))
         :
           <Text5>No se encontro feedback del candidato</Text5>
         }
-    </Wrapper3>
+    </Wrapper1>
   );
 }
 

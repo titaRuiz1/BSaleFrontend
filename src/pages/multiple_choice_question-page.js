@@ -146,7 +146,6 @@ function MultipleChoicePage() {
     })
       .then(response=>{
       setUser(response)
-      console.log("Aquiiiii",response)
     }).catch(console.log())
 
     if (correctAnswer === 'true') {
@@ -182,7 +181,6 @@ function MultipleChoicePage() {
     updateUser(body)
     .then(response=>{
       setUser(response)
-      console.log("Aquiiiii",response)
     }).catch(console.log())
 
     if (test1Status && test2Status && test3Status && test4Status) {
@@ -387,16 +385,16 @@ function MultipleChoicePage() {
                 </>
               :
               <>
-                <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de 10</p>
+                <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 1 + solutions.length} de 10</p>
                 <TextSection>
-                  {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion + 5].solution.description}
+                  {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion + solutions.length].solution.description}
                 </TextSection>
                 {question_type === "multiple" ?
                   solutions[currentQuestion]?.url === 'sin imagen' ?
                     null :
                     <Img src={solutions[currentQuestion]?.url} />
                   :
-                  solutions[currentQuestion + 6]?.url === 'sin imagen' ?
+                  solutions[currentQuestion + 1 + solutions.length]?.url === 'sin imagen' ?
                     null :
                     <Img src={solutions[currentQuestion + 5]?.url} />
                 }

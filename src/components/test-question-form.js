@@ -123,7 +123,6 @@ function TestQuestionForm() {
     setView('challenge_evaluation');
   }
 
-  console.log('sol', newSolution)
   return (
     <>
       <FormContainer>

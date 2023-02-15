@@ -117,12 +117,37 @@ const Input = styled.input`
   height: 112px;
   padding: 16px
 `;
+const Wrapper1 = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Text1 = styled.p`
+  ${typography.head.md}
+  font-size: 1.5rem;
+  line-height: 27.6px;
+  color: #051441;
+`;
+
+const Text2 = styled.p`
+  ${typography.text.lg}
+  line-height: 28px;
+  color: #677294;
+`;
+
+const Video = styled.div`
+display:flex;
+justify-content:center;
+height: 324px
+width: 576px
+`
 function FeedbackPage() {
   const { position, challengeEvaluations, average, setAverage, results, setResults, user, setUser } = useAuth();
   const navigate = useNavigate();
   const [currentCriteria, setCurrentCriteria] = useState(user.current_question-1);
   const [colorStar, setColorStar] = useState(false);
   const [id, setId] = useState(null);
+  const [startTest, setStartTest] = useState(false)
   const [form, setForm] = useState({
     answerDidWell: "",
     answerToImprove: "",
@@ -151,7 +176,6 @@ function FeedbackPage() {
     })
       .then(response=>{
       setUser(response)
-      console.log("Aquiiiii",response)
     }).catch(console.log())
 
     sendFeedbacks(form).then().catch((error) => console.log(error))
@@ -178,83 +202,102 @@ function FeedbackPage() {
   return (
     <>
       <Navbar />
-      <Container>
-        <Section>
-          <Title>{position.title}</Title>
-          <InsideSection>
-            <Title>Criterio {currentCriteria + 1} de 4: guidelines & principles of accesability</Title>
-            <Img width='576px' src={video} alt="video" />
-            <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
-            <Img width='700px' src={codigo} alt="video" />
-            <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
-            <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
-            <BottomSection>
-              <Subtitle>
-                En base a la explicación provista, ¿consideras que el código de tu aplicación nombra correctamente las variables y hace un uso adecuado de las mismas?
-              </Subtitle >
-              <StarsDiv>
-                <Stars>
-                  <StarCheck>
-                    {colorStar ? <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                      : <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ width: '72px', height: '72px', color: `${colors.lowOrange}` }} />
-                    }
-                  </StarCheck>
-                  <StarCheck>
-                    {(colorStar && (['2', '3', '4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="2" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                      : <AiOutlineStar onClick={handleStar} data-icon-id="2" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
-                    }
-                  </StarCheck>
-                  <StarCheck>
-                    {(colorStar && (['3', '4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="3" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                      : <AiOutlineStar onClick={handleStar} data-icon-id="3" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
-                    }
-                  </StarCheck>
-                  <StarCheck>
-                    {(colorStar && (['4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="4" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                      : <AiOutlineStar onClick={handleStar} data-icon-id="4" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
-                    }
-                  </StarCheck>
-                  <StarCheck>
-                    {(colorStar && (id === '5')) ? <AiTwotoneStar onClick={handleStar} data-icon-id="5" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                      : <AiOutlineStar onClick={handleStar} data-icon-id="5" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
-                    }
-                  </StarCheck>
-                </Stars>
-                <Labels>
-                  <StarLabel>En desacuerdo</StarLabel>
-                  <StarLabel>Parcialmente de acuerdo</StarLabel>
-                  <StarLabel>Totalmente de acuerdo</StarLabel>
-                </Labels>
-              </StarsDiv>
+      {startTest ? 
+        <Container>
+          <Section>
+            <Title>{position.title}</Title>
+            <InsideSection>
+              <Title>Criterio {currentCriteria + 1} de 4: guidelines & principles of accesability</Title>
+              <Img width='576px' src={video} alt="video" />
+              <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
+              <Img width='700px' src={codigo} alt="video" />
+              <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
+              <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
+              <BottomSection>
+                <Subtitle>
+                  En base a la explicación provista, ¿consideras que el código de tu aplicación nombra correctamente las variables y hace un uso adecuado de las mismas?
+                </Subtitle >
+                <StarsDiv>
+                  <Stars>
+                    <StarCheck>
+                      {colorStar ? <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                        : <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ width: '72px', height: '72px', color: `${colors.lowOrange}` }} />
+                      }
+                    </StarCheck>
+                    <StarCheck>
+                      {(colorStar && (['2', '3', '4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="2" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                        : <AiOutlineStar onClick={handleStar} data-icon-id="2" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
+                      }
+                    </StarCheck>
+                    <StarCheck>
+                      {(colorStar && (['3', '4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="3" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                        : <AiOutlineStar onClick={handleStar} data-icon-id="3" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
+                      }
+                    </StarCheck>
+                    <StarCheck>
+                      {(colorStar && (['4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="4" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                        : <AiOutlineStar onClick={handleStar} data-icon-id="4" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
+                      }
+                    </StarCheck>
+                    <StarCheck>
+                      {(colorStar && (id === '5')) ? <AiTwotoneStar onClick={handleStar} data-icon-id="5" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                        : <AiOutlineStar onClick={handleStar} data-icon-id="5" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
+                      }
+                    </StarCheck>
+                  </Stars>
+                  <Labels>
+                    <StarLabel>En desacuerdo</StarLabel>
+                    <StarLabel>Parcialmente de acuerdo</StarLabel>
+                    <StarLabel>Totalmente de acuerdo</StarLabel>
+                  </Labels>
+                </StarsDiv>
 
-              <InputDiv onSubmit={handleSubmit}>
-                <Subtitle marginB='0px'>¿Qué consideras que hiciste bien?</Subtitle>
-                <Input
-                  type='text'
-                  id='answerDidWell'
-                  name='answerDidWell'
-                  value={form.answerDidWell}
-                  onChange={handleFormChange}
-                  placeholder='Escribe tu respuesta aqui'
-                />
+                <InputDiv onSubmit={handleSubmit}>
+                  <Subtitle marginB='0px'>¿Qué consideras que hiciste bien?</Subtitle>
+                  <Input
+                    type='text'
+                    id='answerDidWell'
+                    name='answerDidWell'
+                    value={form.answerDidWell}
+                    onChange={handleFormChange}
+                    placeholder='Escribe tu respuesta aqui'
+                  />
 
-                <Subtitle marginB='0px'>¿Qué consideras que puedes mejorar?</Subtitle>
-                <Input
-                  type='text'
-                  id='answerToImprove'
-                  name='answerToImprove'
-                  value={form.answerToImprove}
-                  onChange={handleFormChange}
-                  placeholder='Escribe tu respuesta aqui'
-                />
-                <Button width='120px' style={{ alignSelf: 'center', marginTop: '76px' }}>Siguiente</Button>
-              </InputDiv>
-            </BottomSection>
-          </InsideSection>
-        </Section>
+                  <Subtitle marginB='0px'>¿Qué consideras que puedes mejorar?</Subtitle>
+                  <Input
+                    type='text'
+                    id='answerToImprove'
+                    name='answerToImprove'
+                    value={form.answerToImprove}
+                    onChange={handleFormChange}
+                    placeholder='Escribe tu respuesta aqui'
+                  />
+                  <Button width='120px' style={{ alignSelf: 'center', marginTop: '76px' }}>Siguiente</Button>
+                </InputDiv>
+              </BottomSection>
+            </InsideSection>
+          </Section>
 
-      </Container>
-
+        </Container>
+        :
+        <Wrapper1 style={{alignItems:"center", justifyContent:"center"}}>
+          <Wrapper1 style={{ maxWidth:"868px", gap: "32px", marginTop:"48px"}}>
+            <Text1>{position.title}</Text1>
+            <Text1>Etapa 3: Revision de codigo - mejora continua</Text1>
+            <Video> 
+              <video controls src="https://youtu.be/ykGRYEX0n60"/>
+            </Video>
+            <Text2>Según la necesidad o la complejidad de los algoritmos o instrucciones, se usan diferentes lenguajes y cada uno opera con un conjunto de reglas y estructuras distintos. Estas estructuras permiten acceder a variables, funciones, objetos, cadenas y otras herramientas que procesan la información.</Text2>
+            <Wrapper1  style={{justifyContent:"center", alignItems:"center"}}>
+              <Button
+                width="90px"
+                onClick={()=>setStartTest(true)}>
+                Iniciar
+              </Button>
+            </Wrapper1>
+          </Wrapper1>
+        </Wrapper1>}
+    
     </>
   )
 };
