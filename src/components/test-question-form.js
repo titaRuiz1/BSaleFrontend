@@ -5,7 +5,10 @@ import { colors, typography } from "../styles";
 import Input from "../components/input";
 import TextArea from "../components/textArea"
 import { Button } from "./buttons";
-import { useAuth } from "../context/auth-context"
+import { useAuth } from "../context/auth-context";
+import { useQuill } from 'react-quilljs';
+import toolbar from "../components/toolbar";
+import 'quill/dist/quill.snow.css'
 
 const FormContainer = styled.div`
   background:white;
@@ -94,9 +97,16 @@ function TestQuestionForm() {
   const [test2, setTest2] = useState({ test: '', input: '', output: '', input_type: '', output_type: '' });
   const [test3, setTest3] = useState({ test: '', input: '', output: '', input_type: '', output_type: '' });
   const [test4, setTest4] = useState({ test: '', input: '', output: '', input_type: '', output_type: '' });
+  const [showSol, setShowSol] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [newSolution, setNewSolution] = useState({ description: '' })
-  const { setView, arrTestQuestion, setArrTestQuestion } = useAuth();
+  const { setView, arrTestQuestion, setArrTestQuestion, newPosition } = useAuth();
+  const { quill, quillRef } = useQuill({
+    modules: {
+      toolbar: toolbar
+    }
+  })
+  console.log('NUEVA POS EN TEST', newPosition)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -111,9 +121,19 @@ function TestQuestionForm() {
   function handleSubmitTestQuestion(event) {
     event.preventDefault();
     console.log('hace submit')
-    setNewTestQuestion({ ...newTestQuestion, tests_attributes: [test1, test2, test3, test4], solution_attributes: newSolution })
-    setShowAdd(true)
+    const data = JSON.stringify(quill.getContents())
+    setNewTestQuestion({ ...newTestQuestion, description: data, tests_attributes: [test1, test2, test3, test4] })
+    setShowSol(true)
   };
+
+  function handleSubmitSolution(event) {
+    event.preventDefault();
+    console.log('hace submit2')
+    const data = JSON.stringify(quill.getContents())
+    // setNewSolution({ description: data })
+    setNewTestQuestion({ ...newTestQuestion, solution_attributes: { description: data } })
+    setShowAdd(true)
+  }
 
   function handleBack(event) {
     event.preventDefault();
@@ -146,116 +166,125 @@ function TestQuestionForm() {
   console.log('INPUT TYPE2', test2)
   console.log('INPUT TYPE3', test3)
   console.log('INPUT TYPE4', test4)
-  console.log('sol', newSolution)
+  console.log('TEST QUESTION', newTestQuestion)
   return (
     <>
       <FormContainer>
-        <Form onSubmit={handleSubmitTestQuestion}>
-          <FieldSet>
-            <Legend>Crear Preguntas de tipo Test </Legend>
-            <TextArea
+        {showSol ?
+          <Form onSubmit={handleSubmitSolution}>
+            <FieldSet>
+              <Legend>Solución</Legend>
+              <div ref={quillRef}></div>
+            </FieldSet>
+            <Button>Añadir Solución</Button>
+          </Form>
+          :
+          <Form onSubmit={handleSubmitTestQuestion}>
+            <FieldSet>
+              <Legend>Crear Preguntas de tipo Test </Legend>
+              {/* <TextArea
               label={"Pregunta de tipo Test"}
               id="testQ1"
               name="description"
               cols='40'
               value={newTestQuestion.description}
               onChange={handleChange}
-              placeholder="La pregunta se trata de..." />
+              placeholder="La pregunta se trata de..." /> */}
+              <div ref={quillRef}></div>
+              <FieldSet>
+                <Legend2>Código base</Legend2>
+                <EditorWrapp>
+                  <Editor
+                    language="javascript"
+                    theme="vs-dark"
+                    name="code"
+                    value={newTestQuestion.code}
+                    onChange={value => setNewTestQuestion({ ...newTestQuestion, code: value })}
+                    width="100%"
+                    height="100%"
+                  />
+                </EditorWrapp>
+              </FieldSet>
 
-            <FieldSet>
-              <Legend2>Código base</Legend2>
-              <EditorWrapp>
-                <Editor
-                  language="javascript"
-                  theme="vs-dark"
-                  name="code"
-                  value={newTestQuestion.code}
-                  onChange={value => setNewTestQuestion({ ...newTestQuestion, code: value })}
-                  width="100%"
-                  height="100%"
-                />
-              </EditorWrapp>
-            </FieldSet>
-
-            <FieldSet>
-              <Legend2>Test1</Legend2>
-              <Input
-                label={"Descripción"}
-                id="test1"
-                name="test"
-                type="text"
-                value={test1.test}
-                onChange={event => setTest1({ ...test1, test: event.target.value })}
-                placeholder="Test: sum(x,y)"
-                style={{ borderRadius: '8px' }} />
-
-              <DivInput>
+              <FieldSet>
+                <Legend2>Test1</Legend2>
                 <Input
-                  label={"Input"}
+                  label={"Descripción"}
                   id="test1"
-                  name="input"
+                  name="test"
                   type="text"
-                  value={test1.input}
-                  onChange={event => setTest1({ ...test1, input: event.target.value })}
-                  placeholder="x,y"
+                  value={test1.test}
+                  onChange={event => setTest1({ ...test1, test: event.target.value })}
+                  placeholder="Test: sum(x,y)"
                   style={{ borderRadius: '8px' }} />
-                <SelectContainer>
-                  <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
-                  <StyledSelect onChange={event => setTest1({ ...test1, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
-                    <option value="" value="DEFAULT" disabled >Tipo de input...</option>
-                    <option value="array">Array</option>
-                    <option value="boolean">Boolean</option>
-                    <option value="number">Number</option>
-                    <option value="string">String</option>
-                  </StyledSelect>
-                </SelectContainer>
-              </DivInput>
 
-              <DivInput>
-                <Input
-                  label={"Output"}
-                  id="test1"
-                  name="output"
-                  type="text"
-                  value={test1.output}
-                  onChange={event => setTest1({ ...test1, output: event.target.value })}
-                  placeholder="xy"
-                  style={{ borderRadius: '8px' }} />
-                <SelectContainer>
-                  <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
-                  <StyledSelect onChange={event => setTest1({ ...test1, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
-                    <option value="" value="DEFAULT" disabled >Tipo de output...</option>
-                    <option value="array">Array</option>
-                    <option value="boolean">Boolean</option>
-                    <option value="number">Number</option>
-                    <option value="string">String</option>
-                  </StyledSelect>
-                </SelectContainer>
-              </DivInput>
-            </FieldSet>
-            <FieldSet>
-              <Legend2>Test2</Legend2>
-              <Input
-                label={"Descripción"}
-                id="test2"
-                name="test"
-                type="text"
-                value={test2.test}
-                onChange={event => setTest2({ ...test2, test: event.target.value })}
-                placeholder="Test: sum(x,y)"
-                style={{ borderRadius: '8px' }} />
+                <DivInput>
+                  <Input
+                    label={"Input"}
+                    id="test1"
+                    name="input"
+                    type="text"
+                    value={test1.input}
+                    onChange={event => setTest1({ ...test1, input: event.target.value })}
+                    placeholder="x,y"
+                    style={{ borderRadius: '8px' }} />
+                  <SelectContainer>
+                    <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
+                    <StyledSelect onChange={event => setTest1({ ...test1, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
+                      <option value="" value="DEFAULT" disabled >Tipo de input...</option>
+                      <option value="array">Array</option>
+                      <option value="boolean">Boolean</option>
+                      <option value="number">Number</option>
+                      <option value="string">String</option>
+                    </StyledSelect>
+                  </SelectContainer>
+                </DivInput>
 
-              <DivInput>
+                <DivInput>
+                  <Input
+                    label={"Output"}
+                    id="test1"
+                    name="output"
+                    type="text"
+                    value={test1.output}
+                    onChange={event => setTest1({ ...test1, output: event.target.value })}
+                    placeholder="xy"
+                    style={{ borderRadius: '8px' }} />
+                  <SelectContainer>
+                    <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
+                    <StyledSelect onChange={event => setTest1({ ...test1, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
+                      <option value="" value="DEFAULT" disabled >Tipo de output...</option>
+                      <option value="array">Array</option>
+                      <option value="boolean">Boolean</option>
+                      <option value="number">Number</option>
+                      <option value="string">String</option>
+                    </StyledSelect>
+                  </SelectContainer>
+                </DivInput>
+              </FieldSet>
+              <FieldSet>
+                <Legend2>Test2</Legend2>
                 <Input
-                  label={"Input"}
+                  label={"Descripción"}
                   id="test2"
-                  name="input"
+                  name="test"
                   type="text"
-                  value={test2.input}
-                  onChange={event => setTest2({ ...test2, input: event.target.value })}
-                  placeholder="x,y"
+                  value={test2.test}
+                  onChange={event => setTest2({ ...test2, test: event.target.value })}
+                  placeholder="Test: sum(x,y)"
                   style={{ borderRadius: '8px' }} />
-                {/* <Input
+
+                <DivInput>
+                  <Input
+                    label={"Input"}
+                    id="test2"
+                    name="input"
+                    type="text"
+                    value={test2.input}
+                    onChange={event => setTest2({ ...test2, input: event.target.value })}
+                    placeholder="x,y"
+                    style={{ borderRadius: '8px' }} />
+                  {/* <Input
                   label={"Tipo de Input"}
                   id="test2"
                   name="input_type"
@@ -264,29 +293,29 @@ function TestQuestionForm() {
                   onChange={event => setTest2({ ...test2, input_type: event.target.value })}
                   placeholder="string"
                   style={{ borderRadius: '8px' }} /> */}
-                <SelectContainer>
-                  <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
-                  <StyledSelect onChange={event => setTest2({ ...test2, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
-                    <option value="" value="DEFAULT" disabled >Tipo de input...</option>
-                    <option value="array">Array</option>
-                    <option value="boolean">Boolean</option>
-                    <option value="number">Number</option>
-                    <option value="string">String</option>
-                  </StyledSelect>
-                </SelectContainer>
-              </DivInput>
+                  <SelectContainer>
+                    <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
+                    <StyledSelect onChange={event => setTest2({ ...test2, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
+                      <option value="" value="DEFAULT" disabled >Tipo de input...</option>
+                      <option value="array">Array</option>
+                      <option value="boolean">Boolean</option>
+                      <option value="number">Number</option>
+                      <option value="string">String</option>
+                    </StyledSelect>
+                  </SelectContainer>
+                </DivInput>
 
-              <DivInput>
-                <Input
-                  label={"Output"}
-                  id="test2"
-                  name="output"
-                  type="text"
-                  value={test2.output}
-                  onChange={event => setTest2({ ...test2, output: event.target.value })}
-                  placeholder="xy"
-                  style={{ borderRadius: '8px' }} />
-                {/* <Input
+                <DivInput>
+                  <Input
+                    label={"Output"}
+                    id="test2"
+                    name="output"
+                    type="text"
+                    value={test2.output}
+                    onChange={event => setTest2({ ...test2, output: event.target.value })}
+                    placeholder="xy"
+                    style={{ borderRadius: '8px' }} />
+                  {/* <Input
                   label={"Tipo de Output"}
                   id="test2"
                   name="output_type"
@@ -295,42 +324,42 @@ function TestQuestionForm() {
                   onChange={event => setTest2({ ...test2, output_type: event.target.value })}
                   placeholder="string"
                   style={{ borderRadius: '8px' }} /> */}
-                <SelectContainer>
-                  <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
-                  <StyledSelect onChange={event => setTest2({ ...test2, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
-                    <option value="" value="DEFAULT" disabled >Tipo de output...</option>
-                    <option value="array">Array</option>
-                    <option value="boolean">Boolean</option>
-                    <option value="number">Number</option>
-                    <option value="string">String</option>
-                  </StyledSelect>
-                </SelectContainer>
-              </DivInput>
-            </FieldSet>
+                  <SelectContainer>
+                    <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
+                    <StyledSelect onChange={event => setTest2({ ...test2, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
+                      <option value="" value="DEFAULT" disabled >Tipo de output...</option>
+                      <option value="array">Array</option>
+                      <option value="boolean">Boolean</option>
+                      <option value="number">Number</option>
+                      <option value="string">String</option>
+                    </StyledSelect>
+                  </SelectContainer>
+                </DivInput>
+              </FieldSet>
 
-            <FieldSet>
-              <Legend2>Test3</Legend2>
-              <Input
-                label={"Descripción"}
-                id="test3"
-                name="test"
-                type="text"
-                value={test3.test}
-                onChange={event => setTest3({ ...test3, test: event.target.value })}
-                placeholder="Test: sum(x,y)"
-                style={{ borderRadius: '8px' }} />
-
-              <DivInput>
+              <FieldSet>
+                <Legend2>Test3</Legend2>
                 <Input
-                  label={"Input"}
+                  label={"Descripción"}
                   id="test3"
-                  name="input"
+                  name="test"
                   type="text"
-                  value={test3.input}
-                  onChange={event => setTest3({ ...test3, input: event.target.value })}
-                  placeholder="x,y"
+                  value={test3.test}
+                  onChange={event => setTest3({ ...test3, test: event.target.value })}
+                  placeholder="Test: sum(x,y)"
                   style={{ borderRadius: '8px' }} />
-                {/* <Input
+
+                <DivInput>
+                  <Input
+                    label={"Input"}
+                    id="test3"
+                    name="input"
+                    type="text"
+                    value={test3.input}
+                    onChange={event => setTest3({ ...test3, input: event.target.value })}
+                    placeholder="x,y"
+                    style={{ borderRadius: '8px' }} />
+                  {/* <Input
                   label={"Tipo de Input"}
                   id="test3"
                   name="input_type"
@@ -340,29 +369,29 @@ function TestQuestionForm() {
                   placeholder="string"
                   style={{ borderRadius: '8px' }} /> */}
 
-                <SelectContainer>
-                  <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
-                  <StyledSelect onChange={event => setTest3({ ...test3, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
-                    <option value="" value="DEFAULT" disabled >Tipo de input...</option>
-                    <option value="array">Array</option>
-                    <option value="boolean">Boolean</option>
-                    <option value="number">Number</option>
-                    <option value="string">String</option>
-                  </StyledSelect>
-                </SelectContainer>
-              </DivInput>
+                  <SelectContainer>
+                    <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
+                    <StyledSelect onChange={event => setTest3({ ...test3, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
+                      <option value="" value="DEFAULT" disabled >Tipo de input...</option>
+                      <option value="array">Array</option>
+                      <option value="boolean">Boolean</option>
+                      <option value="number">Number</option>
+                      <option value="string">String</option>
+                    </StyledSelect>
+                  </SelectContainer>
+                </DivInput>
 
-              <DivInput>
-                <Input
-                  label={"Output"}
-                  id="test3"
-                  name="output"
-                  type="text"
-                  value={test3.output}
-                  onChange={event => setTest3({ ...test3, output: event.target.value })}
-                  placeholder="xy"
-                  style={{ borderRadius: '8px' }} />
-                {/* <Input
+                <DivInput>
+                  <Input
+                    label={"Output"}
+                    id="test3"
+                    name="output"
+                    type="text"
+                    value={test3.output}
+                    onChange={event => setTest3({ ...test3, output: event.target.value })}
+                    placeholder="xy"
+                    style={{ borderRadius: '8px' }} />
+                  {/* <Input
                   label={"Tipo de Output"}
                   id="test3"
                   name="output_type"
@@ -371,42 +400,42 @@ function TestQuestionForm() {
                   onChange={event => setTest3({ ...test3, output_type: event.target.value })}
                   placeholder="string"
                   style={{ borderRadius: '8px' }} /> */}
-                <SelectContainer>
-                  <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
-                  <StyledSelect onChange={event => setTest3({ ...test3, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
-                    <option value="" value="DEFAULT" disabled >Tipo de output...</option>
-                    <option value="array">Array</option>
-                    <option value="boolean">Boolean</option>
-                    <option value="number">Number</option>
-                    <option value="string">String</option>
-                  </StyledSelect>
-                </SelectContainer>
-              </DivInput>
-            </FieldSet>
+                  <SelectContainer>
+                    <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
+                    <StyledSelect onChange={event => setTest3({ ...test3, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
+                      <option value="" value="DEFAULT" disabled >Tipo de output...</option>
+                      <option value="array">Array</option>
+                      <option value="boolean">Boolean</option>
+                      <option value="number">Number</option>
+                      <option value="string">String</option>
+                    </StyledSelect>
+                  </SelectContainer>
+                </DivInput>
+              </FieldSet>
 
-            <FieldSet>
-              <Legend2>Test4</Legend2>
-              <Input
-                label={"Descripción"}
-                id="test4"
-                name="test"
-                type="text"
-                value={test4.test}
-                onChange={event => setTest4({ ...test4, test: event.target.value })}
-                placeholder="Test: sum(x,y)"
-                style={{ borderRadius: '8px' }} />
-
-              <DivInput>
+              <FieldSet>
+                <Legend2>Test4</Legend2>
                 <Input
-                  label={"Input"}
+                  label={"Descripción"}
                   id="test4"
-                  name="input"
+                  name="test"
                   type="text"
-                  value={test4.input}
-                  onChange={event => setTest4({ ...test4, input: event.target.value })}
-                  placeholder="x,y"
+                  value={test4.test}
+                  onChange={event => setTest4({ ...test4, test: event.target.value })}
+                  placeholder="Test: sum(x,y)"
                   style={{ borderRadius: '8px' }} />
-                {/* <Input
+
+                <DivInput>
+                  <Input
+                    label={"Input"}
+                    id="test4"
+                    name="input"
+                    type="text"
+                    value={test4.input}
+                    onChange={event => setTest4({ ...test4, input: event.target.value })}
+                    placeholder="x,y"
+                    style={{ borderRadius: '8px' }} />
+                  {/* <Input
                   label={"Tipo de Input"}
                   id="test4"
                   name="input_type"
@@ -416,29 +445,29 @@ function TestQuestionForm() {
                   placeholder="string"
                   style={{ borderRadius: '8px' }} /> */}
 
-                <SelectContainer>
-                  <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
-                  <StyledSelect onChange={event => setTest4({ ...test4, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
-                    <option value="" value="DEFAULT" disabled >Tipo de input...</option>
-                    <option value="array">Array</option>
-                    <option value="boolean">Boolean</option>
-                    <option value="number">Number</option>
-                    <option value="string">String</option>
-                  </StyledSelect>
-                </SelectContainer>
-              </DivInput>
+                  <SelectContainer>
+                    <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
+                    <StyledSelect onChange={event => setTest4({ ...test4, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
+                      <option value="" value="DEFAULT" disabled >Tipo de input...</option>
+                      <option value="array">Array</option>
+                      <option value="boolean">Boolean</option>
+                      <option value="number">Number</option>
+                      <option value="string">String</option>
+                    </StyledSelect>
+                  </SelectContainer>
+                </DivInput>
 
-              <DivInput>
-                <Input
-                  label={"Output"}
-                  id="test4"
-                  name="output"
-                  type="text"
-                  value={test4.output}
-                  onChange={event => setTest4({ ...test4, output: event.target.value })}
-                  placeholder="xy"
-                  style={{ borderRadius: '8px' }} />
-                {/* <Input
+                <DivInput>
+                  <Input
+                    label={"Output"}
+                    id="test4"
+                    name="output"
+                    type="text"
+                    value={test4.output}
+                    onChange={event => setTest4({ ...test4, output: event.target.value })}
+                    placeholder="xy"
+                    style={{ borderRadius: '8px' }} />
+                  {/* <Input
                   label={"Tipo de Output"}
                   id="test4"
                   name="output_type"
@@ -447,21 +476,21 @@ function TestQuestionForm() {
                   onChange={event => setTest4({ ...test4, output_type: event.target.value })}
                   placeholder="string"
                   style={{ borderRadius: '8px' }} /> */}
-                <SelectContainer>
-                  <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
-                  <StyledSelect onChange={event => setTest4({ ...test4, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
-                    <option value="" value="DEFAULT" disabled >Tipo de output...</option>
-                    <option value="array">Array</option>
-                    <option value="boolean">Boolean</option>
-                    <option value="number">Number</option>
-                    <option value="string">String</option>
-                  </StyledSelect>
-                </SelectContainer>
-              </DivInput>
-            </FieldSet>
+                  <SelectContainer>
+                    <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
+                    <StyledSelect onChange={event => setTest4({ ...test4, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
+                      <option value="" value="DEFAULT" disabled >Tipo de output...</option>
+                      <option value="array">Array</option>
+                      <option value="boolean">Boolean</option>
+                      <option value="number">Number</option>
+                      <option value="string">String</option>
+                    </StyledSelect>
+                  </SelectContainer>
+                </DivInput>
+              </FieldSet>
 
 
-            <FieldSet>
+              {/* <FieldSet>
               <Legend2>Solución</Legend2>
               <TextArea
                 label={"Solución"}
@@ -471,11 +500,12 @@ function TestQuestionForm() {
                 value={newSolution.description}
                 onChange={handleChange}
                 placeholder="The solution is..." />
-            </FieldSet>
+            </FieldSet> */}
 
-          </FieldSet>
-          <Button color={`${colors.teal}`}>Agregar</Button>
-        </Form>
+            </FieldSet>
+            <Button color={`${colors.teal}`}>Agregar</Button>
+          </Form>
+        }
         {showAdd ?
           <DivButtons>
             <Button onClick={handleBack}>Atras</Button>

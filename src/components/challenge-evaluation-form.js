@@ -1,11 +1,16 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
+import { useQuill } from 'react-quilljs';
+// import 'react-quill/dist/quill.snow.css';
 import { Navigate, useNavigate } from "react-router";
 import { colors, typography } from "../styles";
 import Input from "../components/input";
 import TextArea from "../components/textArea"
 import { Button } from "./buttons";
-import { useAuth } from "../context/auth-context"
+import { useAuth } from "../context/auth-context";
+import TextEditor from "./text-editor";
+import toolbar from "./toolbar";
+import 'quill/dist/quill.snow.css'
 
 const FormContainer = styled.div`
   background:white;
@@ -75,8 +80,14 @@ function ChallengeEvluationForm() {
   const [newChallengeEvaluation2, setNewChallengeEvaluation2] = useState({ category: '', criteria: '', weighting: '' });
   const [newChallengeEvaluation3, setNewChallengeEvaluation3] = useState({ category: '', criteria: '', weighting: '' });
   const [newChallengeEvaluation4, setNewChallengeEvaluation4] = useState({ category: '', criteria: '', weighting: '' });
+  const [criteria, setCriteria] = useState(1)
   const [showAdd, setShowAdd] = useState(false);
-  const { setView, arrChallengeEvaluation, setArrChallengeEvaluation, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion } = useAuth();
+  const { setView, arrChallengeEvaluation, setArrChallengeEvaluation, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion, setValue, setValue2 } = useAuth();
+  const { quill, quillRef } = useQuill({
+    modules: {
+      toolbar: toolbar
+    }
+  })
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -93,13 +104,41 @@ function ChallengeEvluationForm() {
   };
 
 
-  function handleSubmitChallengeEvaluation(event) {
+  function handleCriterio1(event) {
     event.preventDefault();
     console.log('hace submit')
-    setArrChallengeEvaluation([newChallengeEvaluation1, newChallengeEvaluation2, newChallengeEvaluation3, newChallengeEvaluation4])
-    // setNewTestQuestion({ ...newTestQuestion, tests_attributes: [test1, test2, test3, test4], solution_attributes: newSolution })
+    const data = JSON.stringify(quill.getContents())
+    setNewChallengeEvaluation1({ ...newChallengeEvaluation1, criteria: data })
+    setCriteria(2)
+    // setShowAdd(true)
+  };
+
+  function handleCriterio2(event) {
+    event.preventDefault();
+    console.log('hace submit2')
+    const data = JSON.stringify(quill.getContents())
+    setNewChallengeEvaluation2({ ...newChallengeEvaluation2, criteria: data })
+    setCriteria(3)
+    // setShowAdd(true)
+  };
+
+  function handleCriterio3(event) {
+    event.preventDefault();
+    console.log('hace submit')
+    const data = JSON.stringify(quill.getContents())
+    setNewChallengeEvaluation3({ ...newChallengeEvaluation3, criteria: data })
+    setCriteria(4)
+    // setShowAdd(true)
+  };
+
+  function handleCriterio4(event) {
+    event.preventDefault();
+    console.log('hace submit')
+    const data = JSON.stringify(quill.getContents())
+    setNewChallengeEvaluation4({ ...newChallengeEvaluation4, criteria: data })
     setShowAdd(true)
   };
+  // setArrChallengeEvaluation([newChallengeEvaluation1, newChallengeEvaluation2, newChallengeEvaluation3, newChallengeEvaluation4])
 
   function handleBack(event) {
     event.preventDefault();
@@ -112,161 +151,173 @@ function ChallengeEvluationForm() {
     setNewPosition({
       ...newPosition, multiple_choice_questions_attributes: arrMultiChoiceQuestion,
       test_questions_attributes: arrTestQuestion,
-      challenge_evaluations_attributes: arrChallengeEvaluation
+      challenge_evaluations_attributes: [newChallengeEvaluation1, newChallengeEvaluation2, newChallengeEvaluation3, newChallengeEvaluation4]
     })
     setShowAdd(false)
-    // setView('confirmation')
-    navigate(`/output`)
+    setView('confirmation')
+    // navigate(`/output`)
   };
-
-  console.log('TODO EL REQUEST', newPosition)
+  console.log('CAT 1', newChallengeEvaluation1)
+  // console.log('TODO EL REQUEST', newPosition)
   return (
     <>
       <FormContainer>
-        <Form onSubmit={handleSubmitChallengeEvaluation}>
-          <FieldSet>
-            <Legend>Crear los Criterios de Evaluación</Legend>
-            <FieldSet>
-              <Legend2>Criterio 1</Legend2>
-              <Input
-                label={"Categoría"}
-                id="criterio1"
-                name="category"
-                type="text"
-                value={newChallengeEvaluation1.category}
-                onChange={handleChange}
-                placeholder="La categoría es..."
-                style={{ borderRadius: '8px' }} />
-              {/* <Input
-                label={"Criterio"}
-                id="criterio1"
-                name="criteria"
-                type="text"
-                value={newChallengeEvaluation1.criteria}
-                onChange={handleChange}
-                placeholder="El criterio a evaluar es..."
-                style={{ borderRadius: '8px' }} /> */}
-              <TextArea
-                label={"Criterio"}
-                id="criterio1"
-                name="criteria"
-                cols='40'
-                value={newChallengeEvaluation1.criteria}
-                onChange={handleChange}
-                placeholder="El criterio a evaluar es..." />
+        <FieldSet>
+          <Legend>Crear los Criterios de Evaluación</Legend>
+          {criteria === 1 ?
+            <Form onSubmit={handleCriterio1}>
+              <FieldSet>
+                <Legend2>Criterio 1</Legend2>
+                <Input
+                  label={"Categoría"}
+                  id="criterio1"
+                  name="category"
+                  type="text"
+                  value={newChallengeEvaluation1.category}
+                  onChange={handleChange}
+                  placeholder="La categoría es..."
+                  style={{ borderRadius: '8px' }} />
+                {/* <Input
+                      label={"Criterio"}
+                      id="criterio1"
+                      name="criteria"
+                      type="text"
+                      value={newChallengeEvaluation1.criteria}
+                      onChange={handleChange}
+                      placeholder="El criterio a evaluar es..."
+                      style={{ borderRadius: '8px' }} /> */}
+                <div ref={quillRef}></div>
+                <Input
+                  label={"Peso"}
+                  id="criterio1"
+                  name="weighting"
+                  type="text"
+                  value={newChallengeEvaluation1.weighting}
+                  onChange={handleChange}
+                  placeholder="0.25"
+                  style={{ borderRadius: '8px' }} />
+                <Button color={`${colors.teal}`}>Agregar</Button>
+              </FieldSet>
 
-              <Input
-                label={"Peso"}
-                id="criterio1"
-                name="weighting"
-                type="text"
-                value={newChallengeEvaluation1.weighting}
-                onChange={handleChange}
-                placeholder="0.25"
-                style={{ borderRadius: '8px' }} />
+            </Form>
 
-            </FieldSet>
-            <FieldSet>
-              <Legend2>Criterio 2</Legend2>
-              <Input
-                label={"Categoría"}
-                id="criterio2"
-                name="category"
-                type="text"
-                value={newChallengeEvaluation2.category}
-                onChange={handleChange}
-                placeholder="La categoría es..."
-                style={{ borderRadius: '8px' }} />
-              <Input
-                label={"Criterio"}
-                id="criterio2"
-                name="criteria"
-                type="text"
-                value={newChallengeEvaluation2.criteria}
-                onChange={handleChange}
-                placeholder="El criterio a evaluar es..."
-                style={{ borderRadius: '8px' }} />
+            : criteria === 2 ?
+              <Form onSubmit={handleCriterio2}>
+                <FieldSet>
+                  <Legend2>Criterio 2</Legend2>
+                  <Input
+                    label={"Categoría"}
+                    id="criterio2"
+                    name="category"
+                    type="text"
+                    value={newChallengeEvaluation2.category}
+                    onChange={handleChange}
+                    placeholder="La categoría es..."
+                    style={{ borderRadius: '8px' }} />
+                  {/* <Input
+                    label={"Criterio"}
+                    id="criterio2"
+                    name="criteria"
+                    type="text"
+                    value={newChallengeEvaluation2.criteria}
+                    onChange={handleChange}
+                    placeholder="El criterio a evaluar es..."
+                    style={{ borderRadius: '8px' }} /> */}
+                  <div ref={quillRef}></div>
 
-              <Input
-                label={"Peso"}
-                id="criterio2"
-                name="weighting"
-                type="text"
-                value={newChallengeEvaluation2.weighting}
-                onChange={handleChange}
-                placeholder="0.25"
-                style={{ borderRadius: '8px' }} />
+                  <Input
+                    label={"Peso"}
+                    id="criterio2"
+                    name="weighting"
+                    type="text"
+                    value={newChallengeEvaluation2.weighting}
+                    onChange={handleChange}
+                    placeholder="0.25"
+                    style={{ borderRadius: '8px' }} />
+                  <Button color={`${colors.teal}`}>Agregar</Button>
+                </FieldSet>
 
-            </FieldSet>
-            <FieldSet>
-              <Legend2>Criterio 3</Legend2>
-              <Input
-                label={"Categoría"}
-                id="criterio3"
-                name="category"
-                type="text"
-                value={newChallengeEvaluation3.category}
-                onChange={handleChange}
-                placeholder="La categoría es..."
-                style={{ borderRadius: '8px' }} />
-              <Input
-                label={"Criterio"}
-                id="criterio3"
-                name="criteria"
-                type="text"
-                value={newChallengeEvaluation3.criteria}
-                onChange={handleChange}
-                placeholder="El criterio a evaluar es..."
-                style={{ borderRadius: '8px' }} />
+              </Form>
 
-              <Input
-                label={"Peso"}
-                id="criterio3"
-                name="weighting"
-                type="text"
-                value={newChallengeEvaluation3.weighting}
-                onChange={handleChange}
-                placeholder="0.25"
-                style={{ borderRadius: '8px' }} />
+              : criteria === 3 ?
+                <Form onSubmit={handleCriterio3}>
+                  <FieldSet>
+                    <Legend2>Criterio 3</Legend2>
+                    <Input
+                      label={"Categoría"}
+                      id="criterio3"
+                      name="category"
+                      type="text"
+                      value={newChallengeEvaluation3.category}
+                      onChange={handleChange}
+                      placeholder="La categoría es..."
+                      style={{ borderRadius: '8px' }} />
+                    {/* <Input
+                    label={"Criterio"}
+                    id="criterio3"
+                    name="criteria"
+                    type="text"
+                    value={newChallengeEvaluation3.criteria}
+                    onChange={handleChange}
+                    placeholder="El criterio a evaluar es..."
+                    style={{ borderRadius: '8px' }} /> */}
+                    <div ref={quillRef}></div>
 
-            </FieldSet>
-            <FieldSet>
-              <Legend2>Criterio 4</Legend2>
-              <Input
-                label={"Categoría"}
-                id="criterio4"
-                name="category"
-                type="text"
-                value={newChallengeEvaluation4.category}
-                onChange={handleChange}
-                placeholder="La categoría es..."
-                style={{ borderRadius: '8px' }} />
-              <Input
-                label={"Criterio"}
-                id="criterio4"
-                name="criteria"
-                type="text"
-                value={newChallengeEvaluation4.criteria}
-                onChange={handleChange}
-                placeholder="El criterio a evaluar es..."
-                style={{ borderRadius: '8px' }} />
+                    <Input
+                      label={"Peso"}
+                      id="criterio3"
+                      name="weighting"
+                      type="text"
+                      value={newChallengeEvaluation3.weighting}
+                      onChange={handleChange}
+                      placeholder="0.25"
+                      style={{ borderRadius: '8px' }} />
+                    <Button color={`${colors.teal}`}>Agregar</Button>
+                  </FieldSet>
 
-              <Input
-                label={"Peso"}
-                id="criterio4"
-                name="weighting"
-                type="text"
-                value={newChallengeEvaluation4.weighting}
-                onChange={handleChange}
-                placeholder="0.25"
-                style={{ borderRadius: '8px' }} />
+                </Form>
+                :
+                <Form onSubmit={handleCriterio4}>
+                  <FieldSet>
+                    <Legend2>Criterio 4</Legend2>
+                    <Input
+                      label={"Categoría"}
+                      id="criterio4"
+                      name="category"
+                      type="text"
+                      value={newChallengeEvaluation4.category}
+                      onChange={handleChange}
+                      placeholder="La categoría es..."
+                      style={{ borderRadius: '8px' }} />
+                    {/* <Input
+                  label={"Criterio"}
+                  id="criterio4"
+                  name="criteria"
+                  type="text"
+                  value={newChallengeEvaluation4.criteria}
+                  onChange={handleChange}
+                  placeholder="El criterio a evaluar es..."
+                  style={{ borderRadius: '8px' }} /> */}
+                    <div ref={quillRef}></div>
 
-            </FieldSet>
+                    <Input
+                      label={"Peso"}
+                      id="criterio4"
+                      name="weighting"
+                      type="text"
+                      value={newChallengeEvaluation4.weighting}
+                      onChange={handleChange}
+                      placeholder="0.25"
+                      style={{ borderRadius: '8px' }} />
+                    <Button color={`${colors.teal}`}>Agregar</Button>
 
-          </FieldSet>
+                  </FieldSet>
 
-          <Button color={`${colors.teal}`}>Agregar</Button>
-        </Form>
+                </Form>
+          }
+
+        </FieldSet>
+
         <DivButtons>
           <Button onClick={handleBack}>Atras</Button>
           {showAdd ? <Button width='100%' onClick={handleAdd}>Finalizar Proceso</Button> : null}

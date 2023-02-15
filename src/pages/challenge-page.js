@@ -9,6 +9,10 @@ import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestion
 import { getResult } from "../services/results-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css'
+
+
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -54,7 +58,7 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, setChallengeEvaluations, setSumCorrectAnswer, setAverage } = useAuth();
+  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, setChallengeEvaluations, setSumCorrectAnswer, setAverage, setValue2, setValue } = useAuth();
 
   useEffect(() => {
     getPositions().then(response => {
@@ -87,16 +91,16 @@ function ChallengePage() {
 
   }, [user]);
 
-  function handleContinue(e){
+  function handleContinue(e) {
     e.preventDefault();
     console.log("funcionaaa")
-    if(user.current_stage===1){
+    if (user.current_stage === 1) {
       navigate("/first-stage")
     }
-    else if(user.current_stage===2){
+    else if (user.current_stage === 2) {
       navigate("/stage2")
     }
-    else{
+    else {
       navigate("/feedback")
     }
     //...se debe actualizar el current question (CUIDADO CON EL MULTIPLE CHOICE Y TEST)
@@ -117,13 +121,13 @@ function ChallengePage() {
                 <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
                   <Text3>Iniciar</Text3>
                 </Button>
-              :
+                :
                 user.current_stage === 3 && user.current_question === 5 ?
-                  <Button style={{ padding: "8px 12px", background:"#677294" }} disabled>
+                  <Button style={{ padding: "8px 12px", background: "#677294" }} disabled>
                     <Text3>Finalizado</Text3>
                   </Button>
-                :
-                  <Button style={{ padding: "8px 12px",background:"#31B9DD"}} onClick={handleContinue}>
+                  :
+                  <Button style={{ padding: "8px 12px", background: "#31B9DD" }} onClick={handleContinue}>
                     <Text3>Continuar</Text3>
                   </Button>
               }

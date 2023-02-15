@@ -9,7 +9,11 @@ import { Button } from "../../components/buttons";
 import MultipleChoiceQuestionForm from "../../components/new-multiple-question-form";
 import TestQuestionForm from "../../components/test-question-form";
 import ChallengeEvluationForm from "../../components/challenge-evaluation-form";
-import Confirmation from "../../components/confirmation-page"
+import Confirmation from "../../components/confirmation-page";
+
+import { useQuill } from 'react-quilljs';
+import toolbar from "../../components/toolbar";
+import 'quill/dist/quill.snow.css'
 
 const Container = styled.div`
   display: flex;
@@ -63,13 +67,12 @@ const Title = styled.p`
 `;
 
 function NewPositionPage() {
-  // const [newPosition, setNewPosition] = useState({ title: '', description: '' });
   const { view, setView, newPosition, setNewPosition } = useAuth();
-
-  function handleSubmitPosition(event) {
-    event.preventDefault();
-    console.log('CUAL ES EL TARGET', event.target)
-  }
+  const { quill, quillRef } = useQuill({
+    modules: {
+      toolbar: toolbar
+    }
+  })
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -82,7 +85,8 @@ function NewPositionPage() {
   function handleSubmitPosition(event) {
     event.preventDefault();
     console.log(event.target)
-
+    const data = JSON.stringify(quill.getContents())
+    setNewPosition({ ...newPosition, description: data })
     setView('multiple_choice')
   }
 
@@ -105,15 +109,15 @@ function NewPositionPage() {
                   onChange={handleChange}
                   placeholder="New Position"
                   style={{ borderRadius: '8px' }} />
-
-                <TextArea
+                <div ref={quillRef}></div>
+                {/* <TextArea
                   label={"Deescripción de la nueva Posición"}
                   id="description"
                   name="description"
                   cols='60'
                   value={newPosition.description}
                   onChange={handleChange}
-                  placeholder="This position..." />
+                  placeholder="This position..." /> */}
               </FieldSet>
               <Button>Siguiente</Button>
             </Form>

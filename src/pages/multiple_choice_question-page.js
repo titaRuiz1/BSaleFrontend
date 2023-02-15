@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
 import { useAuth } from "../context/auth-context";
@@ -8,8 +8,10 @@ import { Button } from "../components/buttons";
 import { Option } from "../components/option";
 import Editor from "@monaco-editor/react";
 import { getMultipleChoiceQuestions } from "../services/position-service";
-import { sendResults } from "../services/results-service"
+import { sendResults } from "../services/results-service";
 import { updateUser } from "../services/user-service";
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css'
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -51,6 +53,7 @@ const InsideSection = styled.div`
 
 const TextSection = styled.p`
   margin-top: 36px;
+  margin-bottom: 8px;
   color: ${colors.gray[600]};
   ${typography.text.lg};
   text-align: justify
@@ -119,19 +122,24 @@ function MultipleChoicePage() {
   const [inputID, setInputID] = useState(null);
   const { position, mulChoiceQuestions,
     sumCorrectAnswer, setSumCorrectAnswer,
-    solutions, testQuestions, setResults, results, user, setUser } = useAuth();
+    solutions, testQuestions, setResults, results, user, setUser, newPosition } = useAuth();
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(
-    user.current_question <= mulChoiceQuestions.length ? user.current_question-1 : user.current_question-mulChoiceQuestions.length-1);
+    user.current_question <= mulChoiceQuestions.length ? user.current_question - 1 : user.current_question - mulChoiceQuestions.length - 1);
   const [question_type, setQuestion_type] = useState(
     user.current_question > mulChoiceQuestions.length ? "test" : "multiple");
   const [view, setView] = useState("question")
-  const [code, setCode] = useState(user.current_question > mulChoiceQuestions.length ? testQuestions[user.current_question-mulChoiceQuestions.length-1].question.code : null);
+  const [code, setCode] = useState(user.current_question > mulChoiceQuestions.length ? testQuestions[user.current_question - mulChoiceQuestions.length - 1].question.code : null);
   const [test1Status, setTest1Status] = useState(null);
   const [test2Status, setTest2Status] = useState(null);
   const [test3Status, setTest3Status] = useState(null);
   const [test4Status, setTest4Status] = useState(null);
-
+  const { quill, quillRef } = useQuill({
+    readOnly: true,
+    modules: {
+      toolbar: false
+    }
+  })
   function handleRadio(event) {
     event.preventDefault();
     setInputID(+event.target.id);
@@ -140,14 +148,14 @@ function MultipleChoicePage() {
   }
   function handleSubmitMultipleChoice(event) {
     event.preventDefault();
-    
+
     updateUser({
       "current_question": user.current_question + 1
     })
-      .then(response=>{
-      setUser(response)
-      console.log("Aquiiiii",response)
-    }).catch(console.log())
+      .then(response => {
+        setUser(response)
+        console.log("Aquiiiii", response)
+      }).catch(console.log())
 
     if (correctAnswer === 'true') {
       setSumCorrectAnswer(sumCorrectAnswer + 1)
@@ -161,29 +169,31 @@ function MultipleChoicePage() {
       ).then(console.log).catch((error) => console.log(error))
 
     };
+    quill?.setContents(JSON.parse(solutions[currentQuestion].solution.description))
     setView("solution")
   }
 
   function handleSubmitTest(event) {
     event.preventDefault();
-   
+
     let body;
-    if(solutions.length===user.current_question){
-      body={
+    if (solutions.length === user.current_question) {
+      body = {
         "current_stage": 2,
-        "current_question":1
+        "current_question": 1
       }
     }
-    else{
-      body={
+    else {
+      body = {
         "current_question": user.current_question + 1
       }
+      quill?.setContents(JSON.parse(solutions[1].solution.description))
     }
     updateUser(body)
-    .then(response=>{
-      setUser(response)
-      console.log("Aquiiiii",response)
-    }).catch(console.log())
+      .then(response => {
+        setUser(response)
+        console.log("Aquiiiii", response)
+      }).catch(console.log())
 
     if (test1Status && test2Status && test3Status && test4Status) {
       setResults({ ...results, stage1: sumCorrectAnswer + 1 })
@@ -293,6 +303,24 @@ function MultipleChoicePage() {
     }
     setView("question")
   }
+
+  // question_type === "multiple" ?
+  //   quill?.setContents(JSON.parse(mulChoiceQuestions[currentQuestion].question.description))
+  //   : quill?.setContents(JSON.parse(testQuestions[currentQuestion].question.description))
+  useEffect(() => {
+    if (view === "question") {
+      if (question_type === "multiple") {
+        console.log(mulChoiceQuestions[currentQuestion].question.description)
+        quill?.setContents(JSON.parse(mulChoiceQuestions[currentQuestion].question.description))
+
+      } else {
+        console.log(testQuestions[currentQuestion].question.description)
+        quill?.setContents(JSON.parse(testQuestions[currentQuestion].question.description))
+
+      }
+    }
+  }, [quill, currentQuestion])
+
   return (
     <Wrapper1>
       <Navbar />
@@ -304,8 +332,8 @@ function MultipleChoicePage() {
               question_type === "multiple" ?
                 <>
                   <p>Pregunta {currentQuestion + 1} de {solutions.length}</p>
-                  <TextSection>
-                    {mulChoiceQuestions[currentQuestion].question.description}
+                  <TextSection ref={quillRef}>
+                    {/* {mulChoiceQuestions[currentQuestion].question.description} */}
                   </TextSection>
                   {mulChoiceQuestions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={mulChoiceQuestions[currentQuestion]?.url} />}
                   <OptionsSection onSubmit={handleSubmitMultipleChoice}>
@@ -330,7 +358,8 @@ function MultipleChoicePage() {
                       <Text1>{position.title}</Text1>
                       <Text1>Pregunta {currentQuestion + mulChoiceQuestions?.length + 1} de {solutions.length}</Text1>
                     </Wrapper2>
-                    <Text2>{testQuestions[currentQuestion].question.description} </Text2>
+                    <Text2 ref={quillRef}></Text2>
+                    {/* <Text2 ref={quillRef}>{testQuestions[currentQuestion].question.description} </Text2> */}
                     <Wrapper2 style={{ height: "270px", alignItems: "center", justifyContent: "center", padding: "0px 30px" }}>
                       <Editor
                         language="javascript"
@@ -388,9 +417,12 @@ function MultipleChoicePage() {
               :
               <>
                 <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de 10</p>
-                <TextSection>
-                  {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion + 5].solution.description}
+
+                <TextSection ref={quillRef}>
+                  {/* {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion + 5].solution.description} */}
                 </TextSection>
+
+
                 {question_type === "multiple" ?
                   solutions[currentQuestion]?.url === 'sin imagen' ?
                     null :

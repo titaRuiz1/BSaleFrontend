@@ -13,9 +13,7 @@ import NewUserForm from "./components/new-user-form";
 import NewPositionPage from "./pages/admin-pages/new-position-page"
 import { useAuth } from "./context/auth-context";
 import Table1 from "./components/table1/table1";
-import Prueba from "./components/pruebita-mix";
-import MarkdownInput from "./components/pruebita";
-import MarkdownViewer from "./components/pruebita-show"
+import PruebaText from "./pages/prueba-text"
 
 const Wrapper = styled.div`
 height: 100%;
@@ -49,9 +47,7 @@ function App() {
         <Route path="admin" element={<PositionsListPage />} />
         <Route path="new-user" element={<NewUserForm />} />
         <Route path="new-position" element={<NewPositionPage />} />
-        <Route path="input" element={<MarkdownInput />} />
-        <Route path="output" element={<MarkdownViewer />} />
-        <Route path="pruebita" element={<Prueba />} />
+        <Route path="prueba" element={<PruebaText />} />
 
       </Routes>
     </Wrapper>

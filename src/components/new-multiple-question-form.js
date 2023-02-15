@@ -4,7 +4,10 @@ import { colors, typography } from "../styles";
 import Input from "../components/input";
 import TextArea from "../components/textArea"
 import { Button } from "./buttons";
-import { useAuth } from "../context/auth-context"
+import { useAuth } from "../context/auth-context";
+import { useQuill } from 'react-quilljs';
+import toolbar from "../components/toolbar";
+import 'quill/dist/quill.snow.css'
 
 const FormContainer = styled.div`
   background:white;
@@ -58,10 +61,16 @@ function MultipleChoiceQuestionForm() {
   const [option2, setOption2] = useState({ description: '', correct: 'false' });
   const [option3, setOption3] = useState({ description: '', correct: 'false' });
   const [option4, setOption4] = useState({ description: '', correct: 'false' });
-  const [newSolution, setNewSolution] = useState({ description: '' })
+  const [newSolution, setNewSolution] = useState({ description: '' });
+  const [showSol, setShowSol] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState({});
-  const { view, setView, arrMultiChoiceQuestion, setArrMultiChoiceQuestion } = useAuth();
+  const { view, setView, arrMultiChoiceQuestion, setArrMultiChoiceQuestion, newPosition } = useAuth();
+  const { quill, quillRef } = useQuill({
+    modules: {
+      toolbar: toolbar
+    }
+  })
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -111,11 +120,21 @@ function MultipleChoiceQuestionForm() {
 
   function handleSubmitMultipleChoiceQuestion(event) {
     event.preventDefault();
-    console.log('hace submit')
-    setNewMultiQuestion({ ...newMultiQuestion, options_attributes: [option1, option2, option3, option4], solution_attributes: newSolution })
-    setShowAdd(true)
+    console.log('hace submit');
+    const data = JSON.stringify(quill.getContents())
+    setNewMultiQuestion({ ...newMultiQuestion, description: data, options_attributes: [option1, option2, option3, option4] })
+    setShowSol(true)
+    // setShowAdd(true)
   };
 
+  function handleSubmitSolution(event) {
+    event.preventDefault();
+    console.log('hace submit2')
+    const data = JSON.stringify(quill.getContents())
+    // setNewSolution({ description: data })
+    setNewMultiQuestion({ ...newMultiQuestion, solution_attributes: { description: data } })
+    setShowAdd(true)
+  }
   function handleBack(event) {
     event.preventDefault();
     console.log('back')
@@ -146,14 +165,25 @@ function MultipleChoiceQuestionForm() {
   }
 
   console.log('el arreglo', arrMultiChoiceQuestion)
+  console.log('NEW POS', newPosition)
+  console.log('NEW MUl', newMultiQuestion)
   return (
     <>
       <FormContainer>
-        <Form onSubmit={handleSubmitMultipleChoiceQuestion}>
-          <FieldSet>
-            <Legend>Crear Preguntas de Opción Multiple </Legend>
+        {showSol ?
+          <Form onSubmit={handleSubmitSolution}>
+            <FieldSet>
+              <Legend>Solución</Legend>
+              <div ref={quillRef}></div>
+            </FieldSet>
+            <Button>Añadir Solución</Button>
+          </Form>
+          :
+          <Form onSubmit={handleSubmitMultipleChoiceQuestion}>
+            <FieldSet>
+              <Legend>Crear Preguntas de Opción Multiple </Legend>
 
-            <Input
+              {/* <Input
               label={"Pregunta de Opción Multiple"}
               id="mchq1"
               name="description"
@@ -161,165 +191,151 @@ function MultipleChoiceQuestionForm() {
               value={newMultiQuestion.description}
               onChange={handleChange}
               placeholder="Pregunta"
-              style={{ borderRadius: '8px' }} />
+              style={{ borderRadius: '8px' }} /> */}
+              <div ref={quillRef}></div>
 
-            <FieldSet>
-              <Legend2>Opción1</Legend2>
-              <Input
-                label={"Descripción"}
-                id="mchq_op1"
-                name="op1"
-                type="text"
-                value={option1.description}
-                onChange={handleChange}
-                placeholder="Opción 1"
-                style={{ borderRadius: '8px' }} />
-              <p>Opción correcta</p>
-              <div>
-                <label htmlFor="true">Sí</label>
-                <input
-                  id="true1"
-                  name="correct1"
-                  type="radio"
-                  value={true}
-                  checked={selectedOptions.question1 === 'true1'}
-                  // onChange={e => setSelectedOptions(e.target.value)}
-                  onClick={event => handleCorrect("question1", event)}
-                  placeholder="Pregunta"
-                  style={{ accentColor: colors.green }} />
-                <label htmlFor="false">No</label>
-                <input
-                  id="false1"
-                  name="correct1"
-                  type="radio"
-                  value={false}
-                  checked={selectedOptions.question1 === 'false1'}
-                  // onChange={e => setSelectedOptions(e.target.value)}
-                  // onClick={handleCorrect}
-                  onClick={event => handleCorrect("question1", event)}
-                  placeholder="Pregunta"
-                  style={{ accentColor: colors.red }} />
-              </div>
-            </FieldSet>
-            <FieldSet>
-              <Legend2>Opción2</Legend2>
-              <Input
-                label={"Descripción"}
-                id="mchq_op2"
-                name="op2"
-                type="text"
-                value={option2.description}
-                onChange={handleChange}
-                placeholder="Opción 1"
-                style={{ borderRadius: '8px' }} />
-              <p>Opción correcta</p>
-              <div>
-                <label htmlFor="true">Sí</label>
-                <input
-                  id="true2"
-                  name="correct2"
-                  type="radio"
-                  value={true}
-                  checked={selectedOptions.question2 === 'true2'}
-                  // onChange={e => setSelectedOptions(e.target.value)}
-                  // onClick={handleCorrect}
-                  onClick={event => handleCorrect("question2", event)}
-                  placeholder="Pregunta"
-                  style={{ accentColor: colors.green }} />
-                <label htmlFor="false">No</label>
-                <input
-                  id="false2"
-                  name="correct2"
-                  type="radio"
-                  value={false}
-                  checked={selectedOptions.question2 === 'false2'}
-                  // onChange={e => setSelectedOptions(e.target.value)}
-                  // onClick={handleCorrect}
-                  onClick={event => handleCorrect("question2", event)}
-                  placeholder="Pregunta"
-                  style={{ accentColor: colors.red }} />
-              </div>
-            </FieldSet>
-            <FieldSet>
-              <Legend2>Opción3</Legend2>
-              <Input
-                label={"Descripción"}
-                id="mchq_op3"
-                name="op3"
-                type="text"
-                value={option3.description}
-                onChange={handleChange}
-                placeholder="Opción 1"
-                style={{ borderRadius: '8px' }} />
-              <p>Opción correcta</p>
-              <div>
-                <label htmlFor="true">Sí</label>
-                <input
-                  id="true3"
-                  name="correct3"
-                  type="radio"
-                  value={true}
-                  checked={selectedOptions.question3 === 'true3'}
-                  // onChange={e => setSelectedOptions(e.target.value)}
-                  // onClick={handleCorrect}
-                  onClick={event => handleCorrect("question3", event)}
-                  placeholder="Pregunta"
-                  style={{ accentColor: colors.green }} />
-                <label htmlFor="false">No</label>
-                <input
-                  id="false3"
-                  name="correct3"
-                  type="radio"
-                  value={false}
-                  checked={selectedOptions.question3 === 'false3'}
-                  // onChange={e => setSelectedOptions(e.target.value)}
-                  // onClick={handleCorrect}
-                  onClick={event => handleCorrect("question3", event)}
-                  placeholder="Pregunta"
-                  style={{ accentColor: colors.red }} />
-              </div>
-            </FieldSet>
-            <FieldSet>
-              <Legend2>Opción4</Legend2>
-              <Input
-                label={"Descripción"}
-                id="mchq_op4"
-                name="op4"
-                type="text"
-                value={option4.description}
-                onChange={handleChange}
-                placeholder="Opción 1"
-                style={{ borderRadius: '8px' }} />
-              <p>Opción correcta</p>
-              <div>
-                <label htmlFor="true">Sí</label>
-                <input
-                  id="true4"
-                  name="correct4"
-                  type="radio"
-                  value={true}
-                  checked={selectedOptions.question4 === 'true4'}
-                  // onChange={e => setSelectedOptions(e.target.value)}
-                  // onClick={handleCorrect}
-                  onClick={event => handleCorrect("question4", event)}
-                  placeholder="Pregunta"
-                  style={{ accentColor: colors.green }} />
-                <label htmlFor="false">No</label>
-                <input
-                  id="false4"
-                  name="correct4"
-                  type="radio"
-                  value={false}
-                  checked={selectedOptions.question4 === 'false4'}
-                  // onChange={e => setSelectedOptions(e.target.value)}
-                  // onClick={handleCorrect}
-                  onClick={event => handleCorrect("question4", event)}
-                  placeholder="Pregunta"
-                  style={{ accentColor: colors.red }} />
-              </div>
-            </FieldSet>
-            <FieldSet>
-              <Legend2>Solución</Legend2>
+              <FieldSet>
+                <Legend2>Opción1</Legend2>
+                <Input
+                  label={"Descripción"}
+                  id="mchq_op1"
+                  name="op1"
+                  type="text"
+                  value={option1.description}
+                  onChange={handleChange}
+                  placeholder="Opción 1"
+                  style={{ borderRadius: '8px' }} />
+                <p>Opción correcta</p>
+                <div>
+                  <label htmlFor="true">Sí</label>
+                  <input
+                    id="true1"
+                    name="correct1"
+                    type="radio"
+                    value={true}
+                    checked={selectedOptions.question1 === 'true1'}
+                    onClick={event => handleCorrect("question1", event)}
+                    placeholder="Pregunta"
+                    style={{ accentColor: colors.green }} />
+                  <label htmlFor="false">No</label>
+                  <input
+                    id="false1"
+                    name="correct1"
+                    type="radio"
+                    value={false}
+                    checked={selectedOptions.question1 === 'false1'}
+                    onClick={event => handleCorrect("question1", event)}
+                    placeholder="Pregunta"
+                    style={{ accentColor: colors.red }} />
+                </div>
+              </FieldSet>
+              <FieldSet>
+                <Legend2>Opción2</Legend2>
+                <Input
+                  label={"Descripción"}
+                  id="mchq_op2"
+                  name="op2"
+                  type="text"
+                  value={option2.description}
+                  onChange={handleChange}
+                  placeholder="Opción 1"
+                  style={{ borderRadius: '8px' }} />
+                <p>Opción correcta</p>
+                <div>
+                  <label htmlFor="true">Sí</label>
+                  <input
+                    id="true2"
+                    name="correct2"
+                    type="radio"
+                    value={true}
+                    checked={selectedOptions.question2 === 'true2'}
+                    onClick={event => handleCorrect("question2", event)}
+                    placeholder="Pregunta"
+                    style={{ accentColor: colors.green }} />
+                  <label htmlFor="false">No</label>
+                  <input
+                    id="false2"
+                    name="correct2"
+                    type="radio"
+                    value={false}
+                    checked={selectedOptions.question2 === 'false2'}
+                    onClick={event => handleCorrect("question2", event)}
+                    placeholder="Pregunta"
+                    style={{ accentColor: colors.red }} />
+                </div>
+              </FieldSet>
+              <FieldSet>
+                <Legend2>Opción3</Legend2>
+                <Input
+                  label={"Descripción"}
+                  id="mchq_op3"
+                  name="op3"
+                  type="text"
+                  value={option3.description}
+                  onChange={handleChange}
+                  placeholder="Opción 1"
+                  style={{ borderRadius: '8px' }} />
+                <p>Opción correcta</p>
+                <div>
+                  <label htmlFor="true">Sí</label>
+                  <input
+                    id="true3"
+                    name="correct3"
+                    type="radio"
+                    value={true}
+                    checked={selectedOptions.question3 === 'true3'}
+                    onClick={event => handleCorrect("question3", event)}
+                    placeholder="Pregunta"
+                    style={{ accentColor: colors.green }} />
+                  <label htmlFor="false">No</label>
+                  <input
+                    id="false3"
+                    name="correct3"
+                    type="radio"
+                    value={false}
+                    checked={selectedOptions.question3 === 'false3'}
+                    onClick={event => handleCorrect("question3", event)}
+                    placeholder="Pregunta"
+                    style={{ accentColor: colors.red }} />
+                </div>
+              </FieldSet>
+              <FieldSet>
+                <Legend2>Opción4</Legend2>
+                <Input
+                  label={"Descripción"}
+                  id="mchq_op4"
+                  name="op4"
+                  type="text"
+                  value={option4.description}
+                  onChange={handleChange}
+                  placeholder="Opción 1"
+                  style={{ borderRadius: '8px' }} />
+                <p>Opción correcta</p>
+                <div>
+                  <label htmlFor="true">Sí</label>
+                  <input
+                    id="true4"
+                    name="correct4"
+                    type="radio"
+                    value={true}
+                    checked={selectedOptions.question4 === 'true4'}
+                    onClick={event => handleCorrect("question4", event)}
+                    placeholder="Pregunta"
+                    style={{ accentColor: colors.green }} />
+                  <label htmlFor="false">No</label>
+                  <input
+                    id="false4"
+                    name="correct4"
+                    type="radio"
+                    value={false}
+                    checked={selectedOptions.question4 === 'false4'}
+                    onClick={event => handleCorrect("question4", event)}
+                    placeholder="Pregunta"
+                    style={{ accentColor: colors.red }} />
+                </div>
+              </FieldSet>
+              {/* <FieldSet> */}
+              {/* <Legend2>Solución</Legend2>
               <TextArea
                 label={"Solución"}
                 id="solution1"
@@ -327,11 +343,12 @@ function MultipleChoiceQuestionForm() {
                 cols='40'
                 value={newSolution.description}
                 onChange={handleChange}
-                placeholder="The solution is..." />
+                placeholder="The solution is..." /> */}
+              {/* </FieldSet> */}
             </FieldSet>
-          </FieldSet>
-          <Button color={`${colors.teal}`}>Agregar</Button>
-        </Form>
+            <Button color={`${colors.teal}`}>Agregar</Button>
+          </Form>
+        }
         {showAdd ?
           <DivButtons>
             <Button onClick={handleBack}>Atras</Button>
