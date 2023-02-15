@@ -7,6 +7,7 @@ import MultipleChoicePage from "./pages/multiple_choice_question-page"
 import FirstStagePage from "./pages/first-stage-page";
 import FeedbackPage from "./pages/feedback-page"
 import SecondStagePage from "./pages/second-stage-page";
+import ThirdStagePage from "./pages/third-stage.page";
 import PositionApplicantsPage from "./pages/admin-pages/position-applicants-page"
 import PositionsListPage from "./pages/admin-pages/list-positions-page"
 import NewUserForm from "./components/new-user-form";
@@ -37,7 +38,7 @@ function App() {
         {/* <Route path="test-question" element={<TestQuestionPage />} /> */}
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="results" element={<ResultsPage />} />
-
+        <Route path="third-stage" element={<ThirdStagePage />} />
         
         {/* ADMIN */}
 
@@ -46,6 +47,7 @@ function App() {
         <Route path="admin" element={<PositionsListPage />} />
         <Route path="new-user" element={<NewUserForm />} />
         <Route path="new-position" element={<NewPositionPage />} />
+
 
       </Routes>
     </Wrapper>
