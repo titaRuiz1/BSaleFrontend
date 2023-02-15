@@ -54,7 +54,7 @@ const Text4 = styled.p`
 
 function ResultsPage() {
   const navigate = useNavigate();
-  const { position, sumCorrectAnswer, solutions, average, challengeEvaluations, results } = useAuth();
+  const { position, sumCorrectAnswer, solutions, average, challengeEvaluations, results, sumTest } = useAuth();
 
   return (
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
@@ -68,7 +68,7 @@ function ResultsPage() {
         </StageResultsContainer>
         <StageResultsContainer>
           <Text2>Etapa 2: Desarrollo Web</Text2>
-          <Text3>3 pruebas exitosas de 4</Text3>
+          <Text3>{sumTest} pruebas exitosas de 4</Text3>
         </StageResultsContainer>
         <StageResultsContainer>
           <Text2>Etapa 3: Revision de codigo</Text2>
