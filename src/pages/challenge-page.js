@@ -3,9 +3,10 @@ import styled from "@emotion/styled";
 import { HiOutlineChevronDown } from "react-icons/hi";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
-import { typography } from "../styles";
+import { typography, colors } from "../styles";
 import { useAuth } from "../context/auth-context";
-import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions } from "../services/position-service";
+import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions, getChallengeEvaluations } from "../services/position-service";
+import { getResult } from "../services/results-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
 
@@ -53,12 +54,20 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, testQuestions } = useAuth();
+  const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, setChallengeEvaluations, setSumCorrectAnswer, setAverage } = useAuth();
 
   useEffect(() => {
     getPositions().then(response => {
       setPosition(response);
     }).catch()
+
+    getResult().then(response => {
+      console.log("respuesta results", response)
+      if (response !== []) {
+        setSumCorrectAnswer(response.stage1);
+        setAverage(response.stage3)
+      }
+    }).catch(error => console.log(error))
 
     getMultipleChoiceQuestions().then(response => {
       setMulChoiceQuestions(response);
@@ -72,11 +81,29 @@ function ChallengePage() {
       setTestQuestions(response)
     }).catch()
 
+    getChallengeEvaluations().then(response => {
+      setChallengeEvaluations(response);
+    }).catch()
+
   }, [user]);
 
-  // console.log('EN EL CHALLEGE Page', testQuestions)
+  function handleContinue(e){
+    e.preventDefault();
+    console.log("funcionaaa")
+    if(user.current_stage===1){
+      navigate("/first-stage")
+    }
+    else if(user.current_stage===2){
+      navigate("/stage2")
+    }
+    else{
+      navigate("/feedback")
+    }
+    //...se debe actualizar el current question (CUIDADO CON EL MULTIPLE CHOICE Y TEST)
+    //... se debe actualizar el current criteria
+  }
 
-  return ( 
+  return (
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
       <Navbar />
       <Wrapper1 style={{ width: "68%", gap: "32px", marginTop: "48px" }}>
@@ -85,9 +112,22 @@ function ChallengePage() {
           <Wrapper2 style={{ justifyContent: "space-between", alignItems: "center" }}>
             <Text2>{position ? position.title : "Loading..."}</Text2>
             <Wrapper2 style={{ gap: "38px", justifyContent: "center", alignItems: "center" }}>
-              <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
-                <Text3>Iniciar</Text3>
-              </Button>
+
+              {user.current_stage === 1 && user.current_question === 1 ?
+                <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/first-stage")}>
+                  <Text3>Iniciar</Text3>
+                </Button>
+              :
+                user.current_stage === 3 && user.current_question === 5 ?
+                  <Button style={{ padding: "8px 12px", background:"#677294" }} disabled>
+                    <Text3>Finalizado</Text3>
+                  </Button>
+                :
+                  <Button style={{ padding: "8px 12px",background:"#31B9DD"}} onClick={handleContinue}>
+                    <Text3>Continuar</Text3>
+                  </Button>
+              }
+
               <HiOutlineChevronDown onClick={() => setShow(!show)} />
             </Wrapper2>
           </Wrapper2>

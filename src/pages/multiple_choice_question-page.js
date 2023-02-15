@@ -8,6 +8,8 @@ import { Button } from "../components/buttons";
 import { Option } from "../components/option";
 import Editor from "@monaco-editor/react";
 import { getMultipleChoiceQuestions } from "../services/position-service";
+import { sendResults } from "../services/results-service"
+import { updateUser } from "../services/user-service";
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -117,17 +119,18 @@ function MultipleChoicePage() {
   const [inputID, setInputID] = useState(null);
   const { position, mulChoiceQuestions,
     sumCorrectAnswer, setSumCorrectAnswer,
-    solutions, testQuestions } = useAuth();
+    solutions, testQuestions, setResults, results, user, setUser } = useAuth();
   const [correctAnswer, setCorrectAnswer] = useState(null);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(
+    user.current_question <= mulChoiceQuestions.length ? user.current_question-1 : user.current_question-mulChoiceQuestions.length-1);
+  const [question_type, setQuestion_type] = useState(
+    user.current_question > mulChoiceQuestions.length ? "test" : "multiple");
   const [view, setView] = useState("question")
-  const [question_type, setQuestion_type] = useState("multiple");
-  const [code, setCode] = useState(null);
+  const [code, setCode] = useState(user.current_question > mulChoiceQuestions.length ? testQuestions[user.current_question-mulChoiceQuestions.length-1].question.code : null);
   const [test1Status, setTest1Status] = useState(null);
   const [test2Status, setTest2Status] = useState(null);
   const [test3Status, setTest3Status] = useState(null);
   const [test4Status, setTest4Status] = useState(null);
-  console.log(sumCorrectAnswer)
 
   function handleRadio(event) {
     event.preventDefault();
@@ -137,13 +140,62 @@ function MultipleChoicePage() {
   }
   function handleSubmitMultipleChoice(event) {
     event.preventDefault();
-    if (correctAnswer === 'true') setSumCorrectAnswer(sumCorrectAnswer + 1);
+    
+    updateUser({
+      "current_question": user.current_question + 1
+    })
+      .then(response=>{
+      setUser(response)
+      console.log("Aquiiiii",response)
+    }).catch(console.log())
+
+    if (correctAnswer === 'true') {
+      setSumCorrectAnswer(sumCorrectAnswer + 1)
+      console.log(sumCorrectAnswer)
+      sendResults(
+        {
+          stage1: sumCorrectAnswer + 1,
+          stage2: 0,
+          stage3: 0
+        }
+      ).then(console.log).catch((error) => console.log(error))
+
+    };
     setView("solution")
   }
 
   function handleSubmitTest(event) {
     event.preventDefault();
-    if (test1Status && test2Status && test3Status && test4Status) setSumCorrectAnswer(sumCorrectAnswer + 1);
+   
+    let body;
+    if(solutions.length===user.current_question){
+      body={
+        "current_stage": 2,
+        "current_question":1
+      }
+    }
+    else{
+      body={
+        "current_question": user.current_question + 1
+      }
+    }
+    updateUser(body)
+    .then(response=>{
+      setUser(response)
+      console.log("Aquiiiii",response)
+    }).catch(console.log())
+
+    if (test1Status && test2Status && test3Status && test4Status) {
+      setResults({ ...results, stage1: sumCorrectAnswer + 1 })
+      setSumCorrectAnswer(sumCorrectAnswer + 1)
+      sendResults(
+        {
+          stage1: sumCorrectAnswer + 1,
+          stage2: 0,
+          stage3: 0
+        }
+      ).then().catch((error) => console.log(error))
+    };
     setTest1Status(null)
     setTest2Status(null)
     setTest3Status(null)
@@ -235,7 +287,8 @@ function MultipleChoicePage() {
         setCurrentQuestion(currentQuestion + 1)
         setCode(testQuestions[currentQuestion + 1].question.code)
       } else {
-        navigate("/results")
+        navigate("/stage2")
+
       }
     }
     setView("question")
@@ -250,7 +303,7 @@ function MultipleChoicePage() {
             {view === "question" ?
               question_type === "multiple" ?
                 <>
-                  <p>Pregunta {currentQuestion + 1} de 10</p>
+                  <p>Pregunta {currentQuestion + 1} de {solutions.length}</p>
                   <TextSection>
                     {mulChoiceQuestions[currentQuestion].question.description}
                   </TextSection>
@@ -336,16 +389,16 @@ function MultipleChoicePage() {
               <>
                 <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de 10</p>
                 <TextSection>
-                  {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion+5].solution.description}
+                  {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion + 5].solution.description}
                 </TextSection>
-                {question_type === "multiple" ? 
-                  solutions[currentQuestion]?.url === 'sin imagen' ? 
-                    null : 
+                {question_type === "multiple" ?
+                  solutions[currentQuestion]?.url === 'sin imagen' ?
+                    null :
                     <Img src={solutions[currentQuestion]?.url} />
                   :
-                  solutions[currentQuestion+6]?.url === 'sin imagen' ? 
-                    null : 
-                    <Img src={solutions[currentQuestion+5]?.url} />
+                  solutions[currentQuestion + 6]?.url === 'sin imagen' ?
+                    null :
+                    <Img src={solutions[currentQuestion + 5]?.url} />
                 }
                 <Button
                   width='88px'

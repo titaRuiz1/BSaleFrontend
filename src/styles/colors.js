@@ -12,6 +12,8 @@ export const colors = {
 
   orange: "#FF5B00",
 
+  lowOrange: "#F0B291",
+
   red: "#EF4444",
 
   teal: "#31B9DD",
