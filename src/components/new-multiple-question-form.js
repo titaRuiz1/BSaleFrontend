@@ -182,16 +182,6 @@ function MultipleChoiceQuestionForm() {
           <Form onSubmit={handleSubmitMultipleChoiceQuestion}>
             <FieldSet>
               <Legend>Crear Preguntas de Opción Multiple </Legend>
-
-              {/* <Input
-              label={"Pregunta de Opción Multiple"}
-              id="mchq1"
-              name="description"
-              type="text"
-              value={newMultiQuestion.description}
-              onChange={handleChange}
-              placeholder="Pregunta"
-              style={{ borderRadius: '8px' }} /> */}
               <div ref={quillRef}></div>
 
               <FieldSet>

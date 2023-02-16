@@ -51,12 +51,13 @@ const InsideSection = styled.div`
   margin-top: 32px;
 `;
 
-const TextSection = styled.p`
+const TextSection = styled.div`
   margin-top: 36px;
   margin-bottom: 8px;
   color: ${colors.gray[600]};
   ${typography.text.lg};
-  text-align: justify
+  align-self: center;
+  border:none
 `;
 
 const Text1 = styled.p`
@@ -187,7 +188,7 @@ function MultipleChoicePage() {
       body = {
         "current_question": user.current_question + 1
       }
-      quill?.setContents(JSON.parse(solutions[1].solution.description))
+
     }
     updateUser(body)
       .then(response => {
@@ -210,6 +211,7 @@ function MultipleChoicePage() {
     setTest2Status(null)
     setTest3Status(null)
     setTest4Status(null)
+    quill?.setContents(JSON.parse(solutions[currentQuestion + mulChoiceQuestions.length].solution.description))
     setView("solution")
   }
 
@@ -291,6 +293,7 @@ function MultipleChoicePage() {
         setQuestion_type("test")
         setCode(testQuestions[0].question.code)
         setCurrentQuestion(0)
+        quill?.setContents(JSON.parse(testQuestions[0].question.description))
       }
     } else {
       if (currentQuestion < testQuestions.length - 1) {
@@ -315,10 +318,21 @@ function MultipleChoicePage() {
 
       } else {
         console.log(testQuestions[currentQuestion].question.description)
+        console.log('entre a test')
         quill?.setContents(JSON.parse(testQuestions[currentQuestion].question.description))
 
       }
     }
+    if (view === 'solution') {
+      if (question_type === "multiple") {
+        quill?.setContents(JSON.parse(solutions[currentQuestion].solution.description))
+      } else {
+        console.log('sol de test')
+        // quill?.setContents(JSON.parse(solutions[2].solution.description))
+      }
+    }
+    console.log('vista', view)
+    console.log('tipooo', question_type)
   }, [quill, currentQuestion])
 
   return (
@@ -353,66 +367,70 @@ function MultipleChoicePage() {
                 </>
                 :
                 <>
-                  <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}>
-                    <Wrapper2 style={{ gap: "32px" }}>
+                  <p>Pregunta {currentQuestion + 1} de {solutions.length}</p>
+                  <TextSection ref={quillRef}>
+                    {/* {mulChoiceQuestions[currentQuestion].question.description} */}
+                  </TextSection>
+                  {/* <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}> */}
+                  {/* <Wrapper2 style={{ gap: "32px" }}>
                       <Text1>{position.title}</Text1>
                       <Text1>Pregunta {currentQuestion + mulChoiceQuestions?.length + 1} de {solutions.length}</Text1>
-                    </Wrapper2>
-                    <Text2 ref={quillRef}></Text2>
-                    {/* <Text2 ref={quillRef}>{testQuestions[currentQuestion].question.description} </Text2> */}
-                    <Wrapper2 style={{ height: "270px", alignItems: "center", justifyContent: "center", padding: "0px 30px" }}>
-                      <Editor
-                        language="javascript"
-                        theme="vs-dark"
-                        value={code}
-                        onChange={code => setCode(code)}
-                        width="100%"
-                        height="100%"
-                      />
-                    </Wrapper2>
-                    <Wrapper1>
-                      <Button width="71px" onClick={runTests}>Test</Button>
-                    </Wrapper1>
-                    <TestsContainer>
-                      {test1Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[0].test} />
-                        :
-                        test1Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[0].test} />
-                          :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[0].test} />
-                      }
-                      {test2Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[1].test} />
-                        :
-                        test2Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[1].test} />
-                          :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[1].test} />
-                      }
-                      {test3Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[2].test} />
-                        :
-                        test3Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[2].test} />
-                          :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[2].test} />
-                      }
-                      {test4Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[3].test} />
-                        :
-                        test4Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[3].test} />
-                          :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[3].test} />
-                      }
-                    </TestsContainer>
-                    <Wrapper1>
-                      <Button width="90px" onClick={handleSubmitTest}>
-                        Enviar
-                      </Button>
-                    </Wrapper1>
+                    </Wrapper2> */}
+                  {/* <Text2 ref={quillRef}></Text2> */}
+                  {/* <Text2 ref={quillRef}>{testQuestions[currentQuestion].question.description} </Text2> */}
+                  <Wrapper2 style={{ height: "270px", alignItems: "center", justifyContent: "center", padding: "0px 30px" }}>
+                    <Editor
+                      language="javascript"
+                      theme="vs-dark"
+                      value={code}
+                      onChange={code => setCode(code)}
+                      width="100%"
+                      height="100%"
+                    />
                   </Wrapper2>
+                  <Wrapper1>
+                    <Button width="71px" onClick={runTests}>Test</Button>
+                  </Wrapper1>
+                  <TestsContainer>
+                    {test1Status === null ?
+                      <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[0].test} />
+                      :
+                      test1Status === true ?
+                        <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[0].test} />
+                        :
+                        <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[0].test} />
+                    }
+                    {test2Status === null ?
+                      <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[1].test} />
+                      :
+                      test2Status === true ?
+                        <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[1].test} />
+                        :
+                        <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[1].test} />
+                    }
+                    {test3Status === null ?
+                      <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[2].test} />
+                      :
+                      test3Status === true ?
+                        <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[2].test} />
+                        :
+                        <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[2].test} />
+                    }
+                    {test4Status === null ?
+                      <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[3].test} />
+                      :
+                      test4Status === true ?
+                        <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[3].test} />
+                        :
+                        <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[3].test} />
+                    }
+                  </TestsContainer>
+                  <Wrapper1>
+                    <Button width="90px" onClick={handleSubmitTest}>
+                      Enviar
+                      </Button>
+                  </Wrapper1>
+                  {/* </Wrapper2> */}
                 </>
               :
               <>

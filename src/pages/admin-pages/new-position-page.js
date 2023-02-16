@@ -110,14 +110,6 @@ function NewPositionPage() {
                   placeholder="New Position"
                   style={{ borderRadius: '8px' }} />
                 <div ref={quillRef}></div>
-                {/* <TextArea
-                  label={"Deescripción de la nueva Posición"}
-                  id="description"
-                  name="description"
-                  cols='60'
-                  value={newPosition.description}
-                  onChange={handleChange}
-                  placeholder="This position..." /> */}
               </FieldSet>
               <Button>Siguiente</Button>
             </Form>
