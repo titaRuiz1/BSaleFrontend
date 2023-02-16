@@ -253,10 +253,25 @@ function MultipleChoicePage() {
           if (idx === 3) setTest4Status(false)
         }
       }
-      if (test.input_type === 'array') {
+      if (test.input_type === 'array_number') {
         currentTest = eval(`(${code})`);
         const input = test.input.slice(1, test.input.length - 1).split(',').map(Number)
         if (currentTest(...input) === +test.output) {
+          if (idx === 0) setTest1Status(true)
+          if (idx === 1) setTest2Status(true)
+          if (idx === 2) setTest3Status(true)
+          if (idx === 3) setTest4Status(true)
+        } else {
+          if (idx === 0) setTest1Status(false)
+          if (idx === 1) setTest2Status(false)
+          if (idx === 2) setTest3Status(false)
+          if (idx === 3) setTest4Status(false)
+        }
+      }
+      if (test.input_type === 'array_string') {
+        currentTest = eval(`(${code})`);
+        const input = test.input.slice(1, test.input.length - 1).split(',')
+        if (currentTest(...input) === test.output) {
           if (idx === 0) setTest1Status(true)
           if (idx === 1) setTest2Status(true)
           if (idx === 2) setTest3Status(true)
