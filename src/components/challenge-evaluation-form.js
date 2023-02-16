@@ -76,10 +76,10 @@ const DivButtons = styled.div`
 
 function ChallengeEvluationForm() {
   const navigate = useNavigate();
-  const [newChallengeEvaluation1, setNewChallengeEvaluation1] = useState({ category: '', criteria: '', weighting: '' });
-  const [newChallengeEvaluation2, setNewChallengeEvaluation2] = useState({ category: '', criteria: '', weighting: '' });
-  const [newChallengeEvaluation3, setNewChallengeEvaluation3] = useState({ category: '', criteria: '', weighting: '' });
-  const [newChallengeEvaluation4, setNewChallengeEvaluation4] = useState({ category: '', criteria: '', weighting: '' });
+  const [newChallengeEvaluation1, setNewChallengeEvaluation1] = useState({ description: '', category: '', criteria: '', weighting: '' });
+  const [newChallengeEvaluation2, setNewChallengeEvaluation2] = useState({ description: '', category: '', criteria: '', weighting: '' });
+  const [newChallengeEvaluation3, setNewChallengeEvaluation3] = useState({ description: '', category: '', criteria: '', weighting: '' });
+  const [newChallengeEvaluation4, setNewChallengeEvaluation4] = useState({ description: '', category: '', criteria: '', weighting: '' });
   const [criteria, setCriteria] = useState(1)
   const [showAdd, setShowAdd] = useState(false);
   const { setView, arrChallengeEvaluation, setArrChallengeEvaluation, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion, setValue, setValue2 } = useAuth();
@@ -108,7 +108,7 @@ function ChallengeEvluationForm() {
     event.preventDefault();
     console.log('hace submit')
     const data = JSON.stringify(quill.getContents())
-    setNewChallengeEvaluation1({ ...newChallengeEvaluation1, criteria: data })
+    setNewChallengeEvaluation1({ ...newChallengeEvaluation1, description: data })
     setCriteria(2)
     // setShowAdd(true)
   };
@@ -117,7 +117,7 @@ function ChallengeEvluationForm() {
     event.preventDefault();
     console.log('hace submit2')
     const data = JSON.stringify(quill.getContents())
-    setNewChallengeEvaluation2({ ...newChallengeEvaluation2, criteria: data })
+    setNewChallengeEvaluation2({ ...newChallengeEvaluation2, description: data })
     setCriteria(3)
     // setShowAdd(true)
   };
@@ -126,7 +126,7 @@ function ChallengeEvluationForm() {
     event.preventDefault();
     console.log('hace submit')
     const data = JSON.stringify(quill.getContents())
-    setNewChallengeEvaluation3({ ...newChallengeEvaluation3, criteria: data })
+    setNewChallengeEvaluation3({ ...newChallengeEvaluation3, description: data })
     setCriteria(4)
     // setShowAdd(true)
   };
@@ -135,7 +135,7 @@ function ChallengeEvluationForm() {
     event.preventDefault();
     console.log('hace submit')
     const data = JSON.stringify(quill.getContents())
-    setNewChallengeEvaluation4({ ...newChallengeEvaluation4, criteria: data })
+    setNewChallengeEvaluation4({ ...newChallengeEvaluation4, description: data })
     setShowAdd(true)
   };
   // setArrChallengeEvaluation([newChallengeEvaluation1, newChallengeEvaluation2, newChallengeEvaluation3, newChallengeEvaluation4])
@@ -177,15 +177,15 @@ function ChallengeEvluationForm() {
                   onChange={handleChange}
                   placeholder="La categoría es..."
                   style={{ borderRadius: '8px' }} />
-                {/* <Input
-                      label={"Criterio"}
-                      id="criterio1"
-                      name="criteria"
-                      type="text"
-                      value={newChallengeEvaluation1.criteria}
-                      onChange={handleChange}
-                      placeholder="El criterio a evaluar es..."
-                      style={{ borderRadius: '8px' }} /> */}
+                <Input
+                  label={"Criterio"}
+                  id="criterio1"
+                  name="criteria"
+                  type="text"
+                  value={newChallengeEvaluation1.criteria}
+                  onChange={handleChange}
+                  placeholder="El criterio a evaluar es..."
+                  style={{ borderRadius: '8px' }} />
                 <div ref={quillRef}></div>
                 <Input
                   label={"Peso"}
@@ -214,7 +214,7 @@ function ChallengeEvluationForm() {
                     onChange={handleChange}
                     placeholder="La categoría es..."
                     style={{ borderRadius: '8px' }} />
-                  {/* <Input
+                  <Input
                     label={"Criterio"}
                     id="criterio2"
                     name="criteria"
@@ -222,7 +222,7 @@ function ChallengeEvluationForm() {
                     value={newChallengeEvaluation2.criteria}
                     onChange={handleChange}
                     placeholder="El criterio a evaluar es..."
-                    style={{ borderRadius: '8px' }} /> */}
+                    style={{ borderRadius: '8px' }} />
                   <div ref={quillRef}></div>
 
                   <Input
@@ -252,15 +252,15 @@ function ChallengeEvluationForm() {
                       onChange={handleChange}
                       placeholder="La categoría es..."
                       style={{ borderRadius: '8px' }} />
-                    {/* <Input
-                    label={"Criterio"}
-                    id="criterio3"
-                    name="criteria"
-                    type="text"
-                    value={newChallengeEvaluation3.criteria}
-                    onChange={handleChange}
-                    placeholder="El criterio a evaluar es..."
-                    style={{ borderRadius: '8px' }} /> */}
+                    <Input
+                      label={"Criterio"}
+                      id="criterio3"
+                      name="criteria"
+                      type="text"
+                      value={newChallengeEvaluation3.criteria}
+                      onChange={handleChange}
+                      placeholder="El criterio a evaluar es..."
+                      style={{ borderRadius: '8px' }} />
                     <div ref={quillRef}></div>
 
                     <Input
@@ -289,15 +289,15 @@ function ChallengeEvluationForm() {
                       onChange={handleChange}
                       placeholder="La categoría es..."
                       style={{ borderRadius: '8px' }} />
-                    {/* <Input
-                  label={"Criterio"}
-                  id="criterio4"
-                  name="criteria"
-                  type="text"
-                  value={newChallengeEvaluation4.criteria}
-                  onChange={handleChange}
-                  placeholder="El criterio a evaluar es..."
-                  style={{ borderRadius: '8px' }} /> */}
+                    <Input
+                      label={"Criterio"}
+                      id="criterio4"
+                      name="criteria"
+                      type="text"
+                      value={newChallengeEvaluation4.criteria}
+                      onChange={handleChange}
+                      placeholder="El criterio a evaluar es..."
+                      style={{ borderRadius: '8px' }} />
                     <div ref={quillRef}></div>
 
                     <Input

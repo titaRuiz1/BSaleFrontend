@@ -153,6 +153,7 @@ function MultipleChoiceQuestionForm() {
     setOption4({ description: '', correct: 'false' });
     setNewSolution({ description: '' });
     setSelectedOptions({});
+    setShowSol(false);
     setShowAdd(false)
   };
 

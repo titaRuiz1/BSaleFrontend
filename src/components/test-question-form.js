@@ -151,7 +151,8 @@ function TestQuestionForm() {
     setTest2({ test: '', input: '', output: '', input_type: '', output_type: '' });
     setTest3({ test: '', input: '', output: '', input_type: '', output_type: '' });
     setTest4({ test: '', input: '', output: '', input_type: '', output_type: '' });
-    setNewSolution({ description: '' })
+    setNewSolution({ description: '' });
+    setShowSol(false);
     setShowAdd(false)
   };
 

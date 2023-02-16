@@ -120,7 +120,7 @@ const Input = styled.input`
 function FeedbackPage() {
   const { position, challengeEvaluations, average, setAverage, results, setResults, user, setUser } = useAuth();
   const navigate = useNavigate();
-  const [currentCriteria, setCurrentCriteria] = useState(user.current_question-1);
+  const [currentCriteria, setCurrentCriteria] = useState(user.current_question - 1);
   const [colorStar, setColorStar] = useState(false);
   const [id, setId] = useState(null);
   const [form, setForm] = useState({
@@ -147,12 +147,12 @@ function FeedbackPage() {
   function handleSubmit(event) {
     event.preventDefault();
     updateUser({
-      "current_question": user.current_question + 1 
+      "current_question": user.current_question + 1
     })
-      .then(response=>{
-      setUser(response)
-      console.log("Aquiiiii",response)
-    }).catch(console.log())
+      .then(response => {
+        setUser(response)
+        console.log("Aquiiiii", response)
+      }).catch(console.log())
 
     sendFeedbacks(form).then().catch((error) => console.log(error))
     sendResults(
@@ -174,6 +174,13 @@ function FeedbackPage() {
     }
 
   }
+
+  console.log('EL PRIMER PESO', challengeEvaluations[0].weighting)
+  let we = challengeEvaluations[0].weighting
+  console.log('==========EL TIPO DE WE', typeof we)
+  let peso = challengeEvaluations[0].weighting
+  console.log('EL PRIMER PESO EN NUM', +peso)
+  console.log('==========EL TIPO DE PESO', typeof we)
 
   return (
     <>

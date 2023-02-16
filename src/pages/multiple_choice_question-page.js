@@ -141,6 +141,8 @@ function MultipleChoicePage() {
       toolbar: false
     }
   })
+
+  console.log('ID POSITION', position.id)
   function handleRadio(event) {
     event.preventDefault();
     setInputID(+event.target.id);
@@ -346,9 +348,16 @@ function MultipleChoicePage() {
               question_type === "multiple" ?
                 <>
                   <p>Pregunta {currentQuestion + 1} de {solutions.length}</p>
-                  <TextSection ref={quillRef}>
-                    {/* {mulChoiceQuestions[currentQuestion].question.description} */}
-                  </TextSection>
+
+                  {position.id > 4 ? <TextSection ref={quillRef}></TextSection> :
+                    <TextSection>
+                      {mulChoiceQuestions[currentQuestion].question.description}
+                    </TextSection>
+                  }
+
+                  {/* <TextSection ref={quillRef}> */}
+                  {/* {mulChoiceQuestions[currentQuestion].question.description} */}
+                  {/* </TextSection> */}
                   {mulChoiceQuestions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={mulChoiceQuestions[currentQuestion]?.url} />}
                   <OptionsSection onSubmit={handleSubmitMultipleChoice}>
                     {mulChoiceQuestions[currentQuestion].options && mulChoiceQuestions[currentQuestion].options.map(option => {
@@ -368,9 +377,13 @@ function MultipleChoicePage() {
                 :
                 <>
                   <p>Pregunta {currentQuestion + 1} de {solutions.length}</p>
-                  <TextSection ref={quillRef}>
-                    {/* {mulChoiceQuestions[currentQuestion].question.description} */}
-                  </TextSection>
+                  {position.id > 4 ? <TextSection ref={quillRef}></TextSection> :
+                    <TextSection >
+                      {mulChoiceQuestions[currentQuestion].question.description}
+                    </TextSection>
+                  }
+                  {/* {mulChoiceQuestions[currentQuestion].question.description} */}
+                  {/* </TextSection> */}
                   {/* <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}> */}
                   {/* <Wrapper2 style={{ gap: "32px" }}>
                       <Text1>{position.title}</Text1>
@@ -436,9 +449,12 @@ function MultipleChoicePage() {
               <>
                 <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de 10</p>
 
-                <TextSection ref={quillRef}>
-                  {/* {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion + 5].solution.description} */}
-                </TextSection>
+                {position.id > 4 ? <TextSection ref={quillRef}></TextSection> :
+                  <TextSection >
+                    {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion + 5].solution.description}
+                  </TextSection>
+                }
+
 
 
                 {question_type === "multiple" ?
