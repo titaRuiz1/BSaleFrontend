@@ -138,7 +138,6 @@ function FeedbackPage() {
       toolbar: false
     }
   })
-console.log('CHALLENGE EVALUATIONS',challengeEvaluations[currentCriteria])
   function handleStar(event) {
     const icon = event.currentTarget;
     if (icon.hasAttribute("data-icon-id")) {

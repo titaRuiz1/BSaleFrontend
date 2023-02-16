@@ -28,6 +28,11 @@ export async function getSolutions() {
   return solutions;
 }
 
+export async function getStages() {
+  const stages = await apiFetch(`positions_stg`);
+  return stages;
+}
+
 export async function createPosition(body) {
   const position = await apiFetch(`/admin/create_position`, {
     body: body,

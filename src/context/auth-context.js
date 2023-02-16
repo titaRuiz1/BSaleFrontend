@@ -22,8 +22,7 @@ function AuthProvider({ children }) {
   const [arrChallengeEvaluation, setArrChallengeEvaluation] = useState([]);
   const [positionApplicants, setPositionApplicants] = useState([]);
 
-  const [value, setValue] = useState(null);
-  const [value2, setValue2] = useState('');
+  const [stages, setStages] = useState(null);
 
   const [average, setAverage] = useState(0);
   const [results, setResults] = useState({
@@ -99,10 +98,8 @@ function AuthProvider({ children }) {
         selectedUserFeedbacks,
         setSelectedUserFeedbacks,
 
-        value,
-        setValue,
-        value2,
-        setValue2
+        stages,
+        setStages
       }}
     >
       {children}
