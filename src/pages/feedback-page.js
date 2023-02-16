@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
 import { AiOutlineStar, AiTwotoneStar } from "react-icons/ai";
@@ -8,9 +8,11 @@ import { useAuth } from "../context/auth-context";
 import { colors, typography } from "../styles";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
-import { sendFeedbacks } from "../services/feedback-service"
-import { sendResults } from "../services/results-service"
+import { sendFeedbacks } from "../services/feedback-service";
+import { sendResults } from "../services/results-service";
 import { updateUser } from "../services/user-service";
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css'
 
 const Container = styled.div`
   display: flex;
@@ -117,6 +119,8 @@ const Input = styled.input`
   height: 112px;
   padding: 16px
 `;
+
+
 function FeedbackPage() {
   const { position, challengeEvaluations, average, setAverage, results, setResults, user, setUser } = useAuth();
   const navigate = useNavigate();
@@ -128,7 +132,13 @@ function FeedbackPage() {
     answerToImprove: "",
     challenge_evaluation_id: challengeEvaluations[currentCriteria].id,
   });
-
+  const { quill, quillRef } = useQuill({
+    readOnly: true,
+    modules: {
+      toolbar: false
+    }
+  })
+console.log('CHALLENGE EVALUATIONS',challengeEvaluations[currentCriteria])
   function handleStar(event) {
     const icon = event.currentTarget;
     if (icon.hasAttribute("data-icon-id")) {
@@ -161,6 +171,7 @@ function FeedbackPage() {
       }
     ).then().catch((error) => console.log(error))
     setAverage(average + (id * challengeEvaluations[currentCriteria].weighting))
+    quill?.setContents(JSON.parse(challengeEvaluations[currentCriteria].description))
     if (currentCriteria < challengeEvaluations.length - 1) {
       setCurrentCriteria(currentCriteria + 1)
       setColorStar(false);
@@ -175,12 +186,10 @@ function FeedbackPage() {
 
   }
 
-  console.log('EL PRIMER PESO', challengeEvaluations[0].weighting)
-  let we = challengeEvaluations[0].weighting
-  console.log('==========EL TIPO DE WE', typeof we)
-  let peso = challengeEvaluations[0].weighting
-  console.log('EL PRIMER PESO EN NUM', +peso)
-  console.log('==========EL TIPO DE PESO', typeof we)
+  useEffect(() => {
+    quill?.setContents(JSON.parse(challengeEvaluations[currentCriteria].description))
+
+  }, [quill, currentCriteria])
 
   return (
     <>
@@ -190,11 +199,16 @@ function FeedbackPage() {
           <Title>{position.title}</Title>
           <InsideSection>
             <Title>Criterio {currentCriteria + 1} de 4: guidelines & principles of accesability</Title>
-            <Img width='576px' src={video} alt="video" />
-            <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
-            <Img width='700px' src={codigo} alt="video" />
-            <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
-            <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
+            {position.id > 4 ? <Text ref={quillRef}></Text> :
+              <>
+                <Img width='576px' src={video} alt="video" />
+                <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
+                <Img width='700px' src={codigo} alt="video" />
+                <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
+                <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
+              </>
+            }
+
             <BottomSection>
               <Subtitle>
                 En base a la explicación provista, ¿consideras que el código de tu aplicación nombra correctamente las variables y hace un uso adecuado de las mismas?

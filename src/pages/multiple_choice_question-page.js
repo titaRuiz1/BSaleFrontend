@@ -328,13 +328,8 @@ function MultipleChoicePage() {
     if (view === 'solution') {
       if (question_type === "multiple") {
         quill?.setContents(JSON.parse(solutions[currentQuestion].solution.description))
-      } else {
-        console.log('sol de test')
-        // quill?.setContents(JSON.parse(solutions[2].solution.description))
       }
     }
-    console.log('vista', view)
-    console.log('tipooo', question_type)
   }, [quill, currentQuestion])
 
   return (
