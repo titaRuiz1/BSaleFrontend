@@ -233,7 +233,8 @@ function TestQuestionForm() {
                     <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
                     <StyledSelect onChange={event => setTest1({ ...test1, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
                       <option value="" value="DEFAULT" disabled >Tipo de input...</option>
-                      <option value="array">Array</option>
+                      <option value="array_number">Array Number</option>
+                      <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
                       <option value="number">Number</option>
                       <option value="string">String</option>
@@ -255,7 +256,8 @@ function TestQuestionForm() {
                     <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
                     <StyledSelect onChange={event => setTest1({ ...test1, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
                       <option value="" value="DEFAULT" disabled >Tipo de output...</option>
-                      <option value="array">Array</option>
+                      <option value="array_number">Array Number</option>
+                      <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
                       <option value="number">Number</option>
                       <option value="string">String</option>
@@ -298,7 +300,8 @@ function TestQuestionForm() {
                     <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
                     <StyledSelect onChange={event => setTest2({ ...test2, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
                       <option value="" value="DEFAULT" disabled >Tipo de input...</option>
-                      <option value="array">Array</option>
+                      <option value="array_number">Array Number</option>
+                      <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
                       <option value="number">Number</option>
                       <option value="string">String</option>
@@ -329,7 +332,8 @@ function TestQuestionForm() {
                     <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
                     <StyledSelect onChange={event => setTest2({ ...test2, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
                       <option value="" value="DEFAULT" disabled >Tipo de output...</option>
-                      <option value="array">Array</option>
+                      <option value="array_number">Array Number</option>
+                      <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
                       <option value="number">Number</option>
                       <option value="string">String</option>
@@ -374,7 +378,8 @@ function TestQuestionForm() {
                     <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
                     <StyledSelect onChange={event => setTest3({ ...test3, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
                       <option value="" value="DEFAULT" disabled >Tipo de input...</option>
-                      <option value="array">Array</option>
+                      <option value="array_number">Array Number</option>
+                      <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
                       <option value="number">Number</option>
                       <option value="string">String</option>
@@ -405,7 +410,8 @@ function TestQuestionForm() {
                     <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
                     <StyledSelect onChange={event => setTest3({ ...test3, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
                       <option value="" value="DEFAULT" disabled >Tipo de output...</option>
-                      <option value="array">Array</option>
+                      <option value="array_number">Array Number</option>
+                      <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
                       <option value="number">Number</option>
                       <option value="string">String</option>
@@ -450,7 +456,8 @@ function TestQuestionForm() {
                     <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
                     <StyledSelect onChange={event => setTest4({ ...test4, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'}>
                       <option value="" value="DEFAULT" disabled >Tipo de input...</option>
-                      <option value="array">Array</option>
+                      <option value="array_number">Array Number</option>
+                      <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
                       <option value="number">Number</option>
                       <option value="string">String</option>
@@ -481,7 +488,8 @@ function TestQuestionForm() {
                     <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
                     <StyledSelect onChange={event => setTest4({ ...test4, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'}>
                       <option value="" value="DEFAULT" disabled >Tipo de output...</option>
-                      <option value="array">Array</option>
+                      <option value="array_number">Array Number</option>
+                      <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
                       <option value="number">Number</option>
                       <option value="string">String</option>
