@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { GrAddCircle } from "react-icons/gr";
 import { Navigate, useNavigate } from "react-router";
 import { Link } from "react-router-dom"
-import { getAllPositions } from "../../services/position-service"
+import { getAllPositions, getSolutions, getSolutionsByPosition } from "../../services/position-service"
 import { useAuth } from "../../context/auth-context"
 import { colors, typography } from "../../styles";
 import { Navbar } from "../../components/navbar";
@@ -56,7 +56,7 @@ const Wrapper1 = styled.div`
 `;
 
 function PositionsListPage() {
-  const { user, allPositions, setAllPositions, results, setPositionApplicants } = useAuth();
+  const { user, allPositions, setAllPositions, results, setPositionApplicants, setSolutions } = useAuth();
   const navigate = useNavigate();
   const [showTable, setShowTable] = useState(false);
 
@@ -72,12 +72,17 @@ function PositionsListPage() {
   function handlePosition(event) {
     event.preventDefault();
 
-    getPositionApplicants(event.target.id).then(response=> {
+    getPositionApplicants(event.target.id).then(response => {
       setPositionApplicants(response)
-    }).catch(error=>{
-      console.log("ERROR",error)
+    }).catch(error => {
+      console.log("ERROR", error)
     })
 
+    getSolutionsByPosition(event.target.id).then(response => {
+      setSolutions(response)
+    }).catch(error => {
+      console.log("ERROR", error)
+    })
     setShowTable(true);
   }
 

@@ -31,59 +31,57 @@ const FieldContainer = styled.div`
 function FieldRow() {
   return (
     <Wrapper3>
-      <FieldContainer style={{width:"40px", borderWidth:"1px 0px 1px 1px"}}>
+      <FieldContainer style={{ width: "150px", borderWidth: "1px 0px 1px 1px" }}>
         <Text4>
-        ID
-        </Text4>
-      </FieldContainer>
-      <FieldContainer style={{width: "150px", borderWidth:"1px 0px 1px 1px"}}>
-        <Text4>
-        CORREO
+          CORREO
         </Text4>
       </FieldContainer>
       <Wrapper2>
-        <FieldContainer style={{width: "300px", borderWidth:"1px 0px 0px 1px"}}>
-            <Text4>
+        <FieldContainer style={{ width: "300px", borderWidth: "1px 0px 0px 1px" }}>
+          <Text4>
             PUNTAJE
             </Text4>
         </FieldContainer>
         <Wrapper3>
-          <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+          <FieldContainer style={{ width: "100px", borderWidth: "1px 0px 1px 1px" }}>
             <Text4>
-            ETAPA 1
+              ETAPA 1
             </Text4>
           </FieldContainer>
-          <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+          <FieldContainer style={{ width: "100px", borderWidth: "1px 0px 1px 1px" }}>
             <Text4>
-            ETAPA 2
+              ETAPA 2
             </Text4>
           </FieldContainer>
-          <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+          <FieldContainer style={{ width: "100px", borderWidth: "1px 0px 1px 1px" }}>
             <Text4>
-            ETAPA 3
+              ETAPA 3
             </Text4>
           </FieldContainer>
         </Wrapper3>
       </Wrapper2>
-      <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+      <FieldContainer style={{ width: "100px", borderWidth: "1px 0px 1px 1px" }}>
         <Text4>
-        ENLACE DEL PROYECTO
+          ENLACE DEL PROYECTO
         </Text4>
       </FieldContainer>
-      <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+      <FieldContainer style={{ width: "100px", borderWidth: "1px 0px 1px 1px" }}>
         <Text4>
-        ENLACE DE GITHUB
+          ENLACE DE GITHUB
         </Text4>
       </FieldContainer>
-      <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+      <FieldContainer style={{ width: "100px", borderWidth: "1px 0px 1px 1px" }}>
         <Text4>
-        ESTADO
+          ESTADO
         </Text4>
       </FieldContainer>
-      <FieldContainer style={{width: "100px", borderWidth:"1px 1px 1px 1px"}}>
-        <Text4 style={{textAlign:"center"}}>
-        COMENTARIOS
+      <FieldContainer style={{ width: "100px", borderWidth: "1px 1px 1px 1px" }}>
+        <Text4 style={{ textAlign: "center" }}>
+          COMENTARIOS
         </Text4>
+      </FieldContainer>
+      <FieldContainer style={{ width: "100px", border: "none", backgroundColor: "#FFFFFF" }}>
+
       </FieldContainer>
     </Wrapper3>
   );
