@@ -10,6 +10,7 @@ import MultipleChoiceQuestionForm from "../../components/new-multiple-question-f
 import TestQuestionForm from "../../components/test-question-form";
 import ChallengeEvluationForm from "../../components/challenge-evaluation-form";
 import Confirmation from "../../components/confirmation-page";
+import NewStagePage from "../../components/stages-form"
 
 import { useQuill } from 'react-quilljs';
 import toolbar from "../../components/toolbar";
@@ -87,7 +88,7 @@ function NewPositionPage() {
     console.log(event.target)
     const data = JSON.stringify(quill.getContents())
     setNewPosition({ ...newPosition, description: data })
-    setView('multiple_choice')
+    setView('stages')
   }
 
   return (
@@ -114,12 +115,14 @@ function NewPositionPage() {
               <Button>Siguiente</Button>
             </Form>
           </FormContainer>
-          : view === 'multiple_choice' ?
-            <MultipleChoiceQuestionForm /> :
-            view === 'test_question' ?
-              <TestQuestionForm /> :
-              view === 'challenge_evaluation' ? <ChallengeEvluationForm /> :
-                view === 'confirmation' ? <Confirmation /> : null
+          : view === 'stages' ?
+            <NewStagePage />
+            : view === 'multiple_choice' ?
+              <MultipleChoiceQuestionForm /> :
+              view === 'test_question' ?
+                <TestQuestionForm /> :
+                view === 'challenge_evaluation' ? <ChallengeEvluationForm /> :
+                  view === 'confirmation' ? <Confirmation /> : null
         }
 
       </Container>

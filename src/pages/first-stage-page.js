@@ -56,7 +56,6 @@ function FirstStagePage() {
     quill?.setContents(JSON.parse(stages.stage1))
   }, [quill])
 
-  console.log('ETAPAS', stages)
   return (
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
       <Navbar />

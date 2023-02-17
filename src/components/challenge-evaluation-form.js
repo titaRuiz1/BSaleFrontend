@@ -82,7 +82,7 @@ function ChallengeEvluationForm() {
   const [newChallengeEvaluation4, setNewChallengeEvaluation4] = useState({ description: '', category: '', criteria: '', weighting: '' });
   const [criteria, setCriteria] = useState(1)
   const [showAdd, setShowAdd] = useState(false);
-  const { setView, arrChallengeEvaluation, setArrChallengeEvaluation, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion, setValue, setValue2 } = useAuth();
+  const { setView, objStages, arrChallengeEvaluation, setArrChallengeEvaluation, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion } = useAuth();
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: toolbar
@@ -149,7 +149,7 @@ function ChallengeEvluationForm() {
   function handleAdd(event) {
     event.preventDefault();
     setNewPosition({
-      ...newPosition, multiple_choice_questions_attributes: arrMultiChoiceQuestion,
+      ...newPosition, stage_attributes: objStages, multiple_choice_questions_attributes: arrMultiChoiceQuestion,
       test_questions_attributes: arrTestQuestion,
       challenge_evaluations_attributes: [newChallengeEvaluation1, newChallengeEvaluation2, newChallengeEvaluation3, newChallengeEvaluation4]
     })
@@ -157,7 +157,7 @@ function ChallengeEvluationForm() {
     setView('confirmation')
     // navigate(`/output`)
   };
-  console.log('CAT 1', newChallengeEvaluation1)
+  console.log('STAGES', objStages)
   // console.log('TODO EL REQUEST', newPosition)
   return (
     <>
