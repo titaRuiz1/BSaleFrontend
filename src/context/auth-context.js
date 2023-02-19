@@ -21,6 +21,7 @@ function AuthProvider({ children }) {
   const [arrChallengeEvaluation, setArrChallengeEvaluation] = useState([]);
   const [positionApplicants, setPositionApplicants] = useState([]);
   const [testDescription, setTestDescription] = useState([])
+  const [criterias, setCriterias] = useState(null)
   // Aca estan los acumuladores de puntaje
   const [sumCorrectAnswer, setSumCorrectAnswer] = useState(0);
   const [sumTest, setSumTest] = useState(0)
@@ -74,6 +75,8 @@ function AuthProvider({ children }) {
         newPosition,
         sumTest,
         testDescription,
+        criterias,
+        setCriterias,
         setTestDescription,
         setSumTest,
         setNewPosition,

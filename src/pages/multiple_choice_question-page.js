@@ -53,7 +53,8 @@ const TextSection = styled.p`
   margin-top: 36px;
   color: ${colors.gray[600]};
   ${typography.text.lg};
-  text-align: justify
+  text-align: justify;
+  margin-bottom:12px;
 `;
 
 const Text1 = styled.p`
@@ -150,7 +151,6 @@ function MultipleChoicePage() {
 
     if (correctAnswer === 'true') {
       setSumCorrectAnswer(sumCorrectAnswer + 1)
-      console.log(sumCorrectAnswer)
       sendResults(
         {
           stage1: sumCorrectAnswer + 1,
@@ -204,7 +204,6 @@ function MultipleChoicePage() {
   function runTests(event) {
     event.preventDefault();
     let currentTest;
-
     testQuestions[currentQuestion].tests.map((test, idx) => {
       if (test.input_type === 'number') {
         currentTest = eval(`(${code})`);
@@ -240,7 +239,8 @@ function MultipleChoicePage() {
       if (test.input_type === 'array_string') {
         currentTest = eval(`(${code})`);
         const input = test.input.slice(1, test.input.length - 1).split(',')
-        if (currentTest(...input) === test.output) {
+        console.log(currentTest(input))
+        if (currentTest(input) === test.output) {
           if (idx === 0) setTest1Status(true)
           if (idx === 1) setTest2Status(true)
           if (idx === 2) setTest3Status(true)
@@ -256,17 +256,32 @@ function MultipleChoicePage() {
       if (test.input_type === 'array_number') {
         currentTest = eval(`(${code})`);
         const input = test.input.slice(1, test.input.length - 1).split(',').map(Number)
-        if (currentTest(...input) === +test.output) {
-          if (idx === 0) setTest1Status(true)
-          if (idx === 1) setTest2Status(true)
-          if (idx === 2) setTest3Status(true)
-          if (idx === 3) setTest4Status(true)
-        } 
-        else {
-          if (idx === 0) setTest1Status(false)
-          if (idx === 1) setTest2Status(false)
-          if (idx === 2) setTest3Status(false)
-          if (idx === 3) setTest4Status(false)
+        if(test.type_output === "number"){
+          if (currentTest(input) === +test.output) {
+            if (idx === 0) setTest1Status(true)
+            if (idx === 1) setTest2Status(true)
+            if (idx === 2) setTest3Status(true)
+            if (idx === 3) setTest4Status(true)
+          } 
+          else {
+            if (idx === 0) setTest1Status(false)
+            if (idx === 1) setTest2Status(false)
+            if (idx === 2) setTest3Status(false)
+            if (idx === 3) setTest4Status(false)
+          }
+        }else{
+          if (currentTest(input) === test.output) {
+            if (idx === 0) setTest1Status(true)
+            if (idx === 1) setTest2Status(true)
+            if (idx === 2) setTest3Status(true)
+            if (idx === 3) setTest4Status(true)
+          } 
+          else {
+            if (idx === 0) setTest1Status(false)
+            if (idx === 1) setTest2Status(false)
+            if (idx === 2) setTest3Status(false)
+            if (idx === 3) setTest4Status(false)
+          }
         }
       }
       if (test.input_type === 'boolean') {
@@ -342,7 +357,6 @@ function MultipleChoicePage() {
                 <>
                   <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}>
                     <Wrapper2 style={{ gap: "32px" }}>
-                      <Text1>{position.title}</Text1>
                       <Text1>Pregunta {currentQuestion + mulChoiceQuestions?.length + 1} de {solutions.length}</Text1>
                     </Wrapper2>
                     <Text2>{testQuestions[currentQuestion].question.description} </Text2>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
 import { AiOutlineStar, AiTwotoneStar } from "react-icons/ai";
@@ -9,8 +9,9 @@ import { colors, typography } from "../styles";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { sendFeedbacks } from "../services/feedback-service"
-import { sendResults } from "../services/results-service"
+import { getResult, sendResults } from "../services/results-service"
 import { updateUser } from "../services/user-service";
+import { getChallengeEvaluations, getCriterias, getPositions } from "../services/position-service";
 
 const Container = styled.div`
   display: flex;
@@ -142,7 +143,9 @@ height: 324px
 width: 576px
 `
 function FeedbackPage() {
-  const { position, challengeEvaluations, average, setAverage, results, setResults, user, setUser } = useAuth();
+  const { position, challengeEvaluations, average, setAverage,
+     results, setResults, user, setUser, criterias,
+     setPosition,setSumCorrectAnswer, setSumTest, setCriterias, setChallengeEvaluations } = useAuth();
   const navigate = useNavigate();
   const [currentCriteria, setCurrentCriteria] = useState(user.current_question-1);
   const [colorStar, setColorStar] = useState(false);
@@ -199,6 +202,30 @@ function FeedbackPage() {
 
   }
 
+  useEffect(() => {
+    getPositions().then(response => {
+      setPosition(response);
+    }).catch()
+
+    getResult().then(response => {
+      if (response !== []) {
+        setSumCorrectAnswer(response.stage1);
+        setAverage(response.stage3);
+        setSumTest(response.stage2);
+      }
+    }).catch(error => console.log(error))
+
+    getCriterias().then(response => {
+      setCriterias(response)
+    }).catch()
+
+    getChallengeEvaluations().then(response => {
+      setChallengeEvaluations(response);
+    }).catch()
+
+  }, []);
+  
+
   return (
     <>
       <Navbar />
@@ -207,7 +234,7 @@ function FeedbackPage() {
           <Section>
             <Title>{position.title}</Title>
             <InsideSection>
-              <Title>Criterio {currentCriteria + 1} de 4: guidelines & principles of accesability</Title>
+              <Title>Criterio {currentCriteria + 1} de 4: {criterias.criterias[currentCriteria].criteria}</Title>
               <Img width='576px' src={video} alt="video" />
               <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
               <Img width='700px' src={codigo} alt="video" />

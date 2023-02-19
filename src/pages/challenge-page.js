@@ -5,7 +5,7 @@ import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { typography, colors } from "../styles";
 import { useAuth } from "../context/auth-context";
-import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions, getChallengeEvaluations } from "../services/position-service";
+import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions, getChallengeEvaluations, getCriterias } from "../services/position-service";
 import { getResult } from "../services/results-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
@@ -56,7 +56,7 @@ function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions,
-     setChallengeEvaluations, setSumCorrectAnswer,setSumTest, setAverage, setTestDescription } = useAuth();
+     setChallengeEvaluations, setSumCorrectAnswer,setSumTest, setAverage, setTestDescription, setCriterias } = useAuth();
 
   useEffect(() => {
     getPositions().then(response => {
@@ -79,6 +79,10 @@ function ChallengePage() {
       setSolutions(response)
     }).catch()
 
+    getCriterias().then(response => {
+      setCriterias(response)
+    }).catch()
+
     getTestsDescription().then(response => {
       setTestDescription(response)
     }).catch()
@@ -95,7 +99,6 @@ function ChallengePage() {
 
   function handleContinue(e){
     e.preventDefault();
-    console.log("funcionaaa")
     if(user.current_stage===1){
       navigate("/first-stage")
     }
@@ -105,8 +108,6 @@ function ChallengePage() {
     else{
       navigate("/feedback")
     }
-    //...se debe actualizar el current question (CUIDADO CON EL MULTIPLE CHOICE Y TEST)
-    //... se debe actualizar el current criteria
   }
 
   return (

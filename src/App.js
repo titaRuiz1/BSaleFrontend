@@ -12,7 +12,6 @@ import PositionsListPage from "./pages/admin-pages/list-positions-page"
 import NewUserForm from "./components/new-user-form";
 import NewPositionPage from "./pages/admin-pages/new-position-page"
 import { useAuth } from "./context/auth-context";
-import Table1 from "./components/table1/table1";
 
 const Wrapper = styled.div`
 height: 100%;

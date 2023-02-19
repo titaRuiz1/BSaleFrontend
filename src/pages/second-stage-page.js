@@ -107,8 +107,6 @@ function SecondStagePage() {
       stage2: sumTest
     }).then().catch((error) => console.log(error))
     navigate("/feedback")
-
-    // console.log("PROJECT",)
     
   }
 
@@ -128,7 +126,7 @@ function SecondStagePage() {
 
   function handleGithub(e){
     e.preventDefault();
-    sendGithubUrl({repo: githubRepoUrl})
+    sendGithubUrl({repo: githubRepoUrl}) 
       .then(response=>{
         setRequestGithubResponse(response.response)
       })
