@@ -29,8 +29,8 @@ function AuthProvider({ children }) {
   const [results, setResults] = useState({
     stage1: 0,
     stage2: 0,
-    stage3: 0
-
+    stage3: 0,
+    dontKnow: 0
   });
   const [newPosition, setNewPosition] = useState({
     title: '',
@@ -39,6 +39,8 @@ function AuthProvider({ children }) {
     test_questions_attributes: null,
     challenge_evaluations_attributes: null
   });
+  const [countDontKnow, setCountDontKnow] = useState(0);
+
   const navigate = useNavigate();
 
 
@@ -104,6 +106,8 @@ function AuthProvider({ children }) {
         setIsOpenFeedback,
         selectedUserFeedbacks,
         setSelectedUserFeedbacks,
+        countDontKnow,
+        setCountDontKnow
       }}
     >
       {children}
