@@ -72,6 +72,11 @@ function FieldRow() {
       </FieldContainer>
       <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
         <Text4>
+        ENLACE DE GITHUB
+        </Text4>
+      </FieldContainer>
+      <FieldContainer style={{width: "100px", borderWidth:"1px 0px 1px 1px"}}>
+        <Text4>
         ESTADO
         </Text4>
       </FieldContainer>

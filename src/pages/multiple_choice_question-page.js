@@ -58,6 +58,8 @@ const TextSection = styled.div`
   ${typography.text.lg};
   align-self: center;
   border:none
+  text-align: justify;
+  margin-bottom:12px;
 `;
 
 const Text1 = styled.p`
@@ -123,7 +125,8 @@ function MultipleChoicePage() {
   const [inputID, setInputID] = useState(null);
   const { position, mulChoiceQuestions,
     sumCorrectAnswer, setSumCorrectAnswer,
-    solutions, testQuestions, setResults, results, user, setUser, newPosition } = useAuth();
+    solutions, testQuestions, setResults, results, user, setUser, countDontKnow, setCountDontKnow, newPosition} = useAuth();
+
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(
     user.current_question <= mulChoiceQuestions.length ? user.current_question - 1 : user.current_question - mulChoiceQuestions.length - 1);
@@ -141,39 +144,60 @@ function MultipleChoicePage() {
       toolbar: false
     }
   })
+  const [dontKnow, setDontKnow] = useState(false);
+  const [unblockSend, setUnblockSend] = useState(false);
 
-  console.log('ID POSITION', position.id)
   function handleRadio(event) {
     event.preventDefault();
     setInputID(+event.target.id);
-    setShowStyledInput(true)
-    setCorrectAnswer(event.target.value)
+    setShowStyledInput(true);
+    setCorrectAnswer(event.target.value);
+    setDontKnow(false);
+    setUnblockSend(true)
+  }
+  function handleDontKnow(event){
+    event.preventDefault();
+    setDontKnow(true);
+    setInputID(null)
+    setUnblockSend(true)
   }
   function handleSubmitMultipleChoice(event) {
     event.preventDefault();
-
-    updateUser({
-      "current_question": user.current_question + 1
-    })
-      .then(response => {
+    if (unblockSend){
+      setDontKnow(false)
+      updateUser({
+        "current_question": user.current_question + 1
+      })
+        .then(response=>{
         setUser(response)
-        console.log("Aquiiiii", response)
       }).catch(console.log())
-
-    if (correctAnswer === 'true') {
-      setSumCorrectAnswer(sumCorrectAnswer + 1)
-      console.log(sumCorrectAnswer)
-      sendResults(
-        {
-          stage1: sumCorrectAnswer + 1,
-          stage2: 0,
-          stage3: 0
-        }
-      ).then(console.log).catch((error) => console.log(error))
-
-    };
-    quill?.setContents(JSON.parse(solutions[currentQuestion].solution.description))
-    setView("solution")
+  
+      if (correctAnswer === 'true') {
+        setSumCorrectAnswer(sumCorrectAnswer + 1)
+        sendResults(
+          {
+            stage1: sumCorrectAnswer + 1,
+            stage2: 0,
+            stage3: 0,
+           
+          }
+        ).then(console.log).catch((error) => console.log(error))
+  
+      };
+      if (dontKnow) {
+        setCountDontKnow(countDontKnow + 1)
+        sendResults(
+          {
+            dontKnow: countDontKnow + 1,
+          }
+        ).then(console.log).catch((error) => console.log(error))
+  
+      };
+      setCorrectAnswer(null)
+      setUnblockSend(false)
+      quill?.setContents(JSON.parse(solutions[currentQuestion].solution.description))
+      setView("solution")
+    }
   }
 
   function handleSubmitTest(event) {
@@ -193,10 +217,10 @@ function MultipleChoicePage() {
 
     }
     updateUser(body)
-      .then(response => {
-        setUser(response)
-        console.log("Aquiiiii", response)
-      }).catch(console.log())
+    .then(response=>{
+      setUser(response)
+    }).catch(console.log())
+
 
     if (test1Status && test2Status && test3Status && test4Status) {
       setResults({ ...results, stage1: sumCorrectAnswer + 1 })
@@ -220,7 +244,6 @@ function MultipleChoicePage() {
   function runTests(event) {
     event.preventDefault();
     let currentTest;
-
     testQuestions[currentQuestion].tests.map((test, idx) => {
       if (test.input_type === 'number') {
         currentTest = eval(`(${code})`);
@@ -253,34 +276,53 @@ function MultipleChoicePage() {
           if (idx === 3) setTest4Status(false)
         }
       }
-      if (test.input_type === 'array_number') {
+
+      if (test.input_type === 'array_string') {
         currentTest = eval(`(${code})`);
-        const input = test.input.slice(1, test.input.length - 1).split(',').map(Number)
-        if (currentTest(...input) === +test.output) {
+        const input = test.input.slice(1, test.input.length - 1).split(',')
+        console.log(currentTest(input))
+        if (currentTest(input) === test.output) {
           if (idx === 0) setTest1Status(true)
           if (idx === 1) setTest2Status(true)
           if (idx === 2) setTest3Status(true)
           if (idx === 3) setTest4Status(true)
-        } else {
+        }
+      else {
           if (idx === 0) setTest1Status(false)
           if (idx === 1) setTest2Status(false)
           if (idx === 2) setTest3Status(false)
           if (idx === 3) setTest4Status(false)
         }
       }
-      if (test.input_type === 'array_string') {
+      if (test.input_type === 'array_number') {
         currentTest = eval(`(${code})`);
-        const input = test.input.slice(1, test.input.length - 1).split(',')
-        if (currentTest(...input) === test.output) {
-          if (idx === 0) setTest1Status(true)
-          if (idx === 1) setTest2Status(true)
-          if (idx === 2) setTest3Status(true)
-          if (idx === 3) setTest4Status(true)
-        } else {
-          if (idx === 0) setTest1Status(false)
-          if (idx === 1) setTest2Status(false)
-          if (idx === 2) setTest3Status(false)
-          if (idx === 3) setTest4Status(false)
+        const input = test.input.slice(1, test.input.length - 1).split(',').map(Number)
+        if(test.type_output === "number"){
+          if (currentTest(input) === +test.output) {
+            if (idx === 0) setTest1Status(true)
+            if (idx === 1) setTest2Status(true)
+            if (idx === 2) setTest3Status(true)
+            if (idx === 3) setTest4Status(true)
+          } 
+          else {
+            if (idx === 0) setTest1Status(false)
+            if (idx === 1) setTest2Status(false)
+            if (idx === 2) setTest3Status(false)
+            if (idx === 3) setTest4Status(false)
+          }
+        }else{
+          if (currentTest(input) === test.output) {
+            if (idx === 0) setTest1Status(true)
+            if (idx === 1) setTest2Status(true)
+            if (idx === 2) setTest3Status(true)
+            if (idx === 3) setTest4Status(true)
+          } 
+          else {
+            if (idx === 0) setTest1Status(false)
+            if (idx === 1) setTest2Status(false)
+            if (idx === 2) setTest3Status(false)
+            if (idx === 3) setTest4Status(false)
+          }
         }
       }
       if (test.input_type === 'boolean') {
@@ -378,9 +420,10 @@ function MultipleChoicePage() {
                       }
                     })
                     }
+                    <Option key={`key`} value={true} border={`1px solid ${dontKnow ? colors.orange : colors.gray[600]}`} id={"id-dontknow"} background={`${dontKnow ? colors.orange : "none"}`} label={"No se"} onClick={handleDontKnow} />
                     <Button
                       width='88px'
-                      style={{ alignSelf: 'center', marginTop: '20px' }}> Enviar </Button>
+                      style={{background: `${unblockSend ? colors.orange : colors.gray[600]}`, alignSelf: 'center', marginTop: '20px' } } > Enviar </Button>
 
                   </OptionsSection>
                 </>
@@ -397,6 +440,7 @@ function MultipleChoicePage() {
                   {/* <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}> */}
                   {/* <Wrapper2 style={{ gap: "32px" }}>
                       <Text1>{position.title}</Text1>
+
                       <Text1>Pregunta {currentQuestion + mulChoiceQuestions?.length + 1} de {solutions.length}</Text1>
                     </Wrapper2> */}
                   {/* <Text2 ref={quillRef}></Text2> */}
@@ -465,14 +509,12 @@ function MultipleChoicePage() {
                   </TextSection>
                 }
 
-
-
                 {question_type === "multiple" ?
                   solutions[currentQuestion]?.url === 'sin imagen' ?
                     null :
                     <Img src={solutions[currentQuestion]?.url} />
                   :
-                  solutions[currentQuestion + 6]?.url === 'sin imagen' ?
+                  solutions[currentQuestion + 1 + solutions.length]?.url === 'sin imagen' ?
                     null :
                     <Img src={solutions[currentQuestion + 5]?.url} />
                 }

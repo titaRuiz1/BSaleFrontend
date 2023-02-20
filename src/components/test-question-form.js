@@ -163,11 +163,6 @@ function TestQuestionForm() {
     setView('challenge_evaluation');
   }
 
-  console.log('INPUT TYPE1', test1)
-  console.log('INPUT TYPE2', test2)
-  console.log('INPUT TYPE3', test3)
-  console.log('INPUT TYPE4', test4)
-  console.log('TEST QUESTION', newTestQuestion)
   return (
     <>
       <FormContainer>

@@ -75,7 +75,6 @@ function PositionsListPage() {
 
     getPositionApplicants(event.target.id).then(response => {
       setPositionApplicants(response)
-      console.log("respuestaaaaa", response)
     }).catch(error => {
       console.log("ERROR", error)
     })
@@ -85,7 +84,7 @@ function PositionsListPage() {
 
   function handleAddPosition(event) {
     event.preventDefault();
-    console.log('añadir')
+
     navigate(`/new-position`)
   }
   return (

@@ -15,6 +15,7 @@ import { useAuth } from "./context/auth-context";
 import Table1 from "./components/table1/table1";
 import PruebaText from "./pages/prueba-text"
 
+
 const Wrapper = styled.div`
 height: 100%;
 margin: auto;
@@ -39,7 +40,6 @@ function App() {
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="results" element={<ResultsPage />} />
 
-
         {/* ADMIN */}
 
         <Route path="admin/applicants" element={<PositionApplicantsPage />} />
@@ -48,6 +48,7 @@ function App() {
         <Route path="new-user" element={<NewUserForm />} />
         <Route path="new-position" element={<NewPositionPage />} />
         <Route path="prueba" element={<PruebaText />} />
+
 
       </Routes>
     </Wrapper>

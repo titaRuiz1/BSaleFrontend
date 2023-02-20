@@ -31,9 +31,6 @@ function RecordRow({ record, users }) {
   const [feedbackUserId, setFeedbackUserId]= useState(null)
   const { isOpenFeedback, setIsOpenFeedback, setSelectedUserFeedbacks } = useAuth();
   const navigate = useNavigate();
-  console.log("RECORD INSIDE RECORD ROW", record)
-
-
 
   function handleCommentsClick(userId) {
     setFeedbackUserId(userId);
@@ -46,7 +43,6 @@ function RecordRow({ record, users }) {
 
     setIsOpenFeedback(true)
   }
-  console.log(record)
   return (
     <>
       {users === "+0" ?
@@ -68,16 +64,24 @@ function RecordRow({ record, users }) {
             </Text5>
           </RecordContainer>
           <RecordContainer style={{width:"100px", borderWidth:"0px 0px 1px 1px"}}>
-            <button onClick={()=> navigate("//fanciful-praline-7ff529.netlify.app")}>
-              enlace
-            </button>
+            {record.project === ""? <Text5>No encontrado</Text5>:
+            <a href={record.project}>
+              link
+            </a>}
+          </RecordContainer>
+          <RecordContainer style={{width:"100px", borderWidth:"0px 0px 1px 1px"}}>
+            {record.github ? 
+            <a href={record.github}>
+              link
+            </a> :
+            <Text5>No encontrado</Text5>}
           </RecordContainer>
           <RecordContainer style={{ width: "100px", borderWidth: "0px 0px 1px 1px" }}>
             { (record.user.current_stage ==1 && record.user.current_question == 1)?
-                <Text5>NO INICIADO</Text5> :
+                <Text5>No Iniciado</Text5> :
               (record.user.current_stage == 3 && record.user.current_question == 5)?
-               <Text5>FINALIZADO</Text5>:
-              <Text5>INICIADO</Text5>
+               <Text5>Finalizado</Text5>:
+              <Text5>Iniciado</Text5>
             }
           </RecordContainer>
           <RecordContainer style={{width:"100px", borderWidth:"0px 1px 1px 1px"}} onClick={()=> handleCommentsClick(record.user.id)}>
@@ -114,16 +118,25 @@ function RecordRow({ record, users }) {
             </Text5>
           </RecordContainer>
           <RecordContainer style={{width:"100px", borderWidth:"0px 0px 1px 1px"}}>
-            <button onClick={()=> navigate("//fanciful-praline-7ff529.netlify.app")}>
-              enlace
-            </button>
+            {record.project === ""? <p>Not found</p>:
+            <a href={record.project}>
+              link
+            </a>}
+          </RecordContainer>
+          <RecordContainer style={{width:"100px", borderWidth:"0px 0px 1px 1px"}}>
+            {record.github ? 
+              <a href={record.github}>
+              link
+              </a>
+              :
+              <p>Not found</p>}
           </RecordContainer>
           <RecordContainer style={{width:"100px", borderWidth:"0px 0px 1px 1px"}}>
             { (record.user.current_stage ==1 && record.user.current_question == 1)?
-                <Text5>NO INICIADO</Text5> :
+                <Text5>No iniciado</Text5> :
               (record.user.current_stage == 3 && record.user.current_question == 5)?
-               <Text5>FINALIZADO</Text5>:
-              <Text5>INICIADO</Text5>
+               <Text5>Finalizado</Text5>:
+              <Text5>Iniciado</Text5>
             }
           </RecordContainer>
           <RecordContainer style={{width:"100px", borderWidth:"0px 1px 1px 1px"}} onClick={()=> handleCommentsClick(record.user.id)}>

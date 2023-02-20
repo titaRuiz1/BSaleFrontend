@@ -71,7 +71,7 @@ function FirstStagePage() {
         <Wrapper1 style={{ justifyContent: "center", alignItems: "center" }}>
           <Button
             width="90px"
-            onClick={() => navigate("/stage1")}>
+            onClick={() => navigate("/stage1")}> 
             Iniciar
           </Button>
         </Wrapper1>

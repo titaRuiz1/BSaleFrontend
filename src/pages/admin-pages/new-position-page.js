@@ -75,20 +75,23 @@ function NewPositionPage() {
     }
   })
 
+  function handleSubmitPosition(event) {
+    event.preventDefault();
+  }
+
   function handleChange(event) {
     const { name, value } = event.target
-    console.log('NOMBRE EN EL CHANGE', name)
-    console.log('VALOR CHANGE', value)
     setNewPosition({ ...newPosition, [name]: value })
 
   }
 
   function handleSubmitPosition(event) {
     event.preventDefault();
-    console.log(event.target)
     const data = JSON.stringify(quill.getContents())
     setNewPosition({ ...newPosition, description: data })
     setView('stages')
+   // setView('multiple_choice')
+
   }
 
   return (

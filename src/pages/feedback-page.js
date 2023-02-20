@@ -9,10 +9,12 @@ import { colors, typography } from "../styles";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { sendFeedbacks } from "../services/feedback-service";
-import { sendResults } from "../services/results-service";
-import { updateUser } from "../services/user-service";
 import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css'
+import { getResult, sendResults } from "../services/results-service"
+import { updateUser } from "../services/user-service";
+import { getChallengeEvaluations, getCriterias, getPositions } from "../services/position-service";
+
 
 const Container = styled.div`
   display: flex;
@@ -120,13 +122,40 @@ const Input = styled.input`
   padding: 16px
 `;
 
+const Wrapper1 = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Text1 = styled.p`
+  ${typography.head.md}
+  font-size: 1.5rem;
+  line-height: 27.6px;
+  color: #051441;
+`;
+
+const Text2 = styled.p`
+  ${typography.text.lg}
+  line-height: 28px;
+  color: #677294;
+`;
+
+const Video = styled.div`
+display:flex;
+justify-content:center;
+height: 324px
+width: 576px
+`
 
 function FeedbackPage() {
-  const { position, challengeEvaluations, average, setAverage, results, setResults, user, setUser } = useAuth();
+  const { position, challengeEvaluations, average, setAverage,
+     results, setResults, user, setUser, criterias,
+     setPosition,setSumCorrectAnswer, setSumTest, setCriterias, setChallengeEvaluations } = useAuth();
   const navigate = useNavigate();
   const [currentCriteria, setCurrentCriteria] = useState(user.current_question - 1);
   const [colorStar, setColorStar] = useState(false);
   const [id, setId] = useState(null);
+  const [startTest, setStartTest] = useState(false)
   const [form, setForm] = useState({
     answerDidWell: "",
     answerToImprove: "",
@@ -157,11 +186,10 @@ function FeedbackPage() {
     event.preventDefault();
     updateUser({
       "current_question": user.current_question + 1
-    })
-      .then(response => {
-        setUser(response)
-        console.log("Aquiiiii", response)
-      }).catch(console.log())
+    }).then(response=>{
+      setUser(response)
+    }).catch(console.log())
+
 
     sendFeedbacks(form).then().catch((error) => console.log(error))
     sendResults(
@@ -187,12 +215,36 @@ function FeedbackPage() {
 
   useEffect(() => {
     quill?.setContents(JSON.parse(challengeEvaluations[currentCriteria].description))
-
   }, [quill, currentCriteria])
+  
+  useEffect(() => {
+    getPositions().then(response => {
+      setPosition(response);
+    }).catch()
+
+    getResult().then(response => {
+      if (response !== []) {
+        setSumCorrectAnswer(response.stage1);
+        setAverage(response.stage3);
+        setSumTest(response.stage2);
+      }
+    }).catch(error => console.log(error))
+
+    getCriterias().then(response => {
+      setCriterias(response)
+    }).catch()
+
+    getChallengeEvaluations().then(response => {
+      setChallengeEvaluations(response);
+    }).catch()
+
+  }, []);
+
 
   return (
     <>
       <Navbar />
+
       <Container>
         <Section>
           <Title>{position.title}</Title>
@@ -275,6 +327,25 @@ function FeedbackPage() {
 
       </Container>
 
+        :
+        <Wrapper1 style={{alignItems:"center", justifyContent:"center"}}>
+          <Wrapper1 style={{ maxWidth:"868px", gap: "32px", marginTop:"48px"}}>
+            <Text1>{position.title}</Text1>
+            <Text1>Etapa 3: Revision de codigo - mejora continua</Text1>
+            <Video> 
+              <video controls src="https://youtu.be/ykGRYEX0n60"/>
+            </Video>
+            <Text2>Según la necesidad o la complejidad de los algoritmos o instrucciones, se usan diferentes lenguajes y cada uno opera con un conjunto de reglas y estructuras distintos. Estas estructuras permiten acceder a variables, funciones, objetos, cadenas y otras herramientas que procesan la información.</Text2>
+            <Wrapper1  style={{justifyContent:"center", alignItems:"center"}}>
+              <Button
+                width="90px"
+                onClick={()=>setStartTest(true)}>
+                Iniciar
+              </Button>
+            </Wrapper1>
+          </Wrapper1>
+        </Wrapper1>}
+    
     </>
   )
 };

@@ -5,13 +5,13 @@ import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { typography, colors } from "../styles";
 import { useAuth } from "../context/auth-context";
-import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions, getChallengeEvaluations, getStages } from "../services/position-service";
+import { getMultipleChoiceQuestions, getPositions, getSolutions, getTestQuestions, getChallengeEvaluations, getStages, getCriterias } from "../services/position-service";
 import { getResult } from "../services/results-service";
 import { tokenKey } from "../config";
 import { useNavigate } from "react-router";
 import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css'
-
+import { getTestsDescription } from "../services/teste2e-service";
 
 
 const Wrapper1 = styled.div`
@@ -58,23 +58,27 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { mulChoiceQuestions, testQuestions, position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions, setChallengeEvaluations, setSumCorrectAnswer, setAverage, setStages } = useAuth();
+  const { mulChoiceQuestions, testQuestions, position, setPosition, user, 
+  setMulChoiceQuestions, setSolutions, setTestQuestions, setChallengeEvaluations, 
+  setSumCorrectAnswer, setAverage, setStages, setSumTest, setTestDescription, setCriterias, setCountDontKnow } = useAuth();
   const { quill, quillRef } = useQuill({
     readOnly: true,
     modules: {
       toolbar: false
     }
   })
+
   useEffect(() => {
     getPositions().then(response => {
       setPosition(response);
     }).catch()
 
     getResult().then(response => {
-      console.log("respuesta results", response)
       if (response !== []) {
         setSumCorrectAnswer(response.stage1);
-        setAverage(response.stage3)
+        setAverage(response.stage3);
+        setSumTest(response.stage2);
+        setCountDontKnow(response.dontKnow)      
       }
     }).catch(error => console.log(error))
 
@@ -87,7 +91,14 @@ function ChallengePage() {
     }).catch()
 
     getStages().then(response => {
-      setStages(response)
+
+    getCriterias().then(response => {
+      setCriterias(response)
+    }).catch()
+
+    getTestsDescription().then(response => {
+      setTestDescription(response)
+
     }).catch()
 
     getTestQuestions().then(response => {
@@ -105,8 +116,7 @@ function ChallengePage() {
 
   function handleContinue(e) {
     e.preventDefault();
-    console.log("funcionaaa")
-    if (user.current_stage === 1) {
+    if(user.current_stage===1){
       navigate("/first-stage")
     }
     else if (user.current_stage === 2) {
@@ -115,8 +125,6 @@ function ChallengePage() {
     else {
       navigate("/feedback")
     }
-    //...se debe actualizar el current question (CUIDADO CON EL MULTIPLE CHOICE Y TEST)
-    //... se debe actualizar el current criteria
   }
   return (
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>

@@ -10,6 +10,7 @@ const Wrapper1 = styled.div`
 `;
 
 function Table2({ records }) {
+
   return (
     <>
       {records.length> 0? (

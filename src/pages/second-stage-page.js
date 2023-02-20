@@ -13,6 +13,7 @@ import { MdOutlineCancel } from "react-icons/md"
 import { updateUser } from "../services/user-service";
 import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css'
+import { sendResults } from "../services/results-service";
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -84,15 +85,13 @@ const Input = styled.input`
 `;
 
 function SecondStagePage() {
-  const [test1Status, setTest1Status] = useState(null);
-  const [test2Status, setTest2Status] = useState(true);
-  const [test3Status, setTest3Status] = useState(false);
-  const [test4Status, setTest4Status] = useState(false);
+  const [testStatus, setTestStatus] = useState(null);  
   const [projectUrl, setProjectUrl] = useState("");
   const [githubRepoUrl, setGithubRepoUrl] = useState("")
   const [statusGithub, setStatusGithub] = useState(null)
+  const [requestGithubResponse, setRequestGithubResponse] = useState(null)
   const navigate = useNavigate();
-  const { challengeEvaluations, setUser, position, stages } = useAuth();
+  const { challengeEvaluations, setUser, position, stages, setSumTest, sumTest, testDescription } = useAuth();
   const { quill, quillRef } = useQuill({
     readOnly: true,
     modules: {
@@ -100,34 +99,46 @@ function SecondStagePage() {
     }
   })
 
+
   function handleNextButtonClick() {
     updateUser({
       "current_stage": 3,
-    })
-      .then(response => {
-        setUser(response)
-        console.log("Aquiiiii", response)
-      }).catch(console.log())
-
+    }).then(response=>{
+      setUser(response)
+    }).catch(console.log())
+    
     sendDataTestE2E({
-      link: projectUrl,
-      github: statusGithub
-    })
+      link:projectUrl,
+      github: requestGithubResponse
+    }).then(console.log).catch(console.log)
+    
+    sendResults({
+      stage2: sumTest
+    }).then().catch((error) => console.log(error))
     navigate("/feedback")
+    
   }
 
-  function handleTeste2e(event) {
+  function handleTeste2e(event){
+    let sumCurrentTest = 0;
     event.preventDefault();
-    sendUrl({ url: projectUrl })
-      .then(response => console.log(response))
-      .catch(error => console.log(error))
+    sendUrl({url: projectUrl})
+      .then(response=> {
+        setTestStatus(response)
+        response.tests.forEach(test=>{
+          if(test) sumCurrentTest += 1;
+        })
+        setSumTest(sumCurrentTest)
+      })
+      .catch(error=> console.log(error))  
+
   }
 
   function handleGithub(e) {
     e.preventDefault();
-    sendGithubUrl({ repo: githubRepoUrl })
-      .then(response => {
-        setStatusGithub(response.response)
+    sendGithubUrl({repo: githubRepoUrl}) 
+      .then(response=>{
+        setRequestGithubResponse(response.response)
       })
       .catch(error => console.log(error))
   }
@@ -139,8 +150,9 @@ function SecondStagePage() {
   return (
     <Wrapper1>
       <Navbar />
-      <Wrapper2 style={{ width: "58%", gap: "32px", marginTop: "48px" }}>
-        <Text1>Desarrollador Web Junior </Text1>
+
+      <Wrapper2 style={{ width: "58%", gap: "32px", marginTop:"48px"}}>
+        <Text1>{position.title} </Text1>
         <Text1>Etapa 2:Desarrollo web</Text1>
         {position.id > 4 ? <Text2 ref={quillRef}></Text2> :
           <>
@@ -169,38 +181,22 @@ function SecondStagePage() {
           </Wrapper3>
         </Wrapper1>
         <TestsContainer>
-          {test1Status === null ?
-            <Option padding={`0px 19px`} border={`1px solid ${colors.gray[600]}`} id={`Test1`} value={`Test1`} background={`${colors.white}`} label={`Descripcion de Test1`} />
-            :
-            test1Status === true ?
-              <Option padding={`0px 19px`} border={`1px solid ${colors.green}`} id={`Test1`} value={`Test1`} background={`${colors.green}`} label={`Descripcion de Test1`} />
-              :
-              <Option padding={`0px 19px`} border={`1px solid ${colors.red}`} id={`Test1`} value={`Test1`} background={`${colors.red}`} label={`Descripcion de Test1`} />
+
+          {testStatus ?
+            testStatus.tests.map((test, index)=>{
+              console.log(testDescription[index])
+              return <Option key={index} padding={`0px 19px`} border={`1px solid ${ test ? colors.green: colors.red}`} id={`Test${index+1}`} value={`Test${index+1}`} background={`${ test ? colors.green: colors.red}`} label={testDescription[index].test_description} />
+          }):
+            <>
+              <Option padding={`0px 19px`} border={`1px solid ${ colors.gray[600]}`} id={`Test1`} value={`Test1`} background={`${colors.white}`} label={testDescription[0].test_description} />
+              <Option padding={`0px 19px`} border={`1px solid ${ colors.gray[600]}`} id={`Test2`} value={`Test2`} background={`${colors.white}`} label={testDescription[1].test_description} />
+              <Option padding={`0px 19px`} border={`1px solid ${ colors.gray[600]}`} id={`Test3`} value={`Test3`} background={`${colors.white}`} label={testDescription[2].test_description} />
+              <Option padding={`0px 19px`} border={`1px solid ${ colors.gray[600]}`} id={`Test4`} value={`Test4`} background={`${colors.white}`} label={testDescription[3].test_description} />
+            </>
           }
-          {test2Status === null ?
-            <Option padding={`0px 19px`} border={`1px solid ${colors.gray[600]}`} id={`answer2`} value={`answer2`} background={`${colors.white}`} label={`Descripcion de Test2`} />
-            :
-            test2Status === true ?
-              <Option padding={`0px 19px`} border={`1px solid ${colors.green}`} id={`answer2`} value={`answer2`} background={`${colors.green}`} label={`Descripcion de Test2`} />
-              :
-              <Option padding={`0px 19px`} border={`1px solid ${colors.red}`} id={`answer2`} value={`answer2`} background={`${colors.red}`} label={`Descripcion de Test2`} />
-          }
-          {test3Status === null ?
-            <Option padding={`0px 19px`} border={`1px solid ${colors.gray[600]}`} id={`answer3`} value={`answer3`} background={`${colors.white}`} label={`Descripcion de Test3`} />
-            :
-            test3Status === true ?
-              <Option padding={`0px 19px`} border={`1px solid ${colors.green}`} id={`answer3`} value={`answer3`} background={`${colors.green}`} label={`Descripcion de Test3`} />
-              :
-              <Option padding={`0px 19px`} border={`1px solid ${colors.red}`} id={`answer3`} value={`answer3`} background={`${colors.red}`} label={`Descripcion de Test3`} />
-          }
-          {test4Status === null ?
-            <Option padding={`0px 19px`} border={`1px solid ${colors.gray[600]}`} id={`answer4`} value={`answer4`} background={`${colors.white}`} label={`Descripcion de Test4`} />
-            :
-            test4Status === true ?
-              <Option padding={`0px 19px`} border={`1px solid ${colors.green}`} id={`answer4`} value={`answer4`} background={`${colors.green}`} label={`Descripcion de Test4`} />
-              :
-              <Option padding={`0px 19px`} border={`1px solid ${colors.red}`} id={`answer4`} value={`answer4`} background={`${colors.red}`} label={`Descripcion de Test4`} />
-          }
+          
+          
+          
         </TestsContainer>
         <Text2>Envio de proyecto</Text2>
         <Text3>Para poder revisar el código deployado en su proyecto necesitamos que ingrese el link de su repositorio en GITHUB teniendo en cuenta la siguiente nomenclatura:
@@ -217,15 +213,15 @@ function SecondStagePage() {
             </li>
           </ul>
         </Wrapper2>
-        <Wrapper1 style={{ marginBottom: "32px" }}>
-          <Wrapper3 style={{ gap: "4px" }}>
-            {statusGithub === null ?
-              null
+        <Wrapper1 style={{marginBottom:"32px"}}>
+          <Wrapper3 style={{gap:"4px"}}>
+            { requestGithubResponse === null ?
+                null
               :
-              statusGithub ?
-                <FiCheckCircle style={{ color: "green", width: 25, height: 25 }} />
+                requestGithubResponse === false ?
+                  <MdOutlineCancel style={{color:"red", width:30, height:30}}/>
                 :
-                <MdOutlineCancel style={{ color: "red", width: 30, height: 30 }} />
+                  <FiCheckCircle style={{color:"green", width:25, height:25}}/>
             }
             <Input
               name="github-repo-url"
