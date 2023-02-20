@@ -59,7 +59,6 @@ const Wrapper1 = styled.div`
 function PositionsListPage() {
   const { user, allPositions, setAllPositions, results, setPositionApplicants, value } = useAuth();
   const navigate = useNavigate();
-  const [showTable, setShowTable] = useState(false);
 
   useEffect(() => {
     if (user.user_type === "admin") {
@@ -79,7 +78,7 @@ function PositionsListPage() {
       console.log("ERROR", error)
     })
 
-    setShowTable(true);
+    navigate(`applicants`)
   }
 
   function handleAddPosition(event) {
@@ -87,29 +86,24 @@ function PositionsListPage() {
 
     navigate(`/new-position`)
   }
+  
   return (
     <>
       <Navbar />
       {user.user_type === "admin" ?
-        <>
-
-          {showTable ? <PositionApplicantsPage /> : (
-            <Container>
-              <Title>Posiciones</Title>
-              {!allPositions ? "Loading..." : (allPositions.map((pos) =>
-                <Wrapper1>
-                  <Subtitle
-                    onClick={handlePosition}
-                    id={pos.id}>• {pos.title}</Subtitle>
-                </Wrapper1>
-              ))}
-              <Wrapper1 border='dashed' style={{ justifyContent: 'center' }}>
-                <Subtitle onClick={handleAddPosition}>Add new position <GrAddCircle style={{ alignSelf: 'center' }} /> </Subtitle>
-              </Wrapper1>
-            </Container>
-          )}
-
-        </>
+        <Container>
+          <Title>Posiciones</Title>
+          {!allPositions ? "Loading..." : (allPositions.map((pos) =>
+            <Wrapper1>
+              <Subtitle
+                onClick={handlePosition}
+                id={pos.id}>• {pos.title}</Subtitle>
+            </Wrapper1>
+          ))}
+          <Wrapper1 border='dashed' style={{ justifyContent: 'center' }}>
+            <Subtitle onClick={handleAddPosition}>Add new position <GrAddCircle style={{ alignSelf: 'center' }} /> </Subtitle>
+          </Wrapper1>
+        </Container>
         :
         <Unauthorized />
       }

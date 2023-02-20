@@ -8,7 +8,7 @@ import { useAuth } from "../../context/auth-context";
 import { getPositionApplicants } from "../../services/user-service"
 import { tokenKey } from "../../config";
 import { useNavigate } from "react-router";
-import { useParams } from "react-router";
+import { Link , useParams } from "react-router-dom";
 import Table2 from "../../components/table2/table2";
 import Feedbacks from "../../components/feedbacks";
 
@@ -81,39 +81,42 @@ function PositionApplicantsPage() {
   }
 
   return (
-    <Wrapper1>
-      <Wrapper2 style={{ width: "68%", gap: "32px", marginTop: "48px", padding: "12px 32px" }}>
-        <Text2>Position: </Text2>
-        {positionApplicants.position ?
-        (
-          <>
-            <Text5> {positionApplicants.position.title}</Text5>
+    <>
+      <Navbar />
+      <Wrapper1>
+        <Wrapper2 style={{ width: "68%", gap: "32px", marginTop: "48px", padding: "12px 32px" }}>
+          <Text2>Position: </Text2>
+          {positionApplicants.position ?
+          (
+            <>
+              <Text5> {positionApplicants.position.title}</Text5>
 
-            <Wrapper3 style={{justifyContent:"space-between", alignItems:"center"}}>
-              <Text2>Applicants: </Text2>
-              <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/new-user")}>
-                <Text3>New user</Text3>
-              </Button>
-            </Wrapper3>
+              <Wrapper3 style={{justifyContent:"space-between", alignItems:"center"}}>
+                <Text2>Applicants: </Text2>
+                <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/new-user")}>
+                  <Text3>New user</Text3>
+                </Button>
+              </Wrapper3>
 
-            <Table2 records={positionApplicants.users} />
-            {isOpenFeedback ? (
-                <FeedbacksModal>
-                  <Feedbacks
-                    feedbacks={selectedUserFeedbacks}
-                    onCloseClick={handleFeedbacksClose}
-                  />
-                </FeedbacksModal>
-            ) : null}
+              <Table2 records={positionApplicants.users} />
+              {isOpenFeedback ? (
+                  <FeedbacksModal>
+                    <Feedbacks
+                      feedbacks={selectedUserFeedbacks}
+                      onCloseClick={handleFeedbacksClose}
+                    />
+                  </FeedbacksModal>
+              ) : null}
 
-          </>
+            </>
 
-        )
-        :
-        <Text5> Loading...</Text5>}
+          )
+          :
+          <Text5> Loading...</Text5>}
 
-      </Wrapper2>
-    </Wrapper1>
+        </Wrapper2>
+      </Wrapper1>
+    </>
   )
 }
 
