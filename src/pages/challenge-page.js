@@ -56,7 +56,7 @@ function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { position, setPosition, user, setMulChoiceQuestions, setSolutions, setTestQuestions,
-     setChallengeEvaluations, setSumCorrectAnswer,setSumTest, setAverage, setTestDescription, setCriterias } = useAuth();
+     setChallengeEvaluations, setSumCorrectAnswer,setSumTest, setAverage, setTestDescription, setCriterias, setCountDontKnow } = useAuth();
 
   useEffect(() => {
     getPositions().then(response => {
@@ -68,6 +68,7 @@ function ChallengePage() {
         setSumCorrectAnswer(response.stage1);
         setAverage(response.stage3);
         setSumTest(response.stage2);
+        setCountDontKnow(response.dontKnow)      
       }
     }).catch(error => console.log(error))
 

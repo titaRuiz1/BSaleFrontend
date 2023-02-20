@@ -120,7 +120,7 @@ function MultipleChoicePage() {
   const [inputID, setInputID] = useState(null);
   const { position, mulChoiceQuestions,
     sumCorrectAnswer, setSumCorrectAnswer,
-    solutions, testQuestions, setResults, results, user, setUser } = useAuth();
+    solutions, testQuestions, setResults, results, user, setUser, countDontKnow, setCountDontKnow} = useAuth();
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(
     user.current_question <= mulChoiceQuestions.length ? user.current_question-1 : user.current_question-mulChoiceQuestions.length-1);
@@ -132,35 +132,59 @@ function MultipleChoicePage() {
   const [test2Status, setTest2Status] = useState(null);
   const [test3Status, setTest3Status] = useState(null);
   const [test4Status, setTest4Status] = useState(null);
+  const [dontKnow, setDontKnow] = useState(false);
+  const [unblockSend, setUnblockSend] = useState(false);
 
   function handleRadio(event) {
     event.preventDefault();
     setInputID(+event.target.id);
-    setShowStyledInput(true)
-    setCorrectAnswer(event.target.value)
+    setShowStyledInput(true);
+    setCorrectAnswer(event.target.value);
+    setDontKnow(false);
+    setUnblockSend(true)
+  }
+  function handleDontKnow(event){
+    event.preventDefault();
+    setDontKnow(true);
+    setInputID(null)
+    setUnblockSend(true)
   }
   function handleSubmitMultipleChoice(event) {
     event.preventDefault();
-    
-    updateUser({
-      "current_question": user.current_question + 1
-    })
-      .then(response=>{
-      setUser(response)
-    }).catch(console.log())
-
-    if (correctAnswer === 'true') {
-      setSumCorrectAnswer(sumCorrectAnswer + 1)
-      sendResults(
-        {
-          stage1: sumCorrectAnswer + 1,
-          stage2: 0,
-          stage3: 0
-        }
-      ).then(console.log).catch((error) => console.log(error))
-
-    };
-    setView("solution")
+    if (unblockSend){
+      setDontKnow(false)
+      updateUser({
+        "current_question": user.current_question + 1
+      })
+        .then(response=>{
+        setUser(response)
+      }).catch(console.log())
+  
+      if (correctAnswer === 'true') {
+        setSumCorrectAnswer(sumCorrectAnswer + 1)
+        sendResults(
+          {
+            stage1: sumCorrectAnswer + 1,
+            stage2: 0,
+            stage3: 0,
+           
+          }
+        ).then(console.log).catch((error) => console.log(error))
+  
+      };
+      if (dontKnow) {
+        setCountDontKnow(countDontKnow + 1)
+        sendResults(
+          {
+            dontKnow: countDontKnow + 1,
+          }
+        ).then(console.log).catch((error) => console.log(error))
+  
+      };
+      setCorrectAnswer(null)
+      setUnblockSend(false)
+      setView("solution")
+    }
   }
 
   function handleSubmitTest(event) {
@@ -347,9 +371,10 @@ function MultipleChoicePage() {
                       }
                     })
                     }
+                    <Option key={`key`} value={true} border={`1px solid ${dontKnow ? colors.orange : colors.gray[600]}`} id={"id-dontknow"} background={`${dontKnow ? colors.orange : "none"}`} label={"No se"} onClick={handleDontKnow} />
                     <Button
                       width='88px'
-                      style={{ alignSelf: 'center', marginTop: '20px' }}> Enviar </Button>
+                      style={{background: `${unblockSend ? colors.orange : colors.gray[600]}`, alignSelf: 'center', marginTop: '20px' } } > Enviar </Button>
 
                   </OptionsSection>
                 </>
