@@ -47,11 +47,10 @@ function RecordRow({ record, users }) {
   }
 
   function handleDelete(userId) {
-    deleteUser(userId).then().catch()
+    deleteUser(userId).then(response=>{
+    }).catch()
   }
 
-  console.log('EL RECORD', record)
-  console.log('LAS SOLUCIONE', solutions)
   return (
     <>
       {users === "+0" ?

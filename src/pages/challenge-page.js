@@ -91,6 +91,8 @@ function ChallengePage() {
     }).catch()
 
     getStages().then(response => {
+      setStages(response)
+    }).catch()
 
     getCriterias().then(response => {
       setCriterias(response)
@@ -106,7 +108,6 @@ function ChallengePage() {
     }).catch()
 
     getChallengeEvaluations().then(response => {
-      console.log('HAY CHALLENGE EVALUATIONS', response)
       setChallengeEvaluations(response);
     }).catch()
 

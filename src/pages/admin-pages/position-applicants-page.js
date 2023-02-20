@@ -80,6 +80,10 @@ function PositionApplicantsPage() {
     setIsOpenFeedback(false);
   }
 
+  useEffect(()=>{
+
+  },[positionApplicants])
+
   return (
     <>
       <Navbar />

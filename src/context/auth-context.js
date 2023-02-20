@@ -116,7 +116,7 @@ function AuthProvider({ children }) {
         selectedUserFeedbacks,
         setSelectedUserFeedbacks,
         stages,
-        setStages
+        setStages,
         countDontKnow,
         setCountDontKnow
 
