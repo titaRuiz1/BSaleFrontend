@@ -13,23 +13,31 @@ function AuthProvider({ children }) {
   const [testQuestions, setTestQuestions] = useState([]);
   const [solutions, setSolutions] = useState([]);
   const [isOpenFeedback, setIsOpenFeedback] = useState(false)
-  const [selectedUserFeedbacks, setSelectedUserFeedbacks]= useState([])
+  const [selectedUserFeedbacks, setSelectedUserFeedbacks] = useState([])
   const [applicantResult, setApplicantResult] = useState(null);
   const [view, setView] = useState('position');
   const [arrMultiChoiceQuestion, setArrMultiChoiceQuestion] = useState([]);
   const [arrTestQuestion, setArrTestQuestion] = useState([]);
+  const [objStages, setObjStages] = useState({
+    stage1: '',
+    stage2: '',
+    stage3: ''
+  });
   const [arrChallengeEvaluation, setArrChallengeEvaluation] = useState([]);
   const [positionApplicants, setPositionApplicants] = useState([]);
+  const [stages, setStages] = useState(null);
   const [testDescription, setTestDescription] = useState([])
+  const [criterias, setCriterias] = useState(null)
   // Aca estan los acumuladores de puntaje
   const [sumCorrectAnswer, setSumCorrectAnswer] = useState(0);
   const [sumTest, setSumTest] = useState(0)
+
   const [average, setAverage] = useState(0);
   const [results, setResults] = useState({
     stage1: 0,
     stage2: 0,
-    stage3: 0
-
+    stage3: 0,
+    dontKnow: 0
   });
   const [newPosition, setNewPosition] = useState({
     title: '',
@@ -38,6 +46,8 @@ function AuthProvider({ children }) {
     test_questions_attributes: null,
     challenge_evaluations_attributes: null
   });
+  const [countDontKnow, setCountDontKnow] = useState(0);
+
   const navigate = useNavigate();
 
 
@@ -72,8 +82,12 @@ function AuthProvider({ children }) {
         arrTestQuestion,
         arrChallengeEvaluation,
         newPosition,
+        objStages,
+        setObjStages,
         sumTest,
         testDescription,
+        criterias,
+        setCriterias,
         setTestDescription,
         setSumTest,
         setNewPosition,
@@ -101,6 +115,11 @@ function AuthProvider({ children }) {
         setIsOpenFeedback,
         selectedUserFeedbacks,
         setSelectedUserFeedbacks,
+        stages,
+        setStages
+        countDontKnow,
+        setCountDontKnow
+
       }}
     >
       {children}

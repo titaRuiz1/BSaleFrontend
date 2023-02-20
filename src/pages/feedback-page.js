@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
 import { AiOutlineStar, AiTwotoneStar } from "react-icons/ai";
@@ -8,9 +8,13 @@ import { useAuth } from "../context/auth-context";
 import { colors, typography } from "../styles";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
-import { sendFeedbacks } from "../services/feedback-service"
-import { sendResults } from "../services/results-service"
+import { sendFeedbacks } from "../services/feedback-service";
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css'
+import { getResult, sendResults } from "../services/results-service"
 import { updateUser } from "../services/user-service";
+import { getChallengeEvaluations, getCriterias, getPositions } from "../services/position-service";
+
 
 const Container = styled.div`
   display: flex;
@@ -117,6 +121,7 @@ const Input = styled.input`
   height: 112px;
   padding: 16px
 `;
+
 const Wrapper1 = styled.div`
   display: flex;
   flex-direction: column;
@@ -141,10 +146,13 @@ justify-content:center;
 height: 324px
 width: 576px
 `
+
 function FeedbackPage() {
-  const { position, challengeEvaluations, average, setAverage, results, setResults, user, setUser } = useAuth();
+  const { position, challengeEvaluations, average, setAverage,
+     results, setResults, user, setUser, criterias,
+     setPosition,setSumCorrectAnswer, setSumTest, setCriterias, setChallengeEvaluations } = useAuth();
   const navigate = useNavigate();
-  const [currentCriteria, setCurrentCriteria] = useState(user.current_question-1);
+  const [currentCriteria, setCurrentCriteria] = useState(user.current_question - 1);
   const [colorStar, setColorStar] = useState(false);
   const [id, setId] = useState(null);
   const [startTest, setStartTest] = useState(false)
@@ -153,7 +161,12 @@ function FeedbackPage() {
     answerToImprove: "",
     challenge_evaluation_id: challengeEvaluations[currentCriteria].id,
   });
-
+  const { quill, quillRef } = useQuill({
+    readOnly: true,
+    modules: {
+      toolbar: false
+    }
+  })
   function handleStar(event) {
     const icon = event.currentTarget;
     if (icon.hasAttribute("data-icon-id")) {
@@ -172,11 +185,11 @@ function FeedbackPage() {
   function handleSubmit(event) {
     event.preventDefault();
     updateUser({
-      "current_question": user.current_question + 1 
-    })
-      .then(response=>{
+      "current_question": user.current_question + 1
+    }).then(response=>{
       setUser(response)
     }).catch(console.log())
+
 
     sendFeedbacks(form).then().catch((error) => console.log(error))
     sendResults(
@@ -185,6 +198,7 @@ function FeedbackPage() {
       }
     ).then().catch((error) => console.log(error))
     setAverage(average + (id * challengeEvaluations[currentCriteria].weighting))
+    quill?.setContents(JSON.parse(challengeEvaluations[currentCriteria].description))
     if (currentCriteria < challengeEvaluations.length - 1) {
       setCurrentCriteria(currentCriteria + 1)
       setColorStar(false);
@@ -199,86 +213,120 @@ function FeedbackPage() {
 
   }
 
+  useEffect(() => {
+    quill?.setContents(JSON.parse(challengeEvaluations[currentCriteria].description))
+  }, [quill, currentCriteria])
+  
+  useEffect(() => {
+    getPositions().then(response => {
+      setPosition(response);
+    }).catch()
+
+    getResult().then(response => {
+      if (response !== []) {
+        setSumCorrectAnswer(response.stage1);
+        setAverage(response.stage3);
+        setSumTest(response.stage2);
+      }
+    }).catch(error => console.log(error))
+
+    getCriterias().then(response => {
+      setCriterias(response)
+    }).catch()
+
+    getChallengeEvaluations().then(response => {
+      setChallengeEvaluations(response);
+    }).catch()
+
+  }, []);
+
+
   return (
     <>
       <Navbar />
-      {startTest ? 
-        <Container>
-          <Section>
-            <Title>{position.title}</Title>
-            <InsideSection>
-              <Title>Criterio {currentCriteria + 1} de 4: guidelines & principles of accesability</Title>
-              <Img width='576px' src={video} alt="video" />
-              <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
-              <Img width='700px' src={codigo} alt="video" />
-              <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
-              <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
-              <BottomSection>
-                <Subtitle>
-                  En base a la explicación provista, ¿consideras que el código de tu aplicación nombra correctamente las variables y hace un uso adecuado de las mismas?
-                </Subtitle >
-                <StarsDiv>
-                  <Stars>
-                    <StarCheck>
-                      {colorStar ? <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                        : <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ width: '72px', height: '72px', color: `${colors.lowOrange}` }} />
-                      }
-                    </StarCheck>
-                    <StarCheck>
-                      {(colorStar && (['2', '3', '4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="2" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                        : <AiOutlineStar onClick={handleStar} data-icon-id="2" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
-                      }
-                    </StarCheck>
-                    <StarCheck>
-                      {(colorStar && (['3', '4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="3" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                        : <AiOutlineStar onClick={handleStar} data-icon-id="3" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
-                      }
-                    </StarCheck>
-                    <StarCheck>
-                      {(colorStar && (['4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="4" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                        : <AiOutlineStar onClick={handleStar} data-icon-id="4" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
-                      }
-                    </StarCheck>
-                    <StarCheck>
-                      {(colorStar && (id === '5')) ? <AiTwotoneStar onClick={handleStar} data-icon-id="5" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
-                        : <AiOutlineStar onClick={handleStar} data-icon-id="5" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
-                      }
-                    </StarCheck>
-                  </Stars>
-                  <Labels>
-                    <StarLabel>En desacuerdo</StarLabel>
-                    <StarLabel>Parcialmente de acuerdo</StarLabel>
-                    <StarLabel>Totalmente de acuerdo</StarLabel>
-                  </Labels>
-                </StarsDiv>
 
-                <InputDiv onSubmit={handleSubmit}>
-                  <Subtitle marginB='0px'>¿Qué consideras que hiciste bien?</Subtitle>
-                  <Input
-                    type='text'
-                    id='answerDidWell'
-                    name='answerDidWell'
-                    value={form.answerDidWell}
-                    onChange={handleFormChange}
-                    placeholder='Escribe tu respuesta aqui'
-                  />
+      <Container>
+        <Section>
+          <Title>{position.title}</Title>
+          <InsideSection>
+            <Title>Criterio {currentCriteria + 1} de 4: guidelines & principles of accesability</Title>
+            {position.id > 4 ? <Text ref={quillRef}></Text> :
+              <>
+                <Img width='576px' src={video} alt="video" />
+                <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
+                <Img width='700px' src={codigo} alt="video" />
+                <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
+                <Text>Eget mollis mauris vivamus eget cursus tincidunt mauris nisi. Adipiscing sit dolor blandit et mattis. Sagittis non ultrices viverra non ac tempor. Posuere felis at ultricies purus libero diam. Non non urna tellus vehicula auctor ut massa malesuada. Nulla fermentum in donec mi maecenas iaculis amet mauris est.</Text>
+              </>
+            }
 
-                  <Subtitle marginB='0px'>¿Qué consideras que puedes mejorar?</Subtitle>
-                  <Input
-                    type='text'
-                    id='answerToImprove'
-                    name='answerToImprove'
-                    value={form.answerToImprove}
-                    onChange={handleFormChange}
-                    placeholder='Escribe tu respuesta aqui'
-                  />
-                  <Button width='120px' style={{ alignSelf: 'center', marginTop: '76px' }}>Siguiente</Button>
-                </InputDiv>
-              </BottomSection>
-            </InsideSection>
-          </Section>
+            <BottomSection>
+              <Subtitle>
+                En base a la explicación provista, ¿consideras que el código de tu aplicación nombra correctamente las variables y hace un uso adecuado de las mismas?
+              </Subtitle >
+              <StarsDiv>
+                <Stars>
+                  <StarCheck>
+                    {colorStar ? <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                      : <AiTwotoneStar onClick={handleStar} data-icon-id="1" style={{ width: '72px', height: '72px', color: `${colors.lowOrange}` }} />
+                    }
+                  </StarCheck>
+                  <StarCheck>
+                    {(colorStar && (['2', '3', '4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="2" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                      : <AiOutlineStar onClick={handleStar} data-icon-id="2" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
+                    }
+                  </StarCheck>
+                  <StarCheck>
+                    {(colorStar && (['3', '4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="3" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                      : <AiOutlineStar onClick={handleStar} data-icon-id="3" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
+                    }
+                  </StarCheck>
+                  <StarCheck>
+                    {(colorStar && (['4', '5'].includes(id))) ? <AiTwotoneStar onClick={handleStar} data-icon-id="4" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                      : <AiOutlineStar onClick={handleStar} data-icon-id="4" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
+                    }
+                  </StarCheck>
+                  <StarCheck>
+                    {(colorStar && (id === '5')) ? <AiTwotoneStar onClick={handleStar} data-icon-id="5" style={{ color: `${colors.orange}`, width: '72px', height: '72px' }} />
+                      : <AiOutlineStar onClick={handleStar} data-icon-id="5" style={{ width: '72px', height: '72px', color: `${colors.gray[600]}` }} />
+                    }
+                  </StarCheck>
+                </Stars>
+                <Labels>
+                  <StarLabel>En desacuerdo</StarLabel>
+                  <StarLabel>Parcialmente de acuerdo</StarLabel>
+                  <StarLabel>Totalmente de acuerdo</StarLabel>
+                </Labels>
+              </StarsDiv>
 
-        </Container>
+              <InputDiv onSubmit={handleSubmit}>
+                <Subtitle marginB='0px'>¿Qué consideras que hiciste bien?</Subtitle>
+                <Input
+                  type='text'
+                  id='answerDidWell'
+                  name='answerDidWell'
+                  value={form.answerDidWell}
+                  onChange={handleFormChange}
+                  placeholder='Escribe tu respuesta aqui'
+                />
+
+                <Subtitle marginB='0px'>¿Qué consideras que puedes mejorar?</Subtitle>
+                <Input
+                  type='text'
+                  id='answerToImprove'
+                  name='answerToImprove'
+                  value={form.answerToImprove}
+                  onChange={handleFormChange}
+                  placeholder='Escribe tu respuesta aqui'
+                />
+                <Button width='120px' style={{ alignSelf: 'center', marginTop: '76px' }}>Siguiente</Button>
+              </InputDiv>
+            </BottomSection>
+          </InsideSection>
+        </Section>
+
+      </Container>
+
         :
         <Wrapper1 style={{alignItems:"center", justifyContent:"center"}}>
           <Wrapper1 style={{ maxWidth:"868px", gap: "32px", marginTop:"48px"}}>

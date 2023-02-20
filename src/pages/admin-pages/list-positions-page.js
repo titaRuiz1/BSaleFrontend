@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { GrClose } from "react-icons/gr";
 import { useState, useEffect } from "react";
+import ReactMarkdown from 'react-markdown';
 import { GrAddCircle } from "react-icons/gr";
 import { Navigate, useNavigate } from "react-router";
 import { Link } from "react-router-dom"
@@ -56,9 +57,9 @@ const Wrapper1 = styled.div`
 `;
 
 function PositionsListPage() {
-  const { user, allPositions, setAllPositions, results, setPositionApplicants, setSolutions } = useAuth();
+
+  const { user, allPositions, setAllPositions, results, setPositionApplicants, setSolutions, value } = useAuth();
   const navigate = useNavigate();
-  const [showTable, setShowTable] = useState(false);
 
   useEffect(() => {
     if (user.user_type === "admin") {
@@ -83,7 +84,9 @@ function PositionsListPage() {
     }).catch(error => {
       console.log("ERROR", error)
     })
-    setShowTable(true);
+    
+    navigate(`applicants`)
+
   }
 
   function handleAddPosition(event) {
@@ -91,29 +94,24 @@ function PositionsListPage() {
 
     navigate(`/new-position`)
   }
+  
   return (
     <>
       <Navbar />
       {user.user_type === "admin" ?
-        <>
-
-          {showTable ? <PositionApplicantsPage /> : (
-            <Container>
-              <Title>Posiciones</Title>
-              {!allPositions ? "Loading..." : (allPositions.map((pos) =>
-                <Wrapper1>
-                  <Subtitle
-                    onClick={handlePosition}
-                    id={pos.id}>• {pos.title}</Subtitle>
-                </Wrapper1>
-              ))}
-              <Wrapper1 border='dashed' style={{ justifyContent: 'center' }}>
-                <Subtitle onClick={handleAddPosition}>Add new position <GrAddCircle style={{ alignSelf: 'center' }} /> </Subtitle>
-              </Wrapper1>
-            </Container>
-          )}
-
-        </>
+        <Container>
+          <Title>Posiciones</Title>
+          {!allPositions ? "Loading..." : (allPositions.map((pos) =>
+            <Wrapper1>
+              <Subtitle
+                onClick={handlePosition}
+                id={pos.id}>• {pos.title}</Subtitle>
+            </Wrapper1>
+          ))}
+          <Wrapper1 border='dashed' style={{ justifyContent: 'center' }}>
+            <Subtitle onClick={handleAddPosition}>Add new position <GrAddCircle style={{ alignSelf: 'center' }} /> </Subtitle>
+          </Wrapper1>
+        </Container>
         :
         <Unauthorized />
       }

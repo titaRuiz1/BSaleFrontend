@@ -5,6 +5,8 @@ import { typography } from "../styles";
 import { Button } from "../components/buttons";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/auth-context";
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css'
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -42,17 +44,31 @@ const Text2 = styled.p`
 
 function FirstStagePage() {
   const navigate = useNavigate();
-  const {position} = useAuth();
+  const { position, stages } = useAuth();
+  const { quill, quillRef } = useQuill({
+    readOnly: true,
+    modules: {
+      toolbar: false
+    }
+  })
+
+  useEffect(() => {
+    quill?.setContents(JSON.parse(stages.stage1))
+  }, [quill])
 
   return (
-    <Wrapper1 style={{alignItems:"center", justifyContent:"center"}}>
+    <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
       <Navbar />
-      <Wrapper1 style={{ maxWidth:"868px", gap: "32px", marginTop:"48px"}}>
+      <Wrapper1 style={{ maxWidth: "868px", gap: "32px", marginTop: "48px" }}>
         <Text1>{position.title}</Text1>
         <Text1>Etapa 1: Fundamentos de programacion</Text1>
-        <Text2>La programación se construye sobre una lógica algorítmica, es decir, sobre un procedimiento compuesto por pasos y estructurado en el ingreso y la salida de datos. Sobre este proceso se efectúan operaciones matemáticas, basadas en álgebra booleana que procesan variables binarias. Estas acciones permiten comparar, clasificar y relacionar la información con el fin de inferir resultados específicos según se requiera. Los desarrolladores usan lenguajes de programación que les permiten convertir los algoritmos en instrucciones que el computador puede ejecutar. Estos lenguajes son un conjunto de reglas sintácticas y morfológicas sobre un alfabeto que funcionan como un standar de comunicación con la máquina.</Text2>
-        <Text2>Según la necesidad o la complejidad de los algoritmos o instrucciones, se usan diferentes lenguajes y cada uno opera con un conjunto de reglas y estructuras distintos. Estas estructuras permiten acceder a variables, funciones, objetos, cadenas y otras herramientas que procesan la información.</Text2>
-        <Wrapper1  style={{justifyContent:"center", alignItems:"center"}}>
+        {position.id > 4 ? <Text2 ref={quillRef}></Text2> :
+          <>
+            <Text2>La programación se construye sobre una lógica algorítmica, es decir, sobre un procedimiento compuesto por pasos y estructurado en el ingreso y la salida de datos. Sobre este proceso se efectúan operaciones matemáticas, basadas en álgebra booleana que procesan variables binarias. Estas acciones permiten comparar, clasificar y relacionar la información con el fin de inferir resultados específicos según se requiera. Los desarrolladores usan lenguajes de programación que les permiten convertir los algoritmos en instrucciones que el computador puede ejecutar. Estos lenguajes son un conjunto de reglas sintácticas y morfológicas sobre un alfabeto que funcionan como un standar de comunicación con la máquina.</Text2>
+            <Text2>Según la necesidad o la complejidad de los algoritmos o instrucciones, se usan diferentes lenguajes y cada uno opera con un conjunto de reglas y estructuras distintos. Estas estructuras permiten acceder a variables, funciones, objetos, cadenas y otras herramientas que procesan la información.</Text2>
+          </>
+        }
+        <Wrapper1 style={{ justifyContent: "center", alignItems: "center" }}>
           <Button
             width="90px"
             onClick={() => navigate("/stage1")}> 

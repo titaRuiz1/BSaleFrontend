@@ -9,7 +9,12 @@ import { Button } from "../../components/buttons";
 import MultipleChoiceQuestionForm from "../../components/new-multiple-question-form";
 import TestQuestionForm from "../../components/test-question-form";
 import ChallengeEvluationForm from "../../components/challenge-evaluation-form";
-import Confirmation from "../../components/confirmation-page"
+import Confirmation from "../../components/confirmation-page";
+import NewStagePage from "../../components/stages-form"
+
+import { useQuill } from 'react-quilljs';
+import toolbar from "../../components/toolbar";
+import 'quill/dist/quill.snow.css'
 
 const Container = styled.div`
   display: flex;
@@ -63,8 +68,12 @@ const Title = styled.p`
 `;
 
 function NewPositionPage() {
-  // const [newPosition, setNewPosition] = useState({ title: '', description: '' });
   const { view, setView, newPosition, setNewPosition } = useAuth();
+  const { quill, quillRef } = useQuill({
+    modules: {
+      toolbar: toolbar
+    }
+  })
 
   function handleSubmitPosition(event) {
     event.preventDefault();
@@ -78,8 +87,11 @@ function NewPositionPage() {
 
   function handleSubmitPosition(event) {
     event.preventDefault();
+    const data = JSON.stringify(quill.getContents())
+    setNewPosition({ ...newPosition, description: data })
+    setView('stages')
+   // setView('multiple_choice')
 
-    setView('multiple_choice')
   }
 
   return (
@@ -101,25 +113,19 @@ function NewPositionPage() {
                   onChange={handleChange}
                   placeholder="New Position"
                   style={{ borderRadius: '8px' }} />
-
-                <TextArea
-                  label={"Deescripción de la nueva Posición"}
-                  id="description"
-                  name="description"
-                  cols='60'
-                  value={newPosition.description}
-                  onChange={handleChange}
-                  placeholder="This position..." />
+                <div ref={quillRef}></div>
               </FieldSet>
               <Button>Siguiente</Button>
             </Form>
           </FormContainer>
-          : view === 'multiple_choice' ?
-            <MultipleChoiceQuestionForm /> :
-            view === 'test_question' ?
-              <TestQuestionForm /> :
-              view === 'challenge_evaluation' ? <ChallengeEvluationForm /> :
-                view === 'confirmation' ? <Confirmation /> : null
+          : view === 'stages' ?
+            <NewStagePage />
+            : view === 'multiple_choice' ?
+              <MultipleChoiceQuestionForm /> :
+              view === 'test_question' ?
+                <TestQuestionForm /> :
+                view === 'challenge_evaluation' ? <ChallengeEvluationForm /> :
+                  view === 'confirmation' ? <Confirmation /> : null
         }
 
       </Container>
