@@ -28,7 +28,7 @@ function App() {
     <Wrapper>
       <Routes>
         <Route path="stage2" element={<SecondStagePage />} />
-        <Route index element={!user ? <Navigate to="login" /> : user.user_type === "admin" ? <Navigate to="admin/index" /> : <Navigate to="challenge" />} />
+        <Route index element={!user ? <Navigate to="login" /> : user.user_type === "admin" ? <Navigate to="admin" /> : <Navigate to="challenge" />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="challenge" element={<ChallengePage />} />
         <Route path="first-stage" element={<FirstStagePage />} />
