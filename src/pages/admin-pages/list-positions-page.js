@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import { GrAddCircle } from "react-icons/gr";
 import { Navigate, useNavigate } from "react-router";
 import { Link } from "react-router-dom"
-import { getAllPositions } from "../../services/position-service"
+import { getAllPositions, getSolutions, getSolutionsByPosition } from "../../services/position-service"
 import { useAuth } from "../../context/auth-context"
 import { colors, typography } from "../../styles";
 import { Navbar } from "../../components/navbar";
@@ -57,7 +57,8 @@ const Wrapper1 = styled.div`
 `;
 
 function PositionsListPage() {
-  const { user, allPositions, setAllPositions, results, setPositionApplicants, value } = useAuth();
+
+  const { user, allPositions, setAllPositions, results, setPositionApplicants, setSolutions, value } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,7 +79,14 @@ function PositionsListPage() {
       console.log("ERROR", error)
     })
 
+    getSolutionsByPosition(event.target.id).then(response => {
+      setSolutions(response)
+    }).catch(error => {
+      console.log("ERROR", error)
+    })
+    
     navigate(`applicants`)
+
   }
 
   function handleAddPosition(event) {

@@ -29,6 +29,11 @@ export async function getSolutions() {
 }
 
 
+export async function getSolutionsByPosition(position_id) {
+  const solutions = await apiFetch(`solutions/${position_id}`);
+  return solutions;
+}
+
 export async function getStages() {
   const stages = await apiFetch(`positions_stg`);
   return stages;
