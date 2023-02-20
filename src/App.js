@@ -12,6 +12,9 @@ import PositionsListPage from "./pages/admin-pages/list-positions-page"
 import NewUserForm from "./components/new-user-form";
 import NewPositionPage from "./pages/admin-pages/new-position-page"
 import { useAuth } from "./context/auth-context";
+import Table1 from "./components/table1/table1";
+import PruebaText from "./pages/prueba-text"
+
 
 const Wrapper = styled.div`
 height: 100%;
@@ -36,14 +39,15 @@ function App() {
         {/* <Route path="test-question" element={<TestQuestionPage />} /> */}
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="results" element={<ResultsPage />} />
-        
+
         {/* ADMIN */}
 
-        <Route path="admin/applicants" element={<PositionApplicantsPage/>}/>
+        <Route path="admin/applicants" element={<PositionApplicantsPage />} />
         {/* <Route path="positions-list" element={user?.email.includes('admi') ? <PositionsListPage /> : <ChallengePage />} /> */}
         <Route path="admin" element={<PositionsListPage />} />
         <Route path="new-user" element={<NewUserForm />} />
         <Route path="new-position" element={<NewPositionPage />} />
+        <Route path="prueba" element={<PruebaText />} />
 
 
       </Routes>

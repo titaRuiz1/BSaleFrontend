@@ -28,6 +28,12 @@ export async function getSolutions() {
   return solutions;
 }
 
+
+export async function getStages() {
+  const stages = await apiFetch(`positions_stg`);
+  return stages;
+}
+
 export async function getCriterias() {
   return await apiFetch(`criterias`);
 }

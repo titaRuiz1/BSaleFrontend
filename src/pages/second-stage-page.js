@@ -11,6 +11,8 @@ import { sendDataTestE2E, sendGithubUrl, sendUrl } from "../services/teste2e-ser
 import { FiCheckCircle } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md"
 import { updateUser } from "../services/user-service";
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css'
 import { sendResults } from "../services/results-service";
 
 const Wrapper1 = styled.div`
@@ -85,16 +87,23 @@ const Input = styled.input`
 function SecondStagePage() {
   const [testStatus, setTestStatus] = useState(null);  
   const [projectUrl, setProjectUrl] = useState("");
-  const [githubRepoUrl, setGithubRepoUrl]=useState("")
+  const [githubRepoUrl, setGithubRepoUrl] = useState("")
+  const [statusGithub, setStatusGithub] = useState(null)
   const [requestGithubResponse, setRequestGithubResponse] = useState(null)
   const navigate = useNavigate();
-  const { challengeEvaluations, setUser, position, setSumTest, sumTest, testDescription } = useAuth();
+  const { challengeEvaluations, setUser, position, stages, setSumTest, sumTest, testDescription } = useAuth();
+  const { quill, quillRef } = useQuill({
+    readOnly: true,
+    modules: {
+      toolbar: false
+    }
+  })
+
 
   function handleNextButtonClick() {
     updateUser({
-      "current_stage": 3,  
-    })
-      .then(response=>{
+      "current_stage": 3,
+    }).then(response=>{
       setUser(response)
     }).catch(console.log())
     
@@ -122,46 +131,57 @@ function SecondStagePage() {
         setSumTest(sumCurrentTest)
       })
       .catch(error=> console.log(error))  
+
   }
 
-  function handleGithub(e){
+  function handleGithub(e) {
     e.preventDefault();
     sendGithubUrl({repo: githubRepoUrl}) 
       .then(response=>{
         setRequestGithubResponse(response.response)
       })
-      .catch(error=> console.log(error))
+      .catch(error => console.log(error))
   }
+
+  useEffect(() => {
+    quill?.setContents(JSON.parse(stages.stage2))
+  }, [quill])
 
   return (
     <Wrapper1>
       <Navbar />
+
       <Wrapper2 style={{ width: "58%", gap: "32px", marginTop:"48px"}}>
         <Text1>{position.title} </Text1>
         <Text1>Etapa 2:Desarrollo web</Text1>
-        <Text2>Requerimientos</Text2>
-        <Text3>With almost every business application process being linked with a web portal, the website has become an integral part of any organization. Satisfying the end user's needs is one of the key principles of designing an effective website. Because there are different users for any given website, there are different criteria to consider for ranking the website. Therefore, the evaluation of the website will proceed as a multi-criteria process</Text3>
+        {position.id > 4 ? <Text2 ref={quillRef}></Text2> :
+          <>
+            <Text2>Requerimientos</Text2>
+            <Text3>With almost every business application process being linked with a web portal, the website has become an integral part of any organization. Satisfying the end user's needs is one of the key principles of designing an effective website. Because there are different users for any given website, there are different criteria to consider for ranking the website. Therefore, the evaluation of the website will proceed as a multi-criteria process</Text3>
+          </>
+        }
         <Text2>Criterio de evaluacion</Text2>
         <Text3>Some people consider only the aesthetics or beauty of a website. Others are only concerned with accuracy of the information on webpages. The purpose of this stage is to approach a more wholistic and well rounded set of evaluation criteria. Let’s start with the criteria listed below:</Text3>
         <Table1 records={challengeEvaluations} />
         <Text2>Tests</Text2>
         <Text3>El testing de software es una de las actividades más importantes y fundamentales en el desarrollo de un proyecto, ya que posibilita los procesos, métodos de trabajo y herramientas necesarias para garantizar la calidad de cualquier desarrollo. A continuacion, se mostraran los test por los que pasara tu challenge! </Text3>
         <Wrapper1>
-          <Wrapper3 style={{gap:"4px"}}>
+          <Wrapper3 style={{ gap: "4px" }}>
             <Input
               name="github-repo-url"
               id="github-repo-url"
               type="text"
               placeholder="project-url"
               value={projectUrl}
-              onChange={(e)=> setProjectUrl(e.target.value)}
+              onChange={(e) => setProjectUrl(e.target.value)}
             />
-            <Button onClick={handleTeste2e} width="127px" style={{background:"#31B9DD"}}>
+            <Button onClick={handleTeste2e} width="127px" style={{ background: "#31B9DD" }}>
               Iniciar tests
             </Button>
           </Wrapper3>
         </Wrapper1>
         <TestsContainer>
+
           {testStatus ?
             testStatus.tests.map((test, index)=>{
               console.log(testDescription[index])
@@ -185,10 +205,10 @@ function SecondStagePage() {
         </Text3>
         <Wrapper2>
           <ul>
-            <li style={{ listStyleType: "disc", marginLeft:"17px" }}>
+            <li style={{ listStyleType: "disc", marginLeft: "17px" }}>
               <Text6>Brindar acceso a Bsale-IO a tu repositorio privado de GitHub</Text6>
             </li>
-            <li style={{ listStyleType: "disc", marginLeft:"17px" }}>
+            <li style={{ listStyleType: "disc", marginLeft: "17px" }}>
               <Text6>Registra la URL de tu proyecto en el siguiente campo</Text6>
             </li>
           </ul>
@@ -209,7 +229,7 @@ function SecondStagePage() {
               type="text"
               placeholder="github-repo-url"
               value={githubRepoUrl}
-              onChange={(e)=> setGithubRepoUrl(e.target.value)}
+              onChange={(e) => setGithubRepoUrl(e.target.value)}
             />
             <Button width="83px" onClick={handleGithub}>
               Enviar

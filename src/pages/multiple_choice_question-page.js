@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
 import { useAuth } from "../context/auth-context";
@@ -8,8 +8,10 @@ import { Button } from "../components/buttons";
 import { Option } from "../components/option";
 import Editor from "@monaco-editor/react";
 import { getMultipleChoiceQuestions } from "../services/position-service";
-import { sendResults } from "../services/results-service"
+import { sendResults } from "../services/results-service";
 import { updateUser } from "../services/user-service";
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css'
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -49,10 +51,13 @@ const InsideSection = styled.div`
   margin-top: 32px;
 `;
 
-const TextSection = styled.p`
+const TextSection = styled.div`
   margin-top: 36px;
+  margin-bottom: 8px;
   color: ${colors.gray[600]};
   ${typography.text.lg};
+  align-self: center;
+  border:none
   text-align: justify;
   margin-bottom:12px;
 `;
@@ -120,18 +125,25 @@ function MultipleChoicePage() {
   const [inputID, setInputID] = useState(null);
   const { position, mulChoiceQuestions,
     sumCorrectAnswer, setSumCorrectAnswer,
-    solutions, testQuestions, setResults, results, user, setUser, countDontKnow, setCountDontKnow} = useAuth();
+    solutions, testQuestions, setResults, results, user, setUser, countDontKnow, setCountDontKnow, newPosition} = useAuth();
+
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(
-    user.current_question <= mulChoiceQuestions.length ? user.current_question-1 : user.current_question-mulChoiceQuestions.length-1);
+    user.current_question <= mulChoiceQuestions.length ? user.current_question - 1 : user.current_question - mulChoiceQuestions.length - 1);
   const [question_type, setQuestion_type] = useState(
     user.current_question > mulChoiceQuestions.length ? "test" : "multiple");
   const [view, setView] = useState("question")
-  const [code, setCode] = useState(user.current_question > mulChoiceQuestions.length ? testQuestions[user.current_question-mulChoiceQuestions.length-1].question.code : null);
+  const [code, setCode] = useState(user.current_question > mulChoiceQuestions.length ? testQuestions[user.current_question - mulChoiceQuestions.length - 1].question.code : null);
   const [test1Status, setTest1Status] = useState(null);
   const [test2Status, setTest2Status] = useState(null);
   const [test3Status, setTest3Status] = useState(null);
   const [test4Status, setTest4Status] = useState(null);
+  const { quill, quillRef } = useQuill({
+    readOnly: true,
+    modules: {
+      toolbar: false
+    }
+  })
   const [dontKnow, setDontKnow] = useState(false);
   const [unblockSend, setUnblockSend] = useState(false);
 
@@ -183,29 +195,32 @@ function MultipleChoicePage() {
       };
       setCorrectAnswer(null)
       setUnblockSend(false)
+      quill?.setContents(JSON.parse(solutions[currentQuestion].solution.description))
       setView("solution")
     }
   }
 
   function handleSubmitTest(event) {
     event.preventDefault();
-   
+
     let body;
-    if(solutions.length===user.current_question){
-      body={
+    if (solutions.length === user.current_question) {
+      body = {
         "current_stage": 2,
-        "current_question":1
+        "current_question": 1
       }
     }
-    else{
-      body={
+    else {
+      body = {
         "current_question": user.current_question + 1
       }
+
     }
     updateUser(body)
     .then(response=>{
       setUser(response)
     }).catch(console.log())
+
 
     if (test1Status && test2Status && test3Status && test4Status) {
       setResults({ ...results, stage1: sumCorrectAnswer + 1 })
@@ -222,6 +237,7 @@ function MultipleChoicePage() {
     setTest2Status(null)
     setTest3Status(null)
     setTest4Status(null)
+    quill?.setContents(JSON.parse(solutions[currentQuestion + mulChoiceQuestions.length].solution.description))
     setView("solution")
   }
 
@@ -260,6 +276,7 @@ function MultipleChoicePage() {
           if (idx === 3) setTest4Status(false)
         }
       }
+
       if (test.input_type === 'array_string') {
         currentTest = eval(`(${code})`);
         const input = test.input.slice(1, test.input.length - 1).split(',')
@@ -335,6 +352,7 @@ function MultipleChoicePage() {
         setQuestion_type("test")
         setCode(testQuestions[0].question.code)
         setCurrentQuestion(0)
+        quill?.setContents(JSON.parse(testQuestions[0].question.description))
       }
     } else {
       if (currentQuestion < testQuestions.length - 1) {
@@ -347,6 +365,30 @@ function MultipleChoicePage() {
     }
     setView("question")
   }
+
+  // question_type === "multiple" ?
+  //   quill?.setContents(JSON.parse(mulChoiceQuestions[currentQuestion].question.description))
+  //   : quill?.setContents(JSON.parse(testQuestions[currentQuestion].question.description))
+  useEffect(() => {
+    if (view === "question") {
+      if (question_type === "multiple") {
+        console.log(mulChoiceQuestions[currentQuestion].question.description)
+        quill?.setContents(JSON.parse(mulChoiceQuestions[currentQuestion].question.description))
+
+      } else {
+        console.log(testQuestions[currentQuestion].question.description)
+        console.log('entre a test')
+        quill?.setContents(JSON.parse(testQuestions[currentQuestion].question.description))
+
+      }
+    }
+    if (view === 'solution') {
+      if (question_type === "multiple") {
+        quill?.setContents(JSON.parse(solutions[currentQuestion].solution.description))
+      }
+    }
+  }, [quill, currentQuestion])
+
   return (
     <Wrapper1>
       <Navbar />
@@ -358,9 +400,16 @@ function MultipleChoicePage() {
               question_type === "multiple" ?
                 <>
                   <p>Pregunta {currentQuestion + 1} de {solutions.length}</p>
-                  <TextSection>
-                    {mulChoiceQuestions[currentQuestion].question.description}
-                  </TextSection>
+
+                  {position.id > 4 ? <TextSection ref={quillRef}></TextSection> :
+                    <TextSection>
+                      {mulChoiceQuestions[currentQuestion].question.description}
+                    </TextSection>
+                  }
+
+                  {/* <TextSection ref={quillRef}> */}
+                  {/* {mulChoiceQuestions[currentQuestion].question.description} */}
+                  {/* </TextSection> */}
                   {mulChoiceQuestions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={mulChoiceQuestions[currentQuestion]?.url} />}
                   <OptionsSection onSubmit={handleSubmitMultipleChoice}>
                     {mulChoiceQuestions[currentQuestion].options && mulChoiceQuestions[currentQuestion].options.map(option => {
@@ -380,71 +429,86 @@ function MultipleChoicePage() {
                 </>
                 :
                 <>
-                  <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}>
-                    <Wrapper2 style={{ gap: "32px" }}>
+                  <p>Pregunta {currentQuestion + 1} de {solutions.length}</p>
+                  {position.id > 4 ? <TextSection ref={quillRef}></TextSection> :
+                    <TextSection >
+                      {mulChoiceQuestions[currentQuestion].question.description}
+                    </TextSection>
+                  }
+                  {/* {mulChoiceQuestions[currentQuestion].question.description} */}
+                  {/* </TextSection> */}
+                  {/* <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}> */}
+                  {/* <Wrapper2 style={{ gap: "32px" }}>
+                      <Text1>{position.title}</Text1>
+
                       <Text1>Pregunta {currentQuestion + mulChoiceQuestions?.length + 1} de {solutions.length}</Text1>
-                    </Wrapper2>
-                    <Text2>{testQuestions[currentQuestion].question.description} </Text2>
-                    <Wrapper2 style={{ height: "270px", alignItems: "center", justifyContent: "center", padding: "0px 30px" }}>
-                      <Editor
-                        language="javascript"
-                        theme="vs-dark"
-                        value={code}
-                        onChange={code => setCode(code)}
-                        width="100%"
-                        height="100%"
-                      />
-                    </Wrapper2>
-                    <Wrapper1>
-                      <Button width="71px" onClick={runTests}>Test</Button>
-                    </Wrapper1>
-                    <TestsContainer>
-                      {test1Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[0].test} />
-                        :
-                        test1Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[0].test} />
-                          :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[0].test} />
-                      }
-                      {test2Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[1].test} />
-                        :
-                        test2Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[1].test} />
-                          :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[1].test} />
-                      }
-                      {test3Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[2].test} />
-                        :
-                        test3Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[2].test} />
-                          :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[2].test} />
-                      }
-                      {test4Status === null ?
-                        <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[3].test} />
-                        :
-                        test4Status === true ?
-                          <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[3].test} />
-                          :
-                          <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[3].test} />
-                      }
-                    </TestsContainer>
-                    <Wrapper1>
-                      <Button width="90px" onClick={handleSubmitTest}>
-                        Enviar
-                      </Button>
-                    </Wrapper1>
+                    </Wrapper2> */}
+                  {/* <Text2 ref={quillRef}></Text2> */}
+                  {/* <Text2 ref={quillRef}>{testQuestions[currentQuestion].question.description} </Text2> */}
+                  <Wrapper2 style={{ height: "270px", alignItems: "center", justifyContent: "center", padding: "0px 30px" }}>
+                    <Editor
+                      language="javascript"
+                      theme="vs-dark"
+                      value={code}
+                      onChange={code => setCode(code)}
+                      width="100%"
+                      height="100%"
+                    />
                   </Wrapper2>
+                  <Wrapper1>
+                    <Button width="71px" onClick={runTests}>Test</Button>
+                  </Wrapper1>
+                  <TestsContainer>
+                    {test1Status === null ?
+                      <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[0].test} />
+                      :
+                      test1Status === true ?
+                        <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[0].test} />
+                        :
+                        <Option padding={`0px 19px`} border={`none`} id={`answer1`} value={`answer1`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[0].test} />
+                    }
+                    {test2Status === null ?
+                      <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[1].test} />
+                      :
+                      test2Status === true ?
+                        <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[1].test} />
+                        :
+                        <Option padding={`0px 19px`} border={`none`} id={`answer2`} value={`answer2`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[1].test} />
+                    }
+                    {test3Status === null ?
+                      <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[2].test} />
+                      :
+                      test3Status === true ?
+                        <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[2].test} />
+                        :
+                        <Option padding={`0px 19px`} border={`none`} id={`answer3`} value={`answer3`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[2].test} />
+                    }
+                    {test4Status === null ?
+                      <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.white}`} label={testQuestions[currentQuestion]?.tests[3].test} />
+                      :
+                      test4Status === true ?
+                        <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.green}`} label={testQuestions[currentQuestion]?.tests[3].test} />
+                        :
+                        <Option padding={`0px 19px`} border={`none`} id={`answer4`} value={`answer4`} background={`${colors.red}`} label={testQuestions[currentQuestion]?.tests[3].test} />
+                    }
+                  </TestsContainer>
+                  <Wrapper1>
+                    <Button width="90px" onClick={handleSubmitTest}>
+                      Enviar
+                      </Button>
+                  </Wrapper1>
+                  {/* </Wrapper2> */}
                 </>
               :
               <>
-                <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 1 + mulChoiceQuestions.length} de 10</p>
-                <TextSection>
-                  {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion + mulChoiceQuestions.length].solution.description}
-                </TextSection>
+                <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de 10</p>
+
+                {position.id > 4 ? <TextSection ref={quillRef}></TextSection> :
+                  <TextSection >
+                    {question_type === "multiple" ? solutions[currentQuestion].solution.description : solutions[currentQuestion + 5].solution.description}
+                  </TextSection>
+                }
+
                 {question_type === "multiple" ?
                   solutions[currentQuestion]?.url === 'sin imagen' ?
                     null :
