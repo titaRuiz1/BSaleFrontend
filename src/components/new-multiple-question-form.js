@@ -135,11 +135,6 @@ function MultipleChoiceQuestionForm() {
     setNewMultiQuestion({ ...newMultiQuestion, solution_attributes: { description: data } })
     setShowAdd(true)
   }
-  function handleBack(event) {
-    event.preventDefault();
-    console.log('back')
-    setView('position')
-  };
 
   function handleAdd(event) {
     event.preventDefault();
@@ -343,14 +338,11 @@ function MultipleChoiceQuestionForm() {
         }
         {showAdd ?
           <DivButtons>
-            <Button onClick={handleBack}>Atras</Button>
             <Button width='100%' onClick={handleAdd}>Añadir nueva pregunta multiple</Button>
             <Button onClick={handleNext}>Siguiente</Button>
           </DivButtons>
           :
-          <DivButtons>
-            <Button onClick={handleBack}>Atras</Button>
-          </DivButtons>
+          null
         }
       </FormContainer>
     </>

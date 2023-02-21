@@ -42,13 +42,22 @@ const DivButtons = styled.div`
 
 function Confirmation() {
   const navigate = useNavigate();
-  const { setView, arrChallengeEvaluation, setAllPositions, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion } = useAuth();
+  const { setAllPositions, newPosition, setNewPosition } = useAuth();
 
 
-  function handleBack(event) {
+  function handleCancel(event) {
     event.preventDefault();
-    console.log('back')
-    setView('challenge_evaluation')
+    console.log('back');
+    setNewPosition({
+      title: '',
+      description: '',
+      multiple_choice_questions_attributes: null,
+      test_questions_attributes: null,
+      challenge_evaluations_attributes: null,
+      stage_attributes: null,
+      stage2s_attributes: null
+    })
+    navigate(`/admin`)
   };
 
   function handleConfirm(event) {
@@ -66,7 +75,7 @@ function Confirmation() {
       <FormContainer>
         <Title>Confirmar nueva posición</Title>
         <DivButtons>
-          <Button onClick={handleBack}>Atras</Button>
+          <Button onClick={handleCancel}>Cancelar</Button>
           <Button onClick={handleConfirm}>Confirmar</Button>
         </DivButtons>
       </FormContainer>

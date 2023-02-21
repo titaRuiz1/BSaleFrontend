@@ -57,16 +57,9 @@ const Form = styled.form`
   align-items:center;
 `;
 
-const Title = styled.p`
-  ${typography.text.xxl};
-  color: ${colors.blue};
-  margin: ${(props) => props.marginB || '32px'};
-`;
-
 function NewStage2Page() {
   const [editorContent, setEditorContent] = useState('');
-  const [showAdd, setShowAdd] = useState(false);
-  const { view, setView, newPosition, setNewPosition, objStages, setObjStages } = useAuth();
+  const { setView, objStages, setObjStages } = useAuth();
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: toolbar
@@ -83,17 +76,6 @@ function NewStage2Page() {
     setView('test_descriptions')
   };
 
-  function handleBack(event) {
-    event.preventDefault();
-    console.log('back')
-    setView('position')
-  };
-
-  function handleNext(event) {
-    event.preventDefault();
-    console.log('next')
-    setView('test_descriptions')
-  }
 
   function handleTextChange() {
     setEditorContent(quill.root.innerHTML);
@@ -116,17 +98,6 @@ function NewStage2Page() {
           </Form>
 
         </FieldSet>
-
-        {showAdd ?
-          <DivButtons>
-            <Button onClick={handleBack}>Atras</Button>
-            <Button onClick={handleNext}>Siguiente</Button>
-          </DivButtons>
-          :
-          <DivButtons>
-            <Button onClick={handleBack}>Atras</Button>
-          </DivButtons>
-        }
 
       </FormContainer>
     </>

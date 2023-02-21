@@ -100,8 +100,7 @@ function TestQuestionForm() {
   const [showSol, setShowSol] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [editorContent, setEditorContent] = useState('');
-  const [newSolution, setNewSolution] = useState({ description: '' })
-  const { setView, arrTestQuestion, setArrTestQuestion, newPosition } = useAuth();
+  const { setView, arrTestQuestion, setArrTestQuestion } = useAuth();
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: toolbar
@@ -109,15 +108,6 @@ function TestQuestionForm() {
   });
   quill?.on('text-change', handleTextChange);
 
-  function handleChange(event) {
-    const { name, value } = event.target
-    if (event.target.id === 'testQ1') {
-      setNewTestQuestion({ ...newTestQuestion, [name]: value })
-    }
-    else {
-      setNewSolution({ description: value })
-    }
-  };
 
   function handleSubmitTestQuestion(event) {
     event.preventDefault();
@@ -137,12 +127,6 @@ function TestQuestionForm() {
     setShowAdd(true)
   }
 
-  function handleBack(event) {
-    event.preventDefault();
-    console.log('back')
-    setView('multiple_choice')
-  };
-
   function handleAdd(event) {
     event.preventDefault();
     arrTestQuestion.length === 0 ? setArrTestQuestion([newTestQuestion])
@@ -153,7 +137,6 @@ function TestQuestionForm() {
     setTest2({ test: '', input: '', output: '', input_type: '', output_type: '' });
     setTest3({ test: '', input: '', output: '', input_type: '', output_type: '' });
     setTest4({ test: '', input: '', output: '', input_type: '', output_type: '' });
-    setNewSolution({ description: '' });
     quill.setText('');
     setEditorContent('');
     setShowSol(false);
@@ -233,8 +216,8 @@ function TestQuestionForm() {
                     required />
                   <SelectContainer>
                     <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
-                    <StyledSelect onChange={event => setTest1({ ...test1, input_type: event.target.value })} name="input_types" id="input_types" required>
-                      <option value="" disabled >Tipo de input...</option>
+                    <StyledSelect onChange={event => setTest1({ ...test1, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'} required>
+                      <option value="" value="DEFAULT" disabled >Tipo de input...</option>
                       <option value="array_number">Array Number</option>
                       <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
@@ -257,8 +240,8 @@ function TestQuestionForm() {
                     required />
                   <SelectContainer>
                     <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
-                    <StyledSelect onChange={event => setTest1({ ...test1, output_type: event.target.value })} name="output_types" id="output_types" required>
-                      <option value="" disabled >Tipo de output...</option>
+                    <StyledSelect onChange={event => setTest1({ ...test1, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'} required>
+                      <option value="" value="DEFAULT" disabled >Tipo de output...</option>
                       <option value="array_number">Array Number</option>
                       <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
@@ -295,8 +278,8 @@ function TestQuestionForm() {
                     required />
                   <SelectContainer>
                     <LabelSelect htmlFor="input_types">Tipo de Input</LabelSelect>
-                    <StyledSelect onChange={event => setTest2({ ...test2, input_type: event.target.value })} name="input_types" id="input_types" required>
-                      <option value="" disabled >Tipo de input...</option>
+                    <StyledSelect onChange={event => setTest2({ ...test2, input_type: event.target.value })} name="input_types" id="input_types" defaultValue={'DEFAULT'} required>
+                      <option value="" value="DEFAULT" disabled >Tipo de input...</option>
                       <option value="array_number">Array Number</option>
                       <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
@@ -319,8 +302,8 @@ function TestQuestionForm() {
                     required />
                   <SelectContainer>
                     <LabelSelect htmlFor="output_types">Tipo de Output</LabelSelect>
-                    <StyledSelect onChange={event => setTest2({ ...test2, output_type: event.target.value })} name="output_types" id="output_types" required>
-                      <option value="" disabled >Tipo de output...</option>
+                    <StyledSelect onChange={event => setTest2({ ...test2, output_type: event.target.value })} name="output_types" id="output_types" defaultValue={'DEFAULT'} required>
+                      <option value="" value="DEFAULT" disabled >Tipo de output...</option>
                       <option value="array_number">Array Number</option>
                       <option value="array_string">Array String</option>
                       <option value="boolean">Boolean</option>
@@ -465,14 +448,11 @@ function TestQuestionForm() {
         }
         {showAdd ?
           <DivButtons>
-            <Button onClick={handleBack}>Atras</Button>
             <Button width='100%' onClick={handleAdd}>Añadir nueva pregunta tipo test</Button>
             <Button onClick={handleNext}>Siguiente</Button>
           </DivButtons>
           :
-          <DivButtons>
-            <Button onClick={handleBack}>Atras</Button>
-          </DivButtons>
+          null
         }
       </FormContainer>
     </>

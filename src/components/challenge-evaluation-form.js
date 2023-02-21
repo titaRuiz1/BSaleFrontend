@@ -1,13 +1,11 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useQuill } from 'react-quilljs';
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { colors, typography } from "../styles";
 import Input from "../components/input";
-import TextArea from "../components/textArea"
 import { Button } from "./buttons";
 import { useAuth } from "../context/auth-context";
-import TextEditor from "./text-editor";
 import toolbar from "./toolbar";
 import 'quill/dist/quill.snow.css'
 
@@ -48,22 +46,6 @@ const Form = styled.form`
   align-items:center;
 `;
 
-const EditorWrapp = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 270px; 
-  width:500px;
-  align-items: center; 
-  justify-content: center; 
-  padding: 0px 30px 
-`;
-
-const DivInput = styled.div`
-  display: flex;
-  flex-direction: row; 
-  gap: 8px 
-`;
-
 const DivButtons = styled.div`
   padding: 8px;
   display: flex;
@@ -74,7 +56,6 @@ const DivButtons = styled.div`
 `;
 
 function ChallengeEvluationForm() {
-  const navigate = useNavigate();
   const [newChallengeEvaluation1, setNewChallengeEvaluation1] = useState({ description: '', category: '', criteria: '', weighting: '' });
   const [newChallengeEvaluation2, setNewChallengeEvaluation2] = useState({ description: '', category: '', criteria: '', weighting: '' });
   const [newChallengeEvaluation3, setNewChallengeEvaluation3] = useState({ description: '', category: '', criteria: '', weighting: '' });
@@ -82,7 +63,7 @@ function ChallengeEvluationForm() {
   const [criteria, setCriteria] = useState(1);
   const [editorContent, setEditorContent] = useState('');
   const [showAdd, setShowAdd] = useState(false);
-  const { setView, objStages, arrChallengeEvaluation, setArrChallengeEvaluation, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion } = useAuth();
+  const { setView, objStages, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion } = useAuth();
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: toolbar
@@ -103,7 +84,6 @@ function ChallengeEvluationForm() {
       setNewChallengeEvaluation4({ ...newChallengeEvaluation4, [name]: value })
     }
   };
-
 
   function handleCriterio1(event) {
     event.preventDefault();
@@ -141,12 +121,6 @@ function ChallengeEvluationForm() {
     const data = JSON.stringify(quill.getContents());
     setNewChallengeEvaluation4({ ...newChallengeEvaluation4, description: data });
     setShowAdd(true)
-  };
-
-  function handleBack(event) {
-    event.preventDefault();
-    console.log('back')
-    setView('test_question')
   };
 
   function handleAdd(event) {
@@ -205,7 +179,6 @@ function ChallengeEvluationForm() {
                   placeholder="0.25"
                   style={{ borderRadius: '8px' }}
                   required />
-                {/* <Button color={`${colors.teal}`}>Agregar</Button> */}
                 {editorContent.trim() ?
                   <Button color={`${colors.teal}`}>Agregar</Button> :
                   <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
@@ -350,7 +323,6 @@ function ChallengeEvluationForm() {
         </FieldSet>
 
         <DivButtons>
-          <Button onClick={handleBack}>Atras</Button>
           {showAdd ? <Button width='100%' onClick={handleAdd}>Finalizar Proceso</Button> : null}
         </DivButtons>
       </FormContainer>

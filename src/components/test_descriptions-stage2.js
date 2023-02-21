@@ -1,15 +1,9 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import { useQuill } from 'react-quilljs';
-import { Navigate, useNavigate } from "react-router";
 import { colors, typography } from "../styles";
 import Input from "../components/input";
-import TextArea from "../components/textArea"
 import { Button } from "./buttons";
 import { useAuth } from "../context/auth-context";
-import TextEditor from "./text-editor";
-import toolbar from "./toolbar";
-import 'quill/dist/quill.snow.css'
 
 const FormContainer = styled.div`
   background:white;
@@ -46,22 +40,6 @@ const Form = styled.form`
   gap: 1rem;
   min-width: 258px;
   align-items:center;
-`;
-
-const EditorWrapp = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 270px; 
-  width:500px;
-  align-items: center; 
-  justify-content: center; 
-  padding: 0px 30px 
-`;
-
-const DivInput = styled.div`
-  display: flex;
-  flex-direction: row; 
-  gap: 8px 
 `;
 
 const DivButtons = styled.div`
@@ -167,10 +145,6 @@ function TestDescriptions() {
             <Button color={`${colors.teal}`}>Agregar</Button>
           </Form>
         </FieldSet>
-
-        <DivButtons>
-          <Button>Atras</Button>
-        </DivButtons>
       </FormContainer>
     </>
   )

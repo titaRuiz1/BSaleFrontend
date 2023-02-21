@@ -57,17 +57,9 @@ const Form = styled.form`
   align-items:center;
 `;
 
-const Title = styled.p`
-  ${typography.text.xxl};
-  color: ${colors.blue};
-  margin: ${(props) => props.marginB || '32px'};
-`;
-
 function NewStage3Page() {
   const [editorContent, setEditorContent] = useState('');
-  const [currentStage, setCurrentStage] = useState(1)
-  const [showAdd, setShowAdd] = useState(false);
-  const { view, setView, newPosition, setNewPosition, objStages, setObjStages } = useAuth();
+  const { setView, objStages, setObjStages } = useAuth();
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: toolbar
@@ -83,18 +75,6 @@ function NewStage3Page() {
     setEditorContent('');
     setView('challenge_evaluation')
   };
-
-  function handleBack(event) {
-    event.preventDefault();
-    console.log('back')
-    setView('position')
-  };
-
-  function handleNext(event) {
-    event.preventDefault();
-    console.log('next')
-    setView('multiple_choice')
-  }
 
   function handleTextChange() {
     setEditorContent(quill.root.innerHTML);
@@ -115,19 +95,7 @@ function NewStage3Page() {
               }
             </FieldSet>
           </Form>
-
         </FieldSet>
-
-        {showAdd ?
-          <DivButtons>
-            <Button onClick={handleBack}>Atras</Button>
-            <Button onClick={handleNext}>Siguiente</Button>
-          </DivButtons>
-          :
-          <DivButtons>
-            <Button onClick={handleBack}>Atras</Button>
-          </DivButtons>
-        }
 
       </FormContainer>
     </>

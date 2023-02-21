@@ -81,13 +81,6 @@ function NewStage1Page() {
     setView('multiple_choice')
   };
 
-  function handleBack(event) {
-    event.preventDefault();
-    console.log('back')
-    setView('position')
-  };
-
-
   function handleTextChange() {
     setEditorContent(quill.root.innerHTML);
   }
@@ -109,9 +102,6 @@ function NewStage1Page() {
             </FieldSet>
           </Form>
         </FieldSet>
-        <DivButtons>
-          <Button onClick={handleBack}>Atras</Button>
-        </DivButtons>
       </FormContainer>
     </>
   )
