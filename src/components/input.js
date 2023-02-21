@@ -2,15 +2,15 @@ import styled from "@emotion/styled";
 import { colors, typography } from "../styles";
 
 const Label = styled.label`
-color: #677294;
+color: ${colors.gray[900]};
 `;
 
 const StyledInput = styled.input`
   padding: 0.25rem 0.5rem;
-  ${typography.lg};
-  border: 1px solid #677294;
+  ${typography.text.md};
+  border: 1px solid ${colors.gray[600]};
   background-color: white;
-  color: #677294;
+  color: ${colors.gray[900]};
 
 `;
 
@@ -22,7 +22,7 @@ const InputContainer = styled.div`
 `;
 
 const Error = styled.p`
-  color: #EF4444;
+  color: ${colors.red};
   padding-left: 1rem;
 `;
 

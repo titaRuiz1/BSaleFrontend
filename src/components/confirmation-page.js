@@ -42,7 +42,7 @@ const DivButtons = styled.div`
 
 function Confirmation() {
   const navigate = useNavigate();
-  const { setView, arrChallengeEvaluation, setArrChallengeEvaluation, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion } = useAuth();
+  const { setView, arrChallengeEvaluation, setAllPositions, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion } = useAuth();
 
 
   function handleBack(event) {
@@ -53,7 +53,9 @@ function Confirmation() {
 
   function handleConfirm(event) {
     event.preventDefault();
-    createPosition(newPosition).then().catch((error) => console.log(error))
+    createPosition(newPosition).then(response => {
+      setAllPositions(response.data);
+    }).catch((error) => console.log(error))
     console.log('entre')
     navigate(`/admin`)
   };
