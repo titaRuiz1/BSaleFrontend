@@ -31,7 +31,7 @@ const Text5 = styled.p`
 
 function RecordRow({ record, users }) {
   const [feedbackUserId, setFeedbackUserId] = useState(null)
-  const { isOpenFeedback, setIsOpenFeedback, setSelectedUserFeedbacks, solutions } = useAuth();
+  const { isOpenFeedback, setIsOpenFeedback, setSelectedUserFeedbacks, solutions, setPositionApplicants } = useAuth();
   const navigate = useNavigate();
 
   function handleCommentsClick(userId) {
@@ -48,6 +48,7 @@ function RecordRow({ record, users }) {
 
   function handleDelete(userId) {
     deleteUser(userId).then(response=>{
+      setPositionApplicants(response)
     }).catch()
   }
 
@@ -160,6 +161,7 @@ function RecordRow({ record, users }) {
               {record}
             </Text5>
           </RecordContainer>
+          <RecordContainer style={{ width: "100px", border: "none" }}/>
         </Wrapper3>
       }
     </>
