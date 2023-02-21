@@ -57,6 +57,7 @@ function Confirmation() {
     console.log('entre')
     navigate(`/admin`)
   };
+
   console.log('TODO EL REQUEST', newPosition)
   return (
     <>

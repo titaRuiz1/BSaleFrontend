@@ -61,7 +61,7 @@ function MultipleChoiceQuestionForm() {
   const [option2, setOption2] = useState({ description: '', correct: 'false' });
   const [option3, setOption3] = useState({ description: '', correct: 'false' });
   const [option4, setOption4] = useState({ description: '', correct: 'false' });
-  const [newSolution, setNewSolution] = useState({ description: '' });
+  const [editorContent, setEditorContent] = useState('');
   const [showSol, setShowSol] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -71,13 +71,12 @@ function MultipleChoiceQuestionForm() {
       toolbar: toolbar
     }
   })
+  quill?.on('text-change', handleTextChange);
 
   function handleChange(event) {
     const { name, value } = event.target
     if (event.target.id === 'mchq1') {
       setNewMultiQuestion({ ...newMultiQuestion, [name]: value })
-    } else if (event.target.id === 'solution1') {
-      setNewSolution({ description: value })
     } else {
       name === 'op1' ?
         setOption1({ ...option1, description: value })
@@ -123,7 +122,9 @@ function MultipleChoiceQuestionForm() {
     console.log('hace submit');
     const data = JSON.stringify(quill.getContents())
     setNewMultiQuestion({ ...newMultiQuestion, description: data, options_attributes: [option1, option2, option3, option4] })
-    setShowSol(true)
+    quill.setText('');
+    setEditorContent('');
+    setShowSol(true);
     // setShowAdd(true)
   };
 
@@ -131,7 +132,6 @@ function MultipleChoiceQuestionForm() {
     event.preventDefault();
     console.log('hace submit2')
     const data = JSON.stringify(quill.getContents())
-    // setNewSolution({ description: data })
     setNewMultiQuestion({ ...newMultiQuestion, solution_attributes: { description: data } })
     setShowAdd(true)
   }
@@ -151,18 +151,24 @@ function MultipleChoiceQuestionForm() {
     setOption2({ description: '', correct: 'false' });
     setOption3({ description: '', correct: 'false' });
     setOption4({ description: '', correct: 'false' });
-    setNewSolution({ description: '' });
     setSelectedOptions({});
     setShowSol(false);
-    setShowAdd(false)
+    setShowAdd(false);
+    quill?.setText('');
+    setEditorContent('');
   };
 
   function handleNext(event) {
     event.preventDefault();
     arrMultiChoiceQuestion.length === 0 ? setArrMultiChoiceQuestion([newMultiQuestion])
       : setArrMultiChoiceQuestion([...arrMultiChoiceQuestion, newMultiQuestion]);
-    console.log('next')
-    setView('test_question')
+    quill.setText('');
+    setEditorContent('');
+    setView('stage2')
+  }
+
+  function handleTextChange() {
+    setEditorContent(quill.root.innerHTML);
   }
 
   console.log('el arreglo', arrMultiChoiceQuestion)
@@ -177,14 +183,16 @@ function MultipleChoiceQuestionForm() {
               <Legend>Solución</Legend>
               <div ref={quillRef}></div>
             </FieldSet>
-            <Button>Añadir Solución</Button>
+            {editorContent.trim() ?
+              <Button>Añadir Solución</Button> :
+              <Button disabled color={`${colors.lowOrange}`}>Añadir Solución</Button>
+            }
           </Form>
           :
           <Form onSubmit={handleSubmitMultipleChoiceQuestion}>
             <FieldSet>
               <Legend>Crear Preguntas de Opción Multiple </Legend>
               <div ref={quillRef}></div>
-
               <FieldSet>
                 <Legend2>Opción1</Legend2>
                 <Input
@@ -195,7 +203,8 @@ function MultipleChoiceQuestionForm() {
                   value={option1.description}
                   onChange={handleChange}
                   placeholder="Opción 1"
-                  style={{ borderRadius: '8px' }} />
+                  style={{ borderRadius: '8px' }}
+                  required />
                 <p>Opción correcta</p>
                 <div>
                   <label htmlFor="true">Sí</label>
@@ -230,7 +239,8 @@ function MultipleChoiceQuestionForm() {
                   value={option2.description}
                   onChange={handleChange}
                   placeholder="Opción 1"
-                  style={{ borderRadius: '8px' }} />
+                  style={{ borderRadius: '8px' }}
+                  required />
                 <p>Opción correcta</p>
                 <div>
                   <label htmlFor="true">Sí</label>
@@ -265,7 +275,8 @@ function MultipleChoiceQuestionForm() {
                   value={option3.description}
                   onChange={handleChange}
                   placeholder="Opción 1"
-                  style={{ borderRadius: '8px' }} />
+                  style={{ borderRadius: '8px' }}
+                  required />
                 <p>Opción correcta</p>
                 <div>
                   <label htmlFor="true">Sí</label>
@@ -300,7 +311,8 @@ function MultipleChoiceQuestionForm() {
                   value={option4.description}
                   onChange={handleChange}
                   placeholder="Opción 1"
-                  style={{ borderRadius: '8px' }} />
+                  style={{ borderRadius: '8px' }}
+                  required />
                 <p>Opción correcta</p>
                 <div>
                   <label htmlFor="true">Sí</label>
@@ -325,19 +337,12 @@ function MultipleChoiceQuestionForm() {
                     style={{ accentColor: colors.red }} />
                 </div>
               </FieldSet>
-              {/* <FieldSet> */}
-              {/* <Legend2>Solución</Legend2>
-              <TextArea
-                label={"Solución"}
-                id="solution1"
-                name="description"
-                cols='40'
-                value={newSolution.description}
-                onChange={handleChange}
-                placeholder="The solution is..." /> */}
-              {/* </FieldSet> */}
             </FieldSet>
-            <Button color={`${colors.teal}`}>Agregar</Button>
+            {/* <Button color={`${colors.teal}`}>Agregar</Button> */}
+            {editorContent.trim() ?
+              <Button color={`${colors.teal}`}>Agregar</Button> :
+              <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
+            }
           </Form>
         }
         {showAdd ?
