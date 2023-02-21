@@ -125,7 +125,7 @@ function MultipleChoicePage() {
   const [inputID, setInputID] = useState(null);
   const { position, mulChoiceQuestions,
     sumCorrectAnswer, setSumCorrectAnswer,
-    solutions, testQuestions, setResults, results, user, setUser, countDontKnow, setCountDontKnow, newPosition} = useAuth();
+    solutions, testQuestions, setResults, results, user, setUser, countDontKnow, setCountDontKnow, newPosition } = useAuth();
 
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(
@@ -155,7 +155,7 @@ function MultipleChoicePage() {
     setDontKnow(false);
     setUnblockSend(true)
   }
-  function handleDontKnow(event){
+  function handleDontKnow(event) {
     event.preventDefault();
     setDontKnow(true);
     setInputID(null)
@@ -163,15 +163,15 @@ function MultipleChoicePage() {
   }
   function handleSubmitMultipleChoice(event) {
     event.preventDefault();
-    if (unblockSend){
+    if (unblockSend) {
       setDontKnow(false)
       updateUser({
         "current_question": user.current_question + 1
       })
-        .then(response=>{
-        setUser(response)
-      }).catch(console.log())
-  
+        .then(response => {
+          setUser(response)
+        }).catch(console.log())
+
       if (correctAnswer === 'true') {
         setSumCorrectAnswer(sumCorrectAnswer + 1)
         sendResults(
@@ -179,10 +179,10 @@ function MultipleChoicePage() {
             stage1: sumCorrectAnswer + 1,
             stage2: 0,
             stage3: 0,
-           
+
           }
         ).then(console.log).catch((error) => console.log(error))
-  
+
       };
       if (dontKnow) {
         setCountDontKnow(countDontKnow + 1)
@@ -191,7 +191,7 @@ function MultipleChoicePage() {
             dontKnow: countDontKnow + 1,
           }
         ).then(console.log).catch((error) => console.log(error))
-  
+
       };
       setCorrectAnswer(null)
       setUnblockSend(false)
@@ -217,9 +217,9 @@ function MultipleChoicePage() {
 
     }
     updateUser(body)
-    .then(response=>{
-      setUser(response)
-    }).catch(console.log())
+      .then(response => {
+        setUser(response)
+      }).catch(console.log())
 
 
     if (test1Status && test2Status && test3Status && test4Status) {
@@ -287,7 +287,7 @@ function MultipleChoicePage() {
           if (idx === 2) setTest3Status(true)
           if (idx === 3) setTest4Status(true)
         }
-      else {
+        else {
           if (idx === 0) setTest1Status(false)
           if (idx === 1) setTest2Status(false)
           if (idx === 2) setTest3Status(false)
@@ -297,26 +297,26 @@ function MultipleChoicePage() {
       if (test.input_type === 'array_number') {
         currentTest = eval(`(${code})`);
         const input = test.input.slice(1, test.input.length - 1).split(',').map(Number)
-        if(test.type_output === "number"){
+        if (test.type_output === "number") {
           if (currentTest(input) === +test.output) {
             if (idx === 0) setTest1Status(true)
             if (idx === 1) setTest2Status(true)
             if (idx === 2) setTest3Status(true)
             if (idx === 3) setTest4Status(true)
-          } 
+          }
           else {
             if (idx === 0) setTest1Status(false)
             if (idx === 1) setTest2Status(false)
             if (idx === 2) setTest3Status(false)
             if (idx === 3) setTest4Status(false)
           }
-        }else{
+        } else {
           if (currentTest(input) === test.output) {
             if (idx === 0) setTest1Status(true)
             if (idx === 1) setTest2Status(true)
             if (idx === 2) setTest3Status(true)
             if (idx === 3) setTest4Status(true)
-          } 
+          }
           else {
             if (idx === 0) setTest1Status(false)
             if (idx === 1) setTest2Status(false)
@@ -327,8 +327,8 @@ function MultipleChoicePage() {
       }
       if (test.input_type === 'boolean') {
         currentTest = eval(`(${code})`);
-        const input = test.input.split(',').map(Boolean)
-        if (currentTest(...input) === +test.output) {
+        const input = test.input.split(',')
+        if (currentTest(...input) === test.output) {
           if (idx === 0) setTest1Status(true)
           if (idx === 1) setTest2Status(true)
           if (idx === 2) setTest3Status(true)
@@ -423,7 +423,7 @@ function MultipleChoicePage() {
                     <Option key={`key`} value={true} border={`1px solid ${dontKnow ? colors.orange : colors.gray[600]}`} id={"id-dontknow"} background={`${dontKnow ? colors.orange : "none"}`} label={"No se"} onClick={handleDontKnow} />
                     <Button
                       width='88px'
-                      style={{background: `${unblockSend ? colors.orange : colors.gray[600]}`, alignSelf: 'center', marginTop: '20px' } } > Enviar </Button>
+                      style={{ background: `${unblockSend ? colors.orange : colors.gray[600]}`, alignSelf: 'center', marginTop: '20px' }} > Enviar </Button>
 
                   </OptionsSection>
                 </>
