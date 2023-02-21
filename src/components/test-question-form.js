@@ -108,7 +108,6 @@ function TestQuestionForm() {
     }
   });
   quill?.on('text-change', handleTextChange);
-  console.log('NUEVA POS EN TEST', newPosition)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -134,7 +133,6 @@ function TestQuestionForm() {
     event.preventDefault();
     console.log('hace submit2')
     const data = JSON.stringify(quill.getContents())
-    // setNewSolution({ description: data })
     setNewTestQuestion({ ...newTestQuestion, solution_attributes: { description: data } })
     setShowAdd(true)
   }

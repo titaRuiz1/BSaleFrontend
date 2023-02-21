@@ -1,4 +1,4 @@
-mport styled from "@emotion/styled";
+import styled from "@emotion/styled";
 import { useState } from "react";
 import { useQuill } from 'react-quilljs';
 import { Navigate, useNavigate } from "react-router";
@@ -170,7 +170,6 @@ function TestDescriptions() {
 
         <DivButtons>
           <Button>Atras</Button>
-          {showAdd ? <Button width='100%' onClick={handleAdd}>Finalizar Proceso</Button> : null}
         </DivButtons>
       </FormContainer>
     </>

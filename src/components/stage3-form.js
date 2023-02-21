@@ -100,7 +100,6 @@ function NewStage3Page() {
     setEditorContent(quill.root.innerHTML);
   }
 
-  console.log('EL OBJETO', objStages)
   return (
     <>
       <FormContainer>

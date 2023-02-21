@@ -171,9 +171,6 @@ function MultipleChoiceQuestionForm() {
     setEditorContent(quill.root.innerHTML);
   }
 
-  console.log('el arreglo', arrMultiChoiceQuestion)
-  console.log('NEW POS', newPosition)
-  console.log('NEW MUl', newMultiQuestion)
   return (
     <>
       <FormContainer>

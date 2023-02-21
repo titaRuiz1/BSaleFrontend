@@ -165,7 +165,6 @@ function ChallengeEvluationForm() {
   function handleTextChange() {
     setEditorContent(quill.root.innerHTML);
   }
-  console.log('STAGES', objStages)
   return (
     <>
       <FormContainer>
