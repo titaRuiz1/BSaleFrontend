@@ -12,7 +12,8 @@ import ChallengeEvluationForm from "../../components/challenge-evaluation-form";
 import Confirmation from "../../components/confirmation-page";
 import NewStage1Page from "../../components/stages-form";
 import NewStage2Page from "../../components/stage2-form";
-import NewStage3Page from "../../components/stage3-form"
+import NewStage3Page from "../../components/stage3-form";
+import TestDescriptions from "../../components/test_descriptions-stage2";
 
 import { useQuill } from 'react-quilljs';
 import toolbar from "../../components/toolbar";
@@ -132,14 +133,16 @@ function NewPositionPage() {
             <NewStage1Page />
             : view === 'multiple_choice' ?
               <MultipleChoiceQuestionForm /> :
-              view === 'stage2' ?
-                <NewStage2Page /> :
-                view === 'test_question' ?
-                  <TestQuestionForm /> :
-                  view === 'stage3' ?
-                <NewStage3Page /> :
-                  view === 'challenge_evaluation' ? <ChallengeEvluationForm /> :
-                    view === 'confirmation' ? <Confirmation /> : null
+              view === 'test_question' ?
+                <TestQuestionForm /> :
+                view === 'stage2' ?
+                  <NewStage2Page /> :
+                  view === 'test_descriptions' ?
+                    <TestDescriptions /> :
+                    view === 'stage3' ?
+                      <NewStage3Page /> :
+                      view === 'challenge_evaluation' ? <ChallengeEvluationForm /> :
+                        view === 'confirmation' ? <Confirmation /> : null
         }
 
       </Container>

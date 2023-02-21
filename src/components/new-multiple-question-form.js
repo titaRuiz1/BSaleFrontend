@@ -164,7 +164,7 @@ function MultipleChoiceQuestionForm() {
       : setArrMultiChoiceQuestion([...arrMultiChoiceQuestion, newMultiQuestion]);
     quill.setText('');
     setEditorContent('');
-    setView('stage2')
+    setView('test_question')
   }
 
   function handleTextChange() {
@@ -338,7 +338,6 @@ function MultipleChoiceQuestionForm() {
                 </div>
               </FieldSet>
             </FieldSet>
-            {/* <Button color={`${colors.teal}`}>Agregar</Button> */}
             {editorContent.trim() ?
               <Button color={`${colors.teal}`}>Agregar</Button> :
               <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>

@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useQuill } from 'react-quilljs';
-// import 'react-quill/dist/quill.snow.css';
 import { Navigate, useNavigate } from "react-router";
 import { colors, typography } from "../styles";
 import Input from "../components/input";

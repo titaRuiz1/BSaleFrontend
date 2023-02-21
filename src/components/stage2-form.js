@@ -80,7 +80,7 @@ function NewStage2Page() {
     setObjStages({ ...objStages, stage2: data });
     quill.setText('');
     setEditorContent('');
-    setView('test_question')
+    setView('test_descriptions')
   };
 
   function handleBack(event) {
@@ -92,7 +92,7 @@ function NewStage2Page() {
   function handleNext(event) {
     event.preventDefault();
     console.log('next')
-    setView('multiple_choice')
+    setView('test_descriptions')
   }
 
   function handleTextChange() {

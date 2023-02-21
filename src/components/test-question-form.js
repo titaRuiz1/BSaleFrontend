@@ -166,8 +166,7 @@ function TestQuestionForm() {
     event.preventDefault();
     arrTestQuestion.length === 0 ? setArrTestQuestion([newTestQuestion])
       : setArrTestQuestion([...arrTestQuestion, newTestQuestion]);
-    // ;
-    setView('stage3');
+    setView('stage2');
     quill.setText('');
     setEditorContent('');
   }

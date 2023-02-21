@@ -44,7 +44,9 @@ function AuthProvider({ children }) {
     description: '',
     multiple_choice_questions_attributes: null,
     test_questions_attributes: null,
-    challenge_evaluations_attributes: null
+    challenge_evaluations_attributes: null,
+    stage_attributes: null,
+    stage2s_attributes: null
   });
   const [countDontKnow, setCountDontKnow] = useState(0);
 
