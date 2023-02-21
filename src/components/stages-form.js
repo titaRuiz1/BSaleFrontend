@@ -7,7 +7,6 @@ import Input from "../components/input";
 import TextArea from "../components/textArea"
 import { Button } from "./buttons";
 import { useAuth } from "../context/auth-context";
-import TextEditor from "./text-editor";
 import toolbar from "./toolbar";
 import 'quill/dist/quill.snow.css'
 
