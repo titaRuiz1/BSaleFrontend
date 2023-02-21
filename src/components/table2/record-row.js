@@ -29,7 +29,7 @@ const Text5 = styled.p`
 `;
 
 
-function RecordRow({ record, users }) {
+function RecordRow({ record }) {
   const [feedbackUserId, setFeedbackUserId] = useState(null)
   const { isOpenFeedback, setIsOpenFeedback, setSelectedUserFeedbacks, solutions, setPositionApplicants } = useAuth();
   const navigate = useNavigate();
@@ -54,8 +54,7 @@ function RecordRow({ record, users }) {
 
   return (
     <>
-      {users === "+0" ?
-        record.results.length ?
+      { record.results.length ?
           <Wrapper3>
             <RecordContainer style={{ width: "150px", borderWidth: "0px 0px 1px 1px" }}>
               <Text5>
@@ -66,6 +65,9 @@ function RecordRow({ record, users }) {
               <Text5>
                 {record.results}
               </Text5>
+            </RecordContainer>
+            <RecordContainer style={{ width: "100px", borderWidth: "0px 0px 1px 1px" }}>
+              <Text5>Etapa 1 no iniciada</Text5>
             </RecordContainer>
             <RecordContainer style={{ width: "100px", borderWidth: "0px 0px 1px 1px" }}>
               {record.project === "" ? <Text5>No encontrado</Text5> :
@@ -121,18 +123,21 @@ function RecordRow({ record, users }) {
               </Text5>
             </RecordContainer>
             <RecordContainer style={{ width: "100px", borderWidth: "0px 0px 1px 1px" }}>
-              {record.project === "" ? <p>Not found</p> :
+              <Text5>{record.results.dontKnow}</Text5>
+            </RecordContainer>
+            <RecordContainer style={{ width: "100px", borderWidth: "0px 0px 1px 1px" }}>
+              {record.project === "" ? <Text5>No encontrado</Text5> :
                 <a href={record.project}>
                   link
-            </a>}
+                </a>}
             </RecordContainer>
             <RecordContainer style={{ width: "100px", borderWidth: "0px 0px 1px 1px" }}>
               {record.github ?
                 <a href={record.github}>
                   link
-              </a>
+                </a>
                 :
-                <p>Not found</p>}
+                <Text5>No encontrado</Text5>}
             </RecordContainer>
             <RecordContainer style={{ width: "100px", borderWidth: "0px 0px 1px 1px" }}>
               {(record.user.current_stage == 1 && record.user.current_question == 1) ?
@@ -153,16 +158,6 @@ function RecordRow({ record, users }) {
             </RecordContainer>
 
           </Wrapper3>
-
-        :
-        <Wrapper3>
-          <RecordContainer style={{ width: "850px", borderWidth: "0px 1px 1px 1px" }}>
-            <Text5>
-              {record}
-            </Text5>
-          </RecordContainer>
-          <RecordContainer style={{ width: "100px", border: "none" }}/>
-        </Wrapper3>
       }
     </>
   );

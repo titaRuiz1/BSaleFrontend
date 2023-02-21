@@ -1,6 +1,7 @@
 import FieldRow from "./field-row"
 import RecordRow from "./record-row"
 import styled from "@emotion/styled";
+import { typography, colors } from "../../styles";
 
 const Wrapper1 = styled.div`
   display: flex;
@@ -9,23 +10,27 @@ const Wrapper1 = styled.div`
   justify-content: center;
 `;
 
+const Text5 = styled.p`
+  ${typography.text.xxs}
+  color: ${colors.gray[600]};
+`;
+
 function Table2({ records }) {
 
   return (
     <>
       {records.length> 0? (
       <Wrapper1 style={{maxWidth:"824px"}}>
-        <FieldRow />
+        <FieldRow/>
         {records
           .map((record) => (
-          <RecordRow record={record} users="+0"/>
+          <RecordRow record={record}/>
         ))}
       </Wrapper1>
       ): (
-      <Wrapper1 style={{maxWidth:"824px"}}>
-        <FieldRow />
-        <RecordRow record={"No se han encontrado candidatos para esta posicion"} users="0"/>
-      </Wrapper1>
+      <Text5>
+        No se han encontrado candidatos para esta posicion
+      </Text5>
       )}
     </>
   );
