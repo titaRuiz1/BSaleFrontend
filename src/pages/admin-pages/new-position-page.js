@@ -92,7 +92,6 @@ function NewPositionPage() {
     const data = JSON.stringify(quill.getContents())
     setNewPosition({ ...newPosition, description: data })
     setView('stage1')
-    // setView('multiple_choice')
 
   }
 
@@ -107,7 +106,7 @@ function NewPositionPage() {
       <Container>
         {view === 'position' ?
           <FormContainer>
-            <Title>Create New Position</Title>
+            <Title>Crear nueva posición</Title>
             <Form onSubmit={handleSubmitPosition}>
               <FieldSet>
                 <Legend>Posición</Legend>

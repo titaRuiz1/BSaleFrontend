@@ -39,7 +39,7 @@ const SubtitleLogo = styled.p`
 `;
 
 export default function LoginPage() {
-  const { login, user } = useAuth();
+  const { login, user, error } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -49,7 +49,7 @@ export default function LoginPage() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    login(form).catch((error) => console.log(error));
+    login(form);
 
   }
 
@@ -79,6 +79,11 @@ export default function LoginPage() {
             value={form.password}
             onChange={handleFormChange}
           />
+          {error ? 
+            <p>Usuario o contraseña invalido</p> 
+            :
+            null
+          }
           <Button width='280px'>
             Ingresar
           </Button>

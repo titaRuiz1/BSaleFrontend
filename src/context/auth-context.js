@@ -15,6 +15,7 @@ function AuthProvider({ children }) {
   const [isOpenFeedback, setIsOpenFeedback] = useState(false)
   const [selectedUserFeedbacks, setSelectedUserFeedbacks] = useState([])
   const [applicantResult, setApplicantResult] = useState(null);
+  const [error, setError] = useState(null);
   const [view, setView] = useState('position');
   const [arrMultiChoiceQuestion, setArrMultiChoiceQuestion] = useState([]);
   const [arrTestQuestion, setArrTestQuestion] = useState([]);
@@ -58,8 +59,9 @@ function AuthProvider({ children }) {
       setUser(response)
       response.user_type === "admin" ? navigate("/admin") : navigate("/challenge")
       sessionStorage.setItem("user", JSON.stringify(response))
+      setError(null)
     }).catch(error => {
-    });
+      setError(error.message)});
   }
 
   function handleLogout() {
@@ -107,6 +109,8 @@ function AuthProvider({ children }) {
         setPosition,
         setMulChoiceQuestions,
         setSolutions,
+        error,
+        setError,
         testQuestions,
         setTestQuestions,
         challengeEvaluations,

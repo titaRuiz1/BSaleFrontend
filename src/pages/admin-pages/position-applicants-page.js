@@ -89,16 +89,16 @@ function PositionApplicantsPage() {
       <Navbar />
       <Wrapper1>
         <Wrapper2 style={{ width: "68%", gap: "32px", marginTop: "48px", padding: "12px 32px" }}>
-          <Text2>Position: </Text2>
+          <Text2>Posición: </Text2>
           {positionApplicants.position ?
           (
             <>
               <Text5> {positionApplicants.position.title}</Text5>
 
               <Wrapper3 style={{justifyContent:"space-between", alignItems:"center"}}>
-                <Text2>Applicants: </Text2>
+                <Text2>Postulantes: </Text2>
                 <Button style={{ padding: "8px 12px" }} onClick={() => navigate("/new-user")}>
-                  <Text3>New user</Text3>
+                  <Text3>Nuevo usuario</Text3>
                 </Button>
               </Wrapper3>
 
@@ -116,7 +116,7 @@ function PositionApplicantsPage() {
 
           )
           :
-          <Text5> Loading...</Text5>}
+          <Text5> Cargando...</Text5>}
 
         </Wrapper2>
       </Wrapper1>

@@ -109,7 +109,7 @@ function PositionsListPage() {
             </Wrapper1>
           ))}
           <Wrapper1 border='dashed' style={{ justifyContent: 'center' }}>
-            <Subtitle onClick={handleAddPosition}>Add new position <GrAddCircle style={{ alignSelf: 'center' }} /> </Subtitle>
+            <Subtitle onClick={handleAddPosition}>Nueva posición <GrAddCircle style={{ alignSelf: 'center' }} /> </Subtitle>
           </Wrapper1>
         </Container>
         :
