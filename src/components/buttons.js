@@ -3,6 +3,7 @@ import { colors, typography } from "../styles"
 
 export const Button = styled.button`
     display:flex;
+    position: ${(props) => props.position || 'realtive'};
     flex-direction:row;
     justify-content: center;
     align-items: center;

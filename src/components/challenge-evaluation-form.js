@@ -1,14 +1,11 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useQuill } from 'react-quilljs';
-// import 'react-quill/dist/quill.snow.css';
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { colors, typography } from "../styles";
 import Input from "../components/input";
-import TextArea from "../components/textArea"
 import { Button } from "./buttons";
 import { useAuth } from "../context/auth-context";
-import TextEditor from "./text-editor";
 import toolbar from "./toolbar";
 import 'quill/dist/quill.snow.css'
 
@@ -49,22 +46,6 @@ const Form = styled.form`
   align-items:center;
 `;
 
-const EditorWrapp = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 270px; 
-  width:500px;
-  align-items: center; 
-  justify-content: center; 
-  padding: 0px 30px 
-`;
-
-const DivInput = styled.div`
-  display: flex;
-  flex-direction: row; 
-  gap: 8px 
-`;
-
 const DivButtons = styled.div`
   padding: 8px;
   display: flex;
@@ -75,19 +56,20 @@ const DivButtons = styled.div`
 `;
 
 function ChallengeEvluationForm() {
-  const navigate = useNavigate();
   const [newChallengeEvaluation1, setNewChallengeEvaluation1] = useState({ description: '', category: '', criteria: '', weighting: '' });
   const [newChallengeEvaluation2, setNewChallengeEvaluation2] = useState({ description: '', category: '', criteria: '', weighting: '' });
   const [newChallengeEvaluation3, setNewChallengeEvaluation3] = useState({ description: '', category: '', criteria: '', weighting: '' });
   const [newChallengeEvaluation4, setNewChallengeEvaluation4] = useState({ description: '', category: '', criteria: '', weighting: '' });
-  const [criteria, setCriteria] = useState(1)
+  const [criteria, setCriteria] = useState(1);
+  const [editorContent, setEditorContent] = useState('');
   const [showAdd, setShowAdd] = useState(false);
-  const { setView, objStages, arrChallengeEvaluation, setArrChallengeEvaluation, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion } = useAuth();
+  const { setView, objStages, newPosition, setNewPosition, arrMultiChoiceQuestion, arrTestQuestion } = useAuth();
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: toolbar
     }
   })
+  quill?.on('text-change', handleTextChange);
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -103,47 +85,42 @@ function ChallengeEvluationForm() {
     }
   };
 
-
   function handleCriterio1(event) {
     event.preventDefault();
     console.log('hace submit')
     const data = JSON.stringify(quill.getContents())
-    setNewChallengeEvaluation1({ ...newChallengeEvaluation1, description: data })
+    setNewChallengeEvaluation1({ ...newChallengeEvaluation1, description: data });
+    quill.setText('');
+    setEditorContent('');
     setCriteria(2)
-    // setShowAdd(true)
   };
 
   function handleCriterio2(event) {
     event.preventDefault();
     console.log('hace submit2')
-    const data = JSON.stringify(quill.getContents())
-    setNewChallengeEvaluation2({ ...newChallengeEvaluation2, description: data })
+    const data = JSON.stringify(quill.getContents());
+    setNewChallengeEvaluation2({ ...newChallengeEvaluation2, description: data });
+    quill.setText('');
+    setEditorContent('');
     setCriteria(3)
-    // setShowAdd(true)
   };
 
   function handleCriterio3(event) {
     event.preventDefault();
     console.log('hace submit')
-    const data = JSON.stringify(quill.getContents())
-    setNewChallengeEvaluation3({ ...newChallengeEvaluation3, description: data })
+    const data = JSON.stringify(quill.getContents());
+    setNewChallengeEvaluation3({ ...newChallengeEvaluation3, description: data });
+    quill.setText('');
+    setEditorContent('');
     setCriteria(4)
-    // setShowAdd(true)
   };
 
   function handleCriterio4(event) {
     event.preventDefault();
     console.log('hace submit')
-    const data = JSON.stringify(quill.getContents())
-    setNewChallengeEvaluation4({ ...newChallengeEvaluation4, description: data })
+    const data = JSON.stringify(quill.getContents());
+    setNewChallengeEvaluation4({ ...newChallengeEvaluation4, description: data });
     setShowAdd(true)
-  };
-  // setArrChallengeEvaluation([newChallengeEvaluation1, newChallengeEvaluation2, newChallengeEvaluation3, newChallengeEvaluation4])
-
-  function handleBack(event) {
-    event.preventDefault();
-    console.log('back')
-    setView('test_question')
   };
 
   function handleAdd(event) {
@@ -153,12 +130,15 @@ function ChallengeEvluationForm() {
       test_questions_attributes: arrTestQuestion,
       challenge_evaluations_attributes: [newChallengeEvaluation1, newChallengeEvaluation2, newChallengeEvaluation3, newChallengeEvaluation4]
     })
-    setShowAdd(false)
+    setShowAdd(false);
+    quill.setText('');
+    setEditorContent('');
     setView('confirmation')
-    // navigate(`/output`)
   };
-  console.log('STAGES', objStages)
-  // console.log('TODO EL REQUEST', newPosition)
+
+  function handleTextChange() {
+    setEditorContent(quill.root.innerHTML);
+  }
   return (
     <>
       <FormContainer>
@@ -176,7 +156,8 @@ function ChallengeEvluationForm() {
                   value={newChallengeEvaluation1.category}
                   onChange={handleChange}
                   placeholder="La categoría es..."
-                  style={{ borderRadius: '8px' }} />
+                  style={{ borderRadius: '8px' }}
+                  required />
                 <Input
                   label={"Criterio"}
                   id="criterio1"
@@ -185,7 +166,8 @@ function ChallengeEvluationForm() {
                   value={newChallengeEvaluation1.criteria}
                   onChange={handleChange}
                   placeholder="El criterio a evaluar es..."
-                  style={{ borderRadius: '8px' }} />
+                  style={{ borderRadius: '8px' }}
+                  required />
                 <div ref={quillRef}></div>
                 <Input
                   label={"Peso"}
@@ -195,8 +177,12 @@ function ChallengeEvluationForm() {
                   value={newChallengeEvaluation1.weighting}
                   onChange={handleChange}
                   placeholder="0.25"
-                  style={{ borderRadius: '8px' }} />
-                <Button color={`${colors.teal}`}>Agregar</Button>
+                  style={{ borderRadius: '8px' }}
+                  required />
+                {editorContent.trim() ?
+                  <Button color={`${colors.teal}`}>Agregar</Button> :
+                  <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
+                }
               </FieldSet>
 
             </Form>
@@ -213,7 +199,8 @@ function ChallengeEvluationForm() {
                     value={newChallengeEvaluation2.category}
                     onChange={handleChange}
                     placeholder="La categoría es..."
-                    style={{ borderRadius: '8px' }} />
+                    style={{ borderRadius: '8px' }}
+                    required />
                   <Input
                     label={"Criterio"}
                     id="criterio2"
@@ -222,7 +209,8 @@ function ChallengeEvluationForm() {
                     value={newChallengeEvaluation2.criteria}
                     onChange={handleChange}
                     placeholder="El criterio a evaluar es..."
-                    style={{ borderRadius: '8px' }} />
+                    style={{ borderRadius: '8px' }}
+                    required />
                   <div ref={quillRef}></div>
 
                   <Input
@@ -233,8 +221,12 @@ function ChallengeEvluationForm() {
                     value={newChallengeEvaluation2.weighting}
                     onChange={handleChange}
                     placeholder="0.25"
-                    style={{ borderRadius: '8px' }} />
-                  <Button color={`${colors.teal}`}>Agregar</Button>
+                    style={{ borderRadius: '8px' }}
+                    required />
+                  {editorContent.trim() ?
+                    <Button color={`${colors.teal}`}>Agregar</Button> :
+                    <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
+                  }
                 </FieldSet>
 
               </Form>
@@ -251,7 +243,8 @@ function ChallengeEvluationForm() {
                       value={newChallengeEvaluation3.category}
                       onChange={handleChange}
                       placeholder="La categoría es..."
-                      style={{ borderRadius: '8px' }} />
+                      style={{ borderRadius: '8px' }}
+                      required />
                     <Input
                       label={"Criterio"}
                       id="criterio3"
@@ -260,7 +253,8 @@ function ChallengeEvluationForm() {
                       value={newChallengeEvaluation3.criteria}
                       onChange={handleChange}
                       placeholder="El criterio a evaluar es..."
-                      style={{ borderRadius: '8px' }} />
+                      style={{ borderRadius: '8px' }}
+                      required />
                     <div ref={quillRef}></div>
 
                     <Input
@@ -271,8 +265,12 @@ function ChallengeEvluationForm() {
                       value={newChallengeEvaluation3.weighting}
                       onChange={handleChange}
                       placeholder="0.25"
-                      style={{ borderRadius: '8px' }} />
-                    <Button color={`${colors.teal}`}>Agregar</Button>
+                      style={{ borderRadius: '8px' }}
+                      required />
+                    {editorContent.trim() ?
+                      <Button color={`${colors.teal}`}>Agregar</Button> :
+                      <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
+                    }
                   </FieldSet>
 
                 </Form>
@@ -288,7 +286,8 @@ function ChallengeEvluationForm() {
                       value={newChallengeEvaluation4.category}
                       onChange={handleChange}
                       placeholder="La categoría es..."
-                      style={{ borderRadius: '8px' }} />
+                      style={{ borderRadius: '8px' }}
+                      required />
                     <Input
                       label={"Criterio"}
                       id="criterio4"
@@ -297,7 +296,8 @@ function ChallengeEvluationForm() {
                       value={newChallengeEvaluation4.criteria}
                       onChange={handleChange}
                       placeholder="El criterio a evaluar es..."
-                      style={{ borderRadius: '8px' }} />
+                      style={{ borderRadius: '8px' }}
+                      required />
                     <div ref={quillRef}></div>
 
                     <Input
@@ -308,8 +308,12 @@ function ChallengeEvluationForm() {
                       value={newChallengeEvaluation4.weighting}
                       onChange={handleChange}
                       placeholder="0.25"
-                      style={{ borderRadius: '8px' }} />
-                    <Button color={`${colors.teal}`}>Agregar</Button>
+                      style={{ borderRadius: '8px' }}
+                      required />
+                    {editorContent.trim() ?
+                      <Button color={`${colors.teal}`}>Agregar</Button> :
+                      <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
+                    }
 
                   </FieldSet>
 
@@ -319,7 +323,6 @@ function ChallengeEvluationForm() {
         </FieldSet>
 
         <DivButtons>
-          <Button onClick={handleBack}>Atras</Button>
           {showAdd ? <Button width='100%' onClick={handleAdd}>Finalizar Proceso</Button> : null}
         </DivButtons>
       </FormContainer>

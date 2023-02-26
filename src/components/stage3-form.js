@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useQuill } from 'react-quilljs';
 import { Navigate, useNavigate } from "react-router";
 import { colors, typography } from "../styles";
-import Input from "../components/input";
-import TextArea from "../components/textArea"
+import Input from "./input";
+import TextArea from "./textArea"
 import { Button } from "./buttons";
 import { useAuth } from "../context/auth-context";
 import toolbar from "./toolbar";
@@ -56,28 +56,23 @@ const Form = styled.form`
   align-items:center;
 `;
 
-const Title = styled.p`
-  ${typography.text.xxl};
-  color: ${colors.blue};
-  margin: ${(props) => props.marginB || '32px'};
-`;
-
-function NewStage1Page() {
+function NewStage3Page() {
   const [editorContent, setEditorContent] = useState('');
-  const { view, setView, newPosition, setNewPosition, objStages, setObjStages } = useAuth();
+  const { setView, objStages, setObjStages } = useAuth();
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: toolbar
     }
   })
-
   quill?.on('text-change', handleTextChange);
 
-  function handleCurrentStage1(event) {
+  function handleCurrentStage3(event) {
     event.preventDefault();
-    const data = JSON.stringify(quill.getContents())
-    setObjStages({ ...objStages, stage1: data })
-    setView('multiple_choice')
+    const data = JSON.stringify(quill.getContents());
+    setObjStages({ ...objStages, stage3: data });
+    quill.setText('');
+    setEditorContent('');
+    setView('challenge_evaluation')
   };
 
   function handleTextChange() {
@@ -89,10 +84,9 @@ function NewStage1Page() {
       <FormContainer>
         <FieldSet>
           <Legend>Crear las Etapas de Evaluación</Legend>
-
-          <Form onSubmit={handleCurrentStage1}>
+          <Form onSubmit={handleCurrentStage3}>
             <FieldSet>
-              <Legend2>Etapa 1: Fundamentos de la programación</Legend2>
+              <Legend2>Etapa 3: Revisión de código - Mejora continua</Legend2>
               <div ref={quillRef}></div>
               {editorContent.trim() ?
                 <Button color={`${colors.teal}`}>Agregar</Button> :
@@ -101,8 +95,9 @@ function NewStage1Page() {
             </FieldSet>
           </Form>
         </FieldSet>
+
       </FormContainer>
     </>
   )
 }
-export default NewStage1Page;
+export default NewStage3Page;

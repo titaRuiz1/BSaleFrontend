@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { colors, typography } from "../../styles";
 import Input from "../../components/input";
 import TextArea from "../../components/textArea";
@@ -10,7 +10,10 @@ import MultipleChoiceQuestionForm from "../../components/new-multiple-question-f
 import TestQuestionForm from "../../components/test-question-form";
 import ChallengeEvluationForm from "../../components/challenge-evaluation-form";
 import Confirmation from "../../components/confirmation-page";
-import NewStagePage from "../../components/stages-form"
+import NewStage1Page from "../../components/stages-form";
+import NewStage2Page from "../../components/stage2-form";
+import NewStage3Page from "../../components/stage3-form";
+import TestDescriptions from "../../components/test_descriptions-stage2";
 
 import { useQuill } from 'react-quilljs';
 import toolbar from "../../components/toolbar";
@@ -69,15 +72,13 @@ const Title = styled.p`
 
 function NewPositionPage() {
   const { view, setView, newPosition, setNewPosition } = useAuth();
+  const [editorContent, setEditorContent] = useState('');
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: toolbar
     }
   })
-
-  function handleSubmitPosition(event) {
-    event.preventDefault();
-  }
+  quill?.on('text-change', handleTextChange);
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -87,11 +88,17 @@ function NewPositionPage() {
 
   function handleSubmitPosition(event) {
     event.preventDefault();
+    console.log(quill)
     const data = JSON.stringify(quill.getContents())
     setNewPosition({ ...newPosition, description: data })
-    setView('stages')
-   // setView('multiple_choice')
+    setView('stage1')
+    // setView('multiple_choice')
 
+  }
+
+
+  function handleTextChange() {
+    setEditorContent(quill.root.innerHTML);
   }
 
   return (
@@ -109,23 +116,33 @@ function NewPositionPage() {
                   id="position"
                   name="title"
                   type="text"
+                  required
                   value={newPosition.title}
                   onChange={handleChange}
                   placeholder="New Position"
                   style={{ borderRadius: '8px' }} />
-                <div ref={quillRef}></div>
+                <div ref={quillRef} />
               </FieldSet>
-              <Button>Siguiente</Button>
+              {editorContent.trim() ?
+                <Button>Siguiente</Button> :
+                <Button disabled color={`${colors.lowOrange}`}>Siguiente</Button>
+              }
             </Form>
           </FormContainer>
-          : view === 'stages' ?
-            <NewStagePage />
+          : view === 'stage1' ?
+            <NewStage1Page />
             : view === 'multiple_choice' ?
               <MultipleChoiceQuestionForm /> :
               view === 'test_question' ?
                 <TestQuestionForm /> :
-                view === 'challenge_evaluation' ? <ChallengeEvluationForm /> :
-                  view === 'confirmation' ? <Confirmation /> : null
+                view === 'stage2' ?
+                  <NewStage2Page /> :
+                  view === 'test_descriptions' ?
+                    <TestDescriptions /> :
+                    view === 'stage3' ?
+                      <NewStage3Page /> :
+                      view === 'challenge_evaluation' ? <ChallengeEvluationForm /> :
+                        view === 'confirmation' ? <Confirmation /> : null
         }
 
       </Container>

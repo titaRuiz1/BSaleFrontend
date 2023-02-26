@@ -84,7 +84,7 @@ function PositionsListPage() {
     }).catch(error => {
       console.log("ERROR", error)
     })
-    
+
     navigate(`applicants`)
 
   }
@@ -94,7 +94,7 @@ function PositionsListPage() {
 
     navigate(`/new-position`)
   }
-  
+  console.log('LAS POS', allPositions)
   return (
     <>
       <Navbar />

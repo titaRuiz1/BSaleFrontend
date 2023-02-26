@@ -58,9 +58,9 @@ const Text5 = styled.p`
 function ChallengePage() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { mulChoiceQuestions, testQuestions, position, setPosition, user, 
-  setMulChoiceQuestions, setSolutions, setTestQuestions, setChallengeEvaluations, 
-  setSumCorrectAnswer, setAverage, setStages, setSumTest, setTestDescription, setCriterias, setCountDontKnow } = useAuth();
+  const { mulChoiceQuestions, testDescription, position, setPosition, user,
+    setMulChoiceQuestions, setSolutions, setTestQuestions, setChallengeEvaluations,
+    setSumCorrectAnswer, setAverage, setStages, setSumTest, setTestDescription, setCriterias, setCountDontKnow } = useAuth();
   const { quill, quillRef } = useQuill({
     readOnly: true,
     modules: {
@@ -78,7 +78,7 @@ function ChallengePage() {
         setSumCorrectAnswer(response.stage1);
         setAverage(response.stage3);
         setSumTest(response.stage2);
-        setCountDontKnow(response.dontKnow)      
+        setCountDontKnow(response.dontKnow)
       }
     }).catch(error => console.log(error))
 
@@ -117,7 +117,7 @@ function ChallengePage() {
 
   function handleContinue(e) {
     e.preventDefault();
-    if(user.current_stage===1){
+    if (user.current_stage === 1) {
       navigate("/first-stage")
     }
     else if (user.current_stage === 2) {
