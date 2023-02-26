@@ -15,6 +15,8 @@ const Text4 = styled.p`
   ${typography.head.xxs}
   color: ${colors.black};
   font-size: 0.8rem;
+  line-height: 120%;
+  text-align: center
 `;
 
 const FieldContainer = styled.div`
@@ -62,6 +64,11 @@ function FieldRow() {
       </Wrapper2>
       <FieldContainer style={{ width: "100px", borderWidth: "1px 0px 1px 1px" }}>
         <Text4>
+          # PRGTAS QUE NO SABIA
+        </Text4>
+      </FieldContainer>
+      <FieldContainer style={{ width: "100px", borderWidth: "1px 0px 1px 1px" }}>
+        <Text4>
           ENLACE DEL PROYECTO
         </Text4>
       </FieldContainer>
@@ -80,9 +87,7 @@ function FieldRow() {
           COMENTARIOS
         </Text4>
       </FieldContainer>
-      <FieldContainer style={{ width: "100px", border: "none", backgroundColor: "#FFFFFF" }}>
-
-      </FieldContainer>
+      <FieldContainer style={{ width: "100px", border: "none", backgroundColor: "#FFFFFF" }}/>
     </Wrapper3>
   );
 }
