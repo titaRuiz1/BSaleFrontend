@@ -154,7 +154,7 @@ function RecordRow({ record }) {
             </RecordContainer>
 
             <RecordContainer style={{ width: "100px", border: "none" }}>
-              <Button width='60px' onClick={() => handleDelete(record.user.id)}>Eliminar</Button>
+              <Button width='75px' onClick={() => handleDelete(record.user.id)}>Eliminar</Button>
             </RecordContainer>
 
           </Wrapper3>

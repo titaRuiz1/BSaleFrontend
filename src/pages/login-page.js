@@ -80,7 +80,7 @@ export default function LoginPage() {
             onChange={handleFormChange}
           />
           {error ? 
-            <p>Usuario o contraseña invalido</p> 
+            <p style={{color:"red"}}>Usuario o contraseña inválido</p> 
             :
             null
           }
