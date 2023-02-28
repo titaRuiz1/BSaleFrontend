@@ -20,18 +20,12 @@ function PruebaText() {
     }).catch()
 
     getMultipleChoiceQuestions().then(response => {
-      // console.log('RESPONSE', response)
-
-      // let val = quill.setContents(response[0].question.description)
-      // quill?.setContents(response[0].question.description)
       quill?.setContents(JSON.parse(response[0].question.description))
       setMulChoiceQuestions(response);
     }).catch()
 
   }, [user, quill]);
 
-  console.log(value)
-  console.log('quill', quill)
   return (
     <>
       <p>Aqui renderea</p>

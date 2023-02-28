@@ -87,6 +87,7 @@ function ChallengeEvluationForm() {
 
   function handleCriterio1(event) {
     event.preventDefault();
+
     const data = JSON.stringify(quill.getContents())
     setNewChallengeEvaluation1({ ...newChallengeEvaluation1, description: data });
     quill.setText('');
@@ -96,6 +97,7 @@ function ChallengeEvluationForm() {
 
   function handleCriterio2(event) {
     event.preventDefault();
+
     const data = JSON.stringify(quill.getContents());
     setNewChallengeEvaluation2({ ...newChallengeEvaluation2, description: data });
     quill.setText('');
@@ -105,6 +107,7 @@ function ChallengeEvluationForm() {
 
   function handleCriterio3(event) {
     event.preventDefault();
+
     const data = JSON.stringify(quill.getContents());
     setNewChallengeEvaluation3({ ...newChallengeEvaluation3, description: data });
     quill.setText('');
@@ -114,6 +117,7 @@ function ChallengeEvluationForm() {
 
   function handleCriterio4(event) {
     event.preventDefault();
+
     const data = JSON.stringify(quill.getContents());
     setNewChallengeEvaluation4({ ...newChallengeEvaluation4, description: data });
     setShowAdd(true)

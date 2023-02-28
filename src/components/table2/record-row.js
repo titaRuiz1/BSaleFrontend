@@ -119,7 +119,7 @@ function RecordRow({ record }) {
             </RecordContainer>
             <RecordContainer style={{ width: "100px", borderWidth: "0px 0px 1px 1px" }}>
               <Text5>
-                {record.results.stage3}
+                {record.results.stage3.toFixed(1)}
               </Text5>
             </RecordContainer>
             <RecordContainer style={{ width: "100px", borderWidth: "0px 0px 1px 1px" }}>

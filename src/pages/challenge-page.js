@@ -135,10 +135,6 @@ function ChallengePage() {
         <Wrapper1 style={{ padding: "12px 32px", border: "1px solid #1E1E1E", borderRadius: "8px", gap: "16px" }}>
           <Wrapper2 style={{ justifyContent: "space-between", alignItems: "center" }}>
             <Text2>{position ? position.title : "Loading..."}</Text2>
-            {/* {position ?
-              position.id > 4 ? <Text2 ref={quillRef}></Text2>
-                : <Text2>{position.title}</Text2>
-              : <Text2>"Loading..."</Text2>} */}
             <Wrapper2 style={{ gap: "38px", justifyContent: "center", alignItems: "center" }}>
 
               {user.current_stage === 1 && user.current_question === 1 ?
@@ -162,12 +158,10 @@ function ChallengePage() {
 
           {show === true ? (
             <Wrapper1 style={{ gap: "16px" }}>
-
-              {/* <Text4>{position.description}</Text4> */}
-
               {
                 position.id > 4 ? <Text4 ref={quillRef}></Text4>
-                  : <Text4>{position.description}</Text4>}
+                  : <Text4>{position.description}</Text4>
+              }
             </Wrapper1>
           ) : null}
         </Wrapper1>

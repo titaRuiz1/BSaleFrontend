@@ -64,7 +64,7 @@ function FieldRow() {
       </Wrapper2>
       <FieldContainer style={{ width: "100px", borderWidth: "1px 0px 1px 1px" }}>
         <Text4>
-          # PRGTAS QUE NO SABIA
+          # PRGTAS QUE NO SABE
         </Text4>
       </FieldContainer>
       <FieldContainer style={{ width: "100px", borderWidth: "1px 0px 1px 1px" }}>

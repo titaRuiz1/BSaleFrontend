@@ -184,7 +184,7 @@ function SecondStagePage() {
 
           {testStatus ?
             testStatus.tests.map((test, index)=>{
-              console.log(testDescription[index])
+              
               return <Option key={index} padding={`0px 19px`} border={`1px solid ${ test ? colors.green: colors.red}`} id={`Test${index+1}`} value={`Test${index+1}`} background={`${ test ? colors.green: colors.red}`} label={testDescription[index].test_description} />
           }):
             <>

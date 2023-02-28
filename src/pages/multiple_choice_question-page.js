@@ -280,7 +280,7 @@ function MultipleChoicePage() {
       if (test.input_type === 'array_string') {
         currentTest = eval(`(${code})`);
         const input = test.input.slice(1, test.input.length - 1).split(',')
-        console.log(currentTest(input))
+        
         if (currentTest(input) === test.output) {
           if (idx === 0) setTest1Status(true)
           if (idx === 1) setTest2Status(true)
@@ -366,18 +366,12 @@ function MultipleChoicePage() {
     setView("question")
   }
 
-  // question_type === "multiple" ?
-  //   quill?.setContents(JSON.parse(mulChoiceQuestions[currentQuestion].question.description))
-  //   : quill?.setContents(JSON.parse(testQuestions[currentQuestion].question.description))
   useEffect(() => {
     if (view === "question") {
       if (question_type === "multiple") {
-        console.log(mulChoiceQuestions[currentQuestion].question.description)
         quill?.setContents(JSON.parse(mulChoiceQuestions[currentQuestion].question.description))
 
       } else {
-        console.log(testQuestions[currentQuestion].question.description)
-        console.log('entre a test')
         quill?.setContents(JSON.parse(testQuestions[currentQuestion].question.description))
 
       }
@@ -407,9 +401,6 @@ function MultipleChoicePage() {
                     </TextSection>
                   }
 
-                  {/* <TextSection ref={quillRef}> */}
-                  {/* {mulChoiceQuestions[currentQuestion].question.description} */}
-                  {/* </TextSection> */}
                   {mulChoiceQuestions[currentQuestion]?.url === 'sin imagen' ? null : <Img src={mulChoiceQuestions[currentQuestion]?.url} />}
                   <OptionsSection onSubmit={handleSubmitMultipleChoice}>
                     {mulChoiceQuestions[currentQuestion].options && mulChoiceQuestions[currentQuestion].options.map(option => {
@@ -435,16 +426,6 @@ function MultipleChoicePage() {
                       {mulChoiceQuestions[currentQuestion].question.description}
                     </TextSection>
                   }
-                  {/* {mulChoiceQuestions[currentQuestion].question.description} */}
-                  {/* </TextSection> */}
-                  {/* <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}> */}
-                  {/* <Wrapper2 style={{ gap: "32px" }}>
-                      <Text1>{position.title}</Text1>
-
-                      <Text1>Pregunta {currentQuestion + mulChoiceQuestions?.length + 1} de {solutions.length}</Text1>
-                    </Wrapper2> */}
-                  {/* <Text2 ref={quillRef}></Text2> */}
-                  {/* <Text2 ref={quillRef}>{testQuestions[currentQuestion].question.description} </Text2> */}
                   <Wrapper2 style={{ height: "270px", alignItems: "center", justifyContent: "center", padding: "0px 30px" }}>
                     <Editor
                       language="javascript"
@@ -497,7 +478,6 @@ function MultipleChoicePage() {
                       Enviar
                       </Button>
                   </Wrapper1>
-                  {/* </Wrapper2> */}
                 </>
               :
               <>
