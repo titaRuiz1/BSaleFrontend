@@ -66,11 +66,10 @@ function Confirmation() {
     createPosition(newPosition).then(response => {
       setAllPositions(response.data);
     }).catch((error) => console.log(error))
-    
+
     navigate(`/admin`)
   };
 
-  
   return (
     <>
       <FormContainer>

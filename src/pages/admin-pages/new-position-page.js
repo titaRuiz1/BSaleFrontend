@@ -88,11 +88,9 @@ function NewPositionPage() {
 
   function handleSubmitPosition(event) {
     event.preventDefault();
-    
     const data = JSON.stringify(quill.getContents())
     setNewPosition({ ...newPosition, description: data })
     setView('stage1')
-
   }
 
 

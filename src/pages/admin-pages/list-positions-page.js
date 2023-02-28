@@ -94,7 +94,7 @@ function PositionsListPage() {
 
     navigate(`/new-position`)
   }
-  
+
   return (
     <>
       <Navbar />
