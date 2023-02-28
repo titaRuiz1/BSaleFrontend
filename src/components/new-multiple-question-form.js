@@ -119,18 +119,15 @@ function MultipleChoiceQuestionForm() {
 
   function handleSubmitMultipleChoiceQuestion(event) {
     event.preventDefault();
-    console.log('hace submit');
     const data = JSON.stringify(quill.getContents())
     setNewMultiQuestion({ ...newMultiQuestion, description: data, options_attributes: [option1, option2, option3, option4] })
     quill.setText('');
     setEditorContent('');
     setShowSol(true);
-    // setShowAdd(true)
   };
 
   function handleSubmitSolution(event) {
     event.preventDefault();
-    console.log('hace submit2')
     const data = JSON.stringify(quill.getContents())
     setNewMultiQuestion({ ...newMultiQuestion, solution_attributes: { description: data } })
     setShowAdd(true)

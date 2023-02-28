@@ -65,11 +65,9 @@ function Confirmation() {
     createPosition(newPosition).then(response => {
       setAllPositions(response.data);
     }).catch((error) => console.log(error))
-    console.log('entre')
     navigate(`/admin`)
   };
 
-  console.log('TODO EL REQUEST', newPosition)
   return (
     <>
       <FormContainer>
