@@ -47,7 +47,7 @@ function Confirmation() {
 
   function handleCancel(event) {
     event.preventDefault();
-    console.log('back');
+    
     setNewPosition({
       title: '',
       description: '',
@@ -62,14 +62,15 @@ function Confirmation() {
 
   function handleConfirm(event) {
     event.preventDefault();
+
     createPosition(newPosition).then(response => {
       setAllPositions(response.data);
     }).catch((error) => console.log(error))
-    console.log('entre')
+    
     navigate(`/admin`)
   };
 
-  console.log('TODO EL REQUEST', newPosition)
+  
   return (
     <>
       <FormContainer>

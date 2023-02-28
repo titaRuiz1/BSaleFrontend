@@ -111,7 +111,7 @@ function TestQuestionForm() {
 
   function handleSubmitTestQuestion(event) {
     event.preventDefault();
-    console.log('hace submit')
+
     const data = JSON.stringify(quill.getContents())
     setNewTestQuestion({ ...newTestQuestion, description: data, tests_attributes: [test1, test2, test3, test4] });
     quill.setText('');
@@ -121,7 +121,7 @@ function TestQuestionForm() {
 
   function handleSubmitSolution(event) {
     event.preventDefault();
-    console.log('hace submit2')
+
     const data = JSON.stringify(quill.getContents())
     setNewTestQuestion({ ...newTestQuestion, solution_attributes: { description: data } })
     setShowAdd(true)

@@ -94,7 +94,7 @@ function PositionsListPage() {
 
     navigate(`/new-position`)
   }
-  console.log('LAS POS', allPositions)
+  
   return (
     <>
       <Navbar />
