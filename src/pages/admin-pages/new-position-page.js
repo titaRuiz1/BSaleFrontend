@@ -39,10 +39,13 @@ const FormContainer = styled.div`
 
 const FieldSet = styled.fieldset`
   padding: 0.25rem 0.5rem;
-  width: 100% 
+  width: 100%; 
   ${typography.lg};
   border: 1px solid ${colors.gray[600]};
+  display:flex;
+  flex-direction:column;
   background-color: white;
+  gap:8px;
   color: ${colors.gray[600]}
 `;
 

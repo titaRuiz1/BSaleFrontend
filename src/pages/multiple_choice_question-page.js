@@ -420,7 +420,7 @@ function MultipleChoicePage() {
                 </>
                 :
                 <>
-                  <p>Pregunta {currentQuestion + 1} de {solutions.length}</p>
+                  <p>Pregunta {currentQuestion + 1 + mulChoiceQuestions.length} de {solutions.length}</p>
                   {position.id > 4 ? <TextSection ref={quillRef}></TextSection> :
                     <TextSection >
                       {mulChoiceQuestions[currentQuestion].question.description}
@@ -437,7 +437,7 @@ function MultipleChoicePage() {
                     />
                   </Wrapper2>
                   <Wrapper1>
-                    <Button width="71px" onClick={runTests}>Test</Button>
+                    <Button width="71px" onClick={runTests} style={{marginTop:"16px", marginBottom:"16px"}}>Test</Button>
                   </Wrapper1>
                   <TestsContainer>
                     {test1Status === null ?
@@ -474,14 +474,14 @@ function MultipleChoicePage() {
                     }
                   </TestsContainer>
                   <Wrapper1>
-                    <Button width="90px" onClick={handleSubmitTest}>
+                    <Button width="90px" onClick={handleSubmitTest} style={{marginTop:"16px", marginBottom:"16px"}}>
                       Enviar
                       </Button>
                   </Wrapper1>
                 </>
               :
               <>
-                <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de 10</p>
+                <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de {solutions.length}</p>
 
                 {position.id > 4 ? <TextSection ref={quillRef}></TextSection> :
                   <TextSection >

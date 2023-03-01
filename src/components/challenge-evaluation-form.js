@@ -20,6 +20,8 @@ const FormContainer = styled.div`
 `;
 
 const FieldSet = styled.fieldset`
+  display:flex;
+  flex-direction:column;
   padding: 8px;
   width: 100% 
   ${typography.lg};
@@ -180,8 +182,8 @@ function ChallengeEvluationForm() {
                   style={{ borderRadius: '8px' }}
                   required />
                 {editorContent.trim() ?
-                  <Button color={`${colors.teal}`}>Agregar</Button> :
-                  <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
+                  <Button color={`${colors.teal}`} style={{marginTop:"8px"}}>Agregar</Button> :
+                  <Button disabled color={`${colors.lowOrange}`} style={{marginTop:"8px"}}>Agregar</Button>
                 }
               </FieldSet>
 
@@ -224,8 +226,8 @@ function ChallengeEvluationForm() {
                     style={{ borderRadius: '8px' }}
                     required />
                   {editorContent.trim() ?
-                    <Button color={`${colors.teal}`}>Agregar</Button> :
-                    <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
+                    <Button color={`${colors.teal}`} style={{marginTop:"8px"}}>Agregar</Button> :
+                    <Button disabled color={`${colors.lowOrange}`} style={{marginTop:"8px"}}>Agregar</Button>
                   }
                 </FieldSet>
 
@@ -268,8 +270,8 @@ function ChallengeEvluationForm() {
                       style={{ borderRadius: '8px' }}
                       required />
                     {editorContent.trim() ?
-                      <Button color={`${colors.teal}`}>Agregar</Button> :
-                      <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
+                      <Button color={`${colors.teal}`} style={{marginTop:"8px"}}>Agregar</Button> :
+                      <Button disabled color={`${colors.lowOrange}`} style={{marginTop:"8px"}}>Agregar</Button>
                     }
                   </FieldSet>
 
@@ -311,8 +313,8 @@ function ChallengeEvluationForm() {
                       style={{ borderRadius: '8px' }}
                       required />
                     {editorContent.trim() ?
-                      <Button color={`${colors.teal}`}>Agregar</Button> :
-                      <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
+                      <Button color={`${colors.teal}`} style={{marginTop:"8px"}}>Agregar</Button> :
+                      <Button disabled color={`${colors.lowOrange}`} style={{marginTop:"8px"}}>Agregar</Button>
                     }
 
                   </FieldSet>
