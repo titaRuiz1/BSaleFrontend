@@ -95,8 +95,8 @@ function NewStage1Page() {
               <Legend2>Etapa 1: Fundamentos de la programación</Legend2>
               <div ref={quillRef}></div>
               {editorContent.trim() ?
-                <Button color={`${colors.teal}`}>Agregar</Button> :
-                <Button disabled color={`${colors.lowOrange}`}>Agregar</Button>
+                <Button color={`${colors.teal}`} style={{marginTop:"8px"}}>Agregar</Button> :
+                <Button disabled color={`${colors.lowOrange}`} style={{marginTop:"8px"}}>Agregar</Button>
               }
             </FieldSet>
           </Form>

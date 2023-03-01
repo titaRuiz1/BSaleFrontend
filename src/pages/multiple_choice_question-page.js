@@ -366,9 +366,6 @@ function MultipleChoicePage() {
     setView("question")
   }
 
-  // question_type === "multiple" ?
-  //   quill?.setContents(JSON.parse(mulChoiceQuestions[currentQuestion].question.description))
-  //   : quill?.setContents(JSON.parse(testQuestions[currentQuestion].question.description))
   useEffect(() => {
     if (view === "question") {
       if (question_type === "multiple") {
@@ -429,22 +426,12 @@ function MultipleChoicePage() {
                 </>
                 :
                 <>
-                  <p>Pregunta {currentQuestion + 1} de {solutions.length}</p>
+                  <p>Pregunta {currentQuestion + 1 + mulChoiceQuestions.length} de {solutions.length}</p>
                   {position.id > 4 ? <TextSection ref={quillRef}></TextSection> :
                     <TextSection >
                       {mulChoiceQuestions[currentQuestion].question.description}
                     </TextSection>
                   }
-                  {/* {mulChoiceQuestions[currentQuestion].question.description} */}
-                  {/* </TextSection> */}
-                  {/* <Wrapper2 style={{ maxWidth: "868px", gap: "37px", marginTop: "48px" }}> */}
-                  {/* <Wrapper2 style={{ gap: "32px" }}>
-                      <Text1>{position.title}</Text1>
-
-                      <Text1>Pregunta {currentQuestion + mulChoiceQuestions?.length + 1} de {solutions.length}</Text1>
-                    </Wrapper2> */}
-                  {/* <Text2 ref={quillRef}></Text2> */}
-                  {/* <Text2 ref={quillRef}>{testQuestions[currentQuestion].question.description} </Text2> */}
                   <Wrapper2 style={{ height: "270px", alignItems: "center", justifyContent: "center", padding: "0px 30px" }}>
                     <Editor
                       language="javascript"
@@ -456,7 +443,7 @@ function MultipleChoicePage() {
                     />
                   </Wrapper2>
                   <Wrapper1>
-                    <Button width="71px" onClick={runTests}>Test</Button>
+                    <Button width="71px" onClick={runTests} style={{marginTop:"16px", marginBottom:"16px"}}>Test</Button>
                   </Wrapper1>
                   <TestsContainer>
                     {test1Status === null ?
@@ -493,7 +480,7 @@ function MultipleChoicePage() {
                     }
                   </TestsContainer>
                   <Wrapper1>
-                    <Button width="90px" onClick={handleSubmitTest}>
+                    <Button width="90px" onClick={handleSubmitTest} style={{marginTop:"16px", marginBottom:"16px"}}>
                       Enviar
                       </Button>
                   </Wrapper1>
@@ -501,7 +488,7 @@ function MultipleChoicePage() {
                 </>
               :
               <>
-                <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de 10</p>
+                <p>Solución {question_type === "multiple" ? currentQuestion + 1 : currentQuestion + 6} de {solutions.length}</p>
 
                 {position.id > 4 ? <TextSection ref={quillRef}></TextSection> :
                   <TextSection >

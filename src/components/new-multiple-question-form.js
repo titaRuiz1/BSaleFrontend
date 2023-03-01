@@ -64,6 +64,7 @@ function MultipleChoiceQuestionForm() {
   const [editorContent, setEditorContent] = useState('');
   const [showSol, setShowSol] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
+  const [showButton, setShowButton] = useState(true)
   const [selectedOptions, setSelectedOptions] = useState({});
   const { view, setView, arrMultiChoiceQuestion, setArrMultiChoiceQuestion, newPosition } = useAuth();
   const { quill, quillRef } = useQuill({
@@ -134,9 +135,11 @@ function MultipleChoiceQuestionForm() {
     const data = JSON.stringify(quill.getContents())
     setNewMultiQuestion({ ...newMultiQuestion, solution_attributes: { description: data } })
     setShowAdd(true)
+    setShowButton(false)
   }
 
   function handleAdd(event) {
+    setShowButton(true)
     event.preventDefault();
     arrMultiChoiceQuestion.length === 0 ? setArrMultiChoiceQuestion([newMultiQuestion])
       : setArrMultiChoiceQuestion([...arrMultiChoiceQuestion, newMultiQuestion]);
@@ -154,6 +157,7 @@ function MultipleChoiceQuestionForm() {
   };
 
   function handleNext(event) {
+    setShowButton(true)
     event.preventDefault();
     arrMultiChoiceQuestion.length === 0 ? setArrMultiChoiceQuestion([newMultiQuestion])
       : setArrMultiChoiceQuestion([...arrMultiChoiceQuestion, newMultiQuestion]);
@@ -175,9 +179,12 @@ function MultipleChoiceQuestionForm() {
               <Legend>Solución</Legend>
               <div ref={quillRef}></div>
             </FieldSet>
-            {editorContent.trim() ?
-              <Button>Añadir Solución</Button> :
-              <Button disabled color={`${colors.lowOrange}`}>Añadir Solución</Button>
+            {showButton ? 
+                editorContent.trim() ?
+                <Button style={{height:"50px"}}>Añadir Solución</Button> :
+                <Button disabled color={`${colors.lowOrange}`} style={{height:"50px"}}>Añadir Solución</Button>
+                :
+                null
             }
           </Form>
           :

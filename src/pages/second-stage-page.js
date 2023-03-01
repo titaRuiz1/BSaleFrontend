@@ -148,8 +148,9 @@ function SecondStagePage() {
   }, [quill])
 
   return (
+    <>
+    <Navbar />
     <Wrapper1>
-      <Navbar />
 
       <Wrapper2 style={{ width: "58%", gap: "32px", marginTop:"48px"}}>
         <Text1>{position.title} </Text1>
@@ -200,8 +201,8 @@ function SecondStagePage() {
         </TestsContainer>
         <Text2>Envio de proyecto</Text2>
         <Text3>Para poder revisar el código deployado en su proyecto necesitamos que ingrese el link de su repositorio en GITHUB teniendo en cuenta la siguiente nomenclatura:
-          "nombre_usuario/nombre_repositorio"
-        NOTA: No deberá incluir un "/" al final del link. Puede extraer la url desde el mismo repositorio.
+          "nombre_usuario/nombre_repositorio". </Text3>
+        <Text3>NOTA: No deberá incluir un "/" al final del link. Puede extraer la url desde el mismo repositorio.
         </Text3>
         <Wrapper2>
           <ul>
@@ -243,6 +244,7 @@ function SecondStagePage() {
         </Wrapper1>
       </Wrapper2>
     </Wrapper1>
+    </>
   )
 }
 

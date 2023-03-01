@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { HiOutlineChevronDown } from "react-icons/hi";
+import { HiOutlineChevronDown, HiOutlineChevronUp } from "react-icons/hi";
 import { Navbar } from "../components/navbar";
 import { Button } from "../components/buttons";
 import { typography, colors } from "../styles";
@@ -128,8 +128,9 @@ function ChallengePage() {
     }
   }
   return (
+    <>
+    <Navbar />
     <Wrapper1 style={{ alignItems: "center", justifyContent: "center" }}>
-      <Navbar />
       <Wrapper1 style={{ width: "68%", gap: "32px", marginTop: "48px" }}>
         <Text1>Retos asignados</Text1>
         <Wrapper1 style={{ padding: "12px 32px", border: "1px solid #1E1E1E", borderRadius: "8px", gap: "16px" }}>
@@ -155,8 +156,12 @@ function ChallengePage() {
                     <Text3>Continuar</Text3>
                   </Button>
               }
-
-              <HiOutlineChevronDown onClick={() => setShow(!show)} />
+              {
+                show ? 
+                <HiOutlineChevronUp onClick={() => setShow(!show)} />
+                :
+                <HiOutlineChevronDown onClick={() => setShow(!show)} />
+              }
             </Wrapper2>
           </Wrapper2>
 
@@ -173,6 +178,7 @@ function ChallengePage() {
         </Wrapper1>
       </Wrapper1>
     </Wrapper1>
+    </>
   )
 }
 
